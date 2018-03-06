@@ -37,14 +37,14 @@ INSERT INTO User (version, user_firstname, user_secondname, user_middlename, use
 
 
 INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
-VALUES (1, 'admin','123456','Админ','Admin', FALSE, 0 );
+VALUES (1, 'admin','123456','Админ','Admin', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
-VALUES (1, 'alex','123456','Алекс','User', FALSE, 0 );
+VALUES (1, 'alex','123456','Алекс','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
-VALUES (1, 'vasya','123456','Василий','User', FALSE, 0 );
+VALUES (1, 'vasya','123456','Василий','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
-VALUES (1, 'josh','123456','Джош','User', FALSE, 0 );
+VALUES (1, 'josh','123456','Джош','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
-VALUES (1, 'fedr','123456','Федр','User', FALSE, 0 );
+VALUES (1, 'fedr','123456','Федр','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
-VALUES (1, 'tom','123456','Том','User', FALSE, 0 );
+VALUES (1, 'tom','123456','Том','User', FALSE, NULL );

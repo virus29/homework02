@@ -27,11 +27,11 @@ public class Organization {
 
 //ИНН организации
     @Basic(optional = false)
-    private String organizationInn;
+    private int organizationInn;
 
 //КПП организации
     @Basic(optional = false)
-    private String organizationKpp;
+    private int organizationKpp;
 
 //Адрес организации
     @Basic(optional = false)
@@ -52,68 +52,68 @@ public class Organization {
         return id;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
-    }
-
-    public String getOrganizationFullname() {
-        return organizationFullname;
-    }
-
-    public String getOrganizationInn() {
-        return organizationInn;
-    }
-
-    public String getOrganizationKpp() {
-        return organizationKpp;
-    }
-
-    public String getOrganizationAddress() {
-        return organizationAddress;
-    }
-
-    public String getOrganizationPhone() {
-        return organizationPhone;
-    }
-
-    public boolean isOrganizationIsactive() {
-        return organizationIsactive;
-    }
-
-    public List<Office> getOffices() {
-        return offices;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
     }
 
     public void setOrganizationName(String organizationName) {
         this.organizationName = organizationName;
     }
 
+    public String getOrganizationFullname() {
+        return organizationFullname;
+    }
+
     public void setOrganizationFullname(String organizationFullname) {
         this.organizationFullname = organizationFullname;
     }
 
-    public void setOrganizationInn(String organizationInn) {
+    public int getOrganizationInn() {
+        return organizationInn;
+    }
+
+    public void setOrganizationInn(int organizationInn) {
         this.organizationInn = organizationInn;
     }
 
-    public void setOrganizationKpp(String organizationKpp) {
+    public int getOrganizationKpp() {
+        return organizationKpp;
+    }
+
+    public void setOrganizationKpp(int organizationKpp) {
         this.organizationKpp = organizationKpp;
+    }
+
+    public String getOrganizationAddress() {
+        return organizationAddress;
     }
 
     public void setOrganizationAddress(String organizationAddress) {
         this.organizationAddress = organizationAddress;
     }
 
+    public String getOrganizationPhone() {
+        return organizationPhone;
+    }
+
     public void setOrganizationPhone(String organizationPhone) {
         this.organizationPhone = organizationPhone;
     }
 
+    public boolean isOrganizationIsactive() {
+        return organizationIsactive;
+    }
+
     public void setOrganizationIsactive(boolean organizationIsactive) {
         this.organizationIsactive = organizationIsactive;
+    }
+
+    public List<Office> getOffices() {
+        return offices;
     }
 
     public void setOffices(List<Office> offices) {

@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS Account (
     name    VARCHAR(50) NOT NULL,
     role    VARCHAR(50) NOT NULL,
     isactive BOOLEAN,
-    activation_code    BIGINT
+    activation_code    VARCHAR(200)
 );
 
 CREATE INDEX IX_Office_Organization_Id ON Office (organization_id);

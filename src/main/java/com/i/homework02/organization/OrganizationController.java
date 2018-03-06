@@ -1,25 +1,50 @@
 package com.i.homework02.organization;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.query.Param;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-public interface OrganizationRepository extends JpaRepository<Organization, Long> {
-    @Query("SELECT o.id, o.organizationName, o.organizationIsactive FROM Organization o WHERE " +
-            "o.organizationName = :organizationName AND " +
-            "o.organizationInn = :organizationInn AND " +
-            "o.organizationIsactive = :organizationIsactive")
-    List<Organization> findBySearchParams(
-            @Param("organizationName") String organizationName,
-            @Param("organizationInn") int organizationInn,
-            @Param("organizationIsactive") Boolean organizationIsactive
-    );
-}
+@RestController
+@RequestMapping(value = "/api/organization", produces = MediaType.APPLICATION_JSON_VALUE)
+public class OrganizationController {
+    final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
+    @Autowired
+    private OrganizationService organizationService;
+
+    @PostMapping(value = "/list")
+    @ResponseStatus(HttpStatus.FOUND)
+    public @ResponseBody
+    List<Organization> search(
+            @RequestParam(required = true) String organizationName,
+            @RequestParam(required = false) int organizationInn,
+            @RequestParam(required = false) boolean organizationIsactive
+    ){
+        return organizationService.search(organizationName, organizationInn, organizationIsactive);
+    }
+
+    @GetMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public @ResponseBody
+    Organization findOrganizationById(@PathVariable Long id) {
+        return organizationService.findById(id);
+    }
+
+    @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Organization create(@RequestBody Organization organization) {
+        organizationService.save(organization);
+        return organization;
+    }
+}
 //4. api/organization/list
 //        In (фильтр):
 //        {
