@@ -1,6 +1,5 @@
-
 INSERT INTO Organization (id, version, organization_name, organization_fullName, organization_inn, organization_kpp, organization_address, organization_phone,organization_isActive)
-      VALUES (1, 1, 'БЕЛЛ ИНТЕГРАТОР','АКЦИОНЕРНОЕ ОБЩЕСТВО "БЕЛЛ ИНТЕГРАТОР"',7714923230,771401001,'125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4', '+7 (495) 980-61-81', TRUE);
+VALUES (1, 1, 'БЕЛЛ ИНТЕГРАТОР','АКЦИОНЕРНОЕ ОБЩЕСТВО "БЕЛЛ ИНТЕГРАТОР"',7714923230,771401001,'125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4', '+7 (495) 980-61-81', TRUE);
 
 INSERT INTO Office (id, version, office_name, office_address, office_phone, office_isActive, organization_id) VALUES (1, 1, 'Московский филиал','115088, г. Москва, 2-й Южнопортовый проезд 18, стр. 2', '+7 (495) 980-61-81', TRUE, 1);
 INSERT INTO Office (id, version, office_name, office_address, office_phone, office_isActive, organization_id) VALUES (2, 1, 'Пензенский филиал', '440000, Пенза, ул. Московская 27', '+7 (8412) 988-061', TRUE, 1);
@@ -25,5 +24,27 @@ INSERT INTO Document (version, document_code, document_name) VALUES (1,23,'Св�
 INSERT INTO Document (version, document_code, document_name) VALUES (1,24,'Удостоверение личности военнослужащего Российской Федерации');
 INSERT INTO Document (version, document_code, document_name) VALUES (1,91,'Иные документы');
 
-INSERT INTO User (version, login, password, user_firstName, user_secondName, user_middleName, user_position, user_phone, user_docCode, user_docNumber, user_docDate, user_citizenshipCode, user_isIdentified, office_id)
-          VALUES (1, 'vasya','123456','Василий','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
+INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+          VALUES (1, 'Василий','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
+INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+          VALUES (1, 'Алекс','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
+INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+          VALUES (1, 'Джош','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
+INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+          VALUES (1, 'Федр','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
+INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+          VALUES (1, 'Том','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
+
+
+INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
+VALUES (1, 'admin','123456','Админ','Admin', FALSE, 0 );
+INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
+VALUES (1, 'alex','123456','Алекс','User', FALSE, 0 );
+INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
+VALUES (1, 'vasya','123456','Василий','User', FALSE, 0 );
+INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
+VALUES (1, 'josh','123456','Джош','User', FALSE, 0 );
+INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
+VALUES (1, 'fedr','123456','Федр','User', FALSE, 0 );
+INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
+VALUES (1, 'tom','123456','Том','User', FALSE, 0 );

@@ -19,44 +19,23 @@ public class Country {
      */
     @Id
     @Basic(optional = false)
-    @Column(name = "country_code")
-    private int code;
+    private int countryCode;
 
     /**
      * Название страны
      */
     @Basic(optional = false)
-    @Column(name = "country_name")
-    private String name;
+    private String countryName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "country", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> users;
 
-    public Country() {
+    public int getCountryCode() {
+        return countryCode;
     }
 
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public String getCountryName() {
+        return countryName;
     }
 }
 

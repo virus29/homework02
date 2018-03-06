@@ -18,234 +18,95 @@ public class User {
     @Version
     private Integer version;
 
+//Имя пользователя
+    @Basic(optional = false)
+    private String userFirstname;
 
-// LogIn
+//Фамилия пользователя
     @Basic(optional = false)
-    @Column(name = "login")
-    private String login;
+    private String userSecondname;
 
-    /**
-     * Password
-     */
+//Отчество пользователя
     @Basic(optional = false)
-    @Column(name = "password")
-    private String password;
+    private String userMiddlename;
 
-    /**
-     * Имя пользователя
-     */
+    //Занимаемая должность
     @Basic(optional = false)
-    @Column(name = "user_firstName")
-    private String firstName;
+    private String userPosition;
 
-    /**
-     * Фамилия пользователя
-     */
+    //Телефон
     @Basic(optional = false)
-    @Column(name = "user_secondName")
-    private String secondName;
+    private String userPhone;
 
-    /**
-     * Отчество пользователя
-     */
+//Номер документа пользователя
     @Basic(optional = false)
-    @Column(name = "user_middleName")
-    private String middleName;
-    /**
-     * Занимаемая должность
-     */
-    @Basic(optional = false)
-    @Column(name = "user_position")
-    private String position;
-    /**
-     * Телефон
-     */
-    @Basic(optional = false)
-    @Column(name = "user_phone")
-    private String phone;
+    private String userDocnumber;
 
-    /**
-     * Номер документа пользователя
-     */
+//Дата выдачи документа пользователя
     @Basic(optional = false)
-    @Column(name = "user_docNumber")
-    private String docNumber;
+    private String userDocdate;
 
-    /**
-     * Дата выдачи документа пользователя
-     */
+//Идентифицирован ли пользователь
     @Basic(optional = false)
-    @Column(name = "user_docDate")
-    private String docDate;
-
-    /**
-     * Идентифицирован ли пользователь
-     */
-    @Basic(optional = false)
-    @Column(name = "user_isIdentified")
-    private String isIdentified;
+    private String userIsidentified;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "office_id")
     private Office office;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_citizenshipCode")
+    @JoinColumn(name = "user_citizenshipcode")
     private Country country;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_docCode")
+    @JoinColumn(name = "user_doccode")
     private Document document;
-
-    public User() {
-    }
-
-    /**
-     * Конструктор для hibernate
-     * @param login
-     * @param password
-     * @param firstName
-     */
-    public User(String login, String password, String firstName) {
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-    }
-
-    @Override
-    public String toString() {
-        return "Quote{" +
-                "login='" + login + '\'' +
-                ", password=" + password + '\'' +
-                ", firstName=" + firstName +
-                '}';
-    }
-
-    public User(String login, String password, String firstName, String secondName, String middleName, String position, String phone, String docNumber, String docDate, String isIdentified, Office office, Document document, Country country) {
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.middleName = middleName;
-        this.position = position;
-        this.phone = phone;
-        this.docNumber = docNumber;
-        this.docDate = docDate;
-        this.isIdentified = isIdentified;
-        this.office = office;
-        this.country = country;
-        this.document = document;
-    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getUserFirstname() {
+        return userFirstname;
     }
 
-    public String getLogin() {
-        return login;
+    public String getUserSecondname() {
+        return userSecondname;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public String getUserMiddlename() {
+        return userMiddlename;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserPosition() {
+        return userPosition;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getUserPhone() {
+        return userPhone;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getUserDocnumber() {
+        return userDocnumber;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public String getUserDocdate() {
+        return userDocdate;
     }
 
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getDocNumber() {
-        return docNumber;
-    }
-
-    public void setDocNumber(String docNumber) {
-        this.docNumber = docNumber;
-    }
-
-    public String getDocDate() {
-        return docDate;
-    }
-
-    public void setDocDate(String docDate) {
-        this.docDate = docDate;
-    }
-
-    public String getIsIdentified() {
-        return isIdentified;
-    }
-
-    public void setIsIdentified(String isIdentified) {
-        this.isIdentified = isIdentified;
+    public String getUserIsidentified() {
+        return userIsidentified;
     }
 
     public Office getOffice() {
         return office;
     }
 
-    public void setOffice(Office office) {
-        this.office = office;
-    }
-
     public Country getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
-    }
-
     public Document getDocument() {
         return document;
-    }
-
-    public void setDocument(Document document) {
-        this.document = document;
     }
 }

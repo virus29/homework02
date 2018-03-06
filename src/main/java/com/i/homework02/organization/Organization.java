@@ -13,126 +13,107 @@ public class Organization {
     @Column(name = "Id")
     private Long id;
 
-    /**
-     * Служебное поле hibernate
-     */
+//Служебное поле hibernate
     @Version
     private Integer version;
 
-    /**
-     * краткое название организации
-     */
+// Краткое название организации
     @Basic(optional = false)
-    @Column(name = "organization_name")
-    private String name;
+    private String organizationName;
 
-    /**
-     * Полное название оранизации
-     */
+//Полное название оранизации
     @Basic(optional = false)
-    @Column(name = "organization_fullName")
-    private String fullName;
+    private String organizationFullname;
 
-    /**
-     * ИНН организации
-     */
+//ИНН организации
     @Basic(optional = false)
-    @Column(name = "organization_inn")
-    private String inn;
+    private String organizationInn;
 
-    /**
-     * КПП организации
-     */
+//КПП организации
     @Basic(optional = false)
-    @Column(name = "organization_kpp")
-    private String kpp;
+    private String organizationKpp;
 
-    /**
-     * Адрес организации
-     */
+//Адрес организации
     @Basic(optional = false)
-    @Column(name = "organization_address")
-    private String address;
+    private String organizationAddress;
 
-    /**
-     * Телефон организации
-     */
+//Телефон организации
     @Basic(optional = false)
-    @Column(name = "organization_phone")
-    private String phone;
+    private String organizationPhone;
 
-    /**
-     * Активная ли организация
-     */
+//Активная ли организация
     @Basic(optional = false)
-    @Column(name = "organization_isActive")
-    private boolean isActive;
+    private boolean organizationIsactive;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Office> offices;
 
-    /**
-     * Конструктор для hibernate
-     */
-
-    public String getName() {
-        return name;
+    public Long getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getOrganizationName() {
+        return organizationName;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getOrganizationFullname() {
+        return organizationFullname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public String getOrganizationInn() {
+        return organizationInn;
     }
 
-    public String getInn() {
-        return inn;
+    public String getOrganizationKpp() {
+        return organizationKpp;
     }
 
-    public void setInn(String inn) {
-        this.inn = inn;
+    public String getOrganizationAddress() {
+        return organizationAddress;
     }
 
-    public String getKpp() {
-        return kpp;
+    public String getOrganizationPhone() {
+        return organizationPhone;
     }
 
-    public void setKpp(String kpp) {
-        this.kpp = kpp;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+    public boolean isOrganizationIsactive() {
+        return organizationIsactive;
     }
 
     public List<Office> getOffices() {
         return offices;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public void setOrganizationFullname(String organizationFullname) {
+        this.organizationFullname = organizationFullname;
+    }
+
+    public void setOrganizationInn(String organizationInn) {
+        this.organizationInn = organizationInn;
+    }
+
+    public void setOrganizationKpp(String organizationKpp) {
+        this.organizationKpp = organizationKpp;
+    }
+
+    public void setOrganizationAddress(String organizationAddress) {
+        this.organizationAddress = organizationAddress;
+    }
+
+    public void setOrganizationPhone(String organizationPhone) {
+        this.organizationPhone = organizationPhone;
+    }
+
+    public void setOrganizationIsactive(boolean organizationIsactive) {
+        this.organizationIsactive = organizationIsactive;
     }
 
     public void setOffices(List<Office> offices) {
