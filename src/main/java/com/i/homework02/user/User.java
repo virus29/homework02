@@ -24,7 +24,7 @@ public class User {
 
 //Фамилия пользователя
     @Basic(optional = false)
-    private String userSecondname;
+    private String userLastname;
 
 //Отчество пользователя
     @Basic(optional = false)
@@ -70,8 +70,8 @@ public class User {
         return userFirstname;
     }
 
-    public String getUserSecondname() {
-        return userSecondname;
+    public String getUserLastname() {
+        return userLastname;
     }
 
     public String getUserMiddlename() {
@@ -108,5 +108,53 @@ public class User {
 
     public Document getDocument() {
         return document;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setUserFirstname(String userFirstname) {
+        this.userFirstname = userFirstname;
+    }
+
+    public void setUserLastname(String userLastname) {
+        this.userLastname = userLastname;
+    }
+
+    public void setUserMiddlename(String userMiddlename) {
+        this.userMiddlename = userMiddlename;
+    }
+
+    public void setUserPosition(String userPosition) {
+        this.userPosition = userPosition;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+
+    public void setUserDocnumber(String userDocnumber) {
+        this.userDocnumber = userDocnumber;
+    }
+
+    public void setUserDocdate(String userDocdate) {
+        this.userDocdate = userDocdate;
+    }
+
+    public void setUserIsidentified(String userIsidentified) {
+        this.userIsidentified = userIsidentified;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public void setDocument(Document document) {
+        this.document = document;
     }
 }

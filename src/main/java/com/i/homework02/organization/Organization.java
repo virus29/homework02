@@ -1,50 +1,52 @@
 package com.i.homework02.organization;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.i.homework02.office.Office;
+import com.i.homework02.office.OfficeView;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "Organization")
 public class Organization {
-
+    @NotNull
+    @JsonView(OfficeView.OfficeFindById.class)
     @Id
     @GeneratedValue
     @Column(name = "Id")
     private Long id;
 
 //Служебное поле hibernate
+    @Transient
     @Version
     private Integer version;
 
 // Краткое название организации
-    @Basic(optional = false)
+    @NotNull
     private String organizationName;
 
 //Полное название оранизации
-    @Basic(optional = false)
     private String organizationFullname;
 
 //ИНН организации
-    @Basic(optional = false)
-    private int organizationInn;
+    private Long organizationInn;
 
 //КПП организации
-    @Basic(optional = false)
-    private int organizationKpp;
+    private Long organizationKpp;
 
 //Адрес организации
-    @Basic(optional = false)
     private String organizationAddress;
 
 //Телефон организации
-    @Basic(optional = false)
     private String organizationPhone;
 
 //Активная ли организация
-    @Basic(optional = false)
-    private boolean organizationIsactive;
+@JsonProperty
+    private Boolean organizationIsactive;
 
+    @Transient
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Office> offices;
 
@@ -72,19 +74,19 @@ public class Organization {
         this.organizationFullname = organizationFullname;
     }
 
-    public int getOrganizationInn() {
+    public Long getOrganizationInn() {
         return organizationInn;
     }
 
-    public void setOrganizationInn(int organizationInn) {
+    public void setOrganizationInn(Long organizationInn) {
         this.organizationInn = organizationInn;
     }
 
-    public int getOrganizationKpp() {
+    public Long getOrganizationKpp() {
         return organizationKpp;
     }
 
-    public void setOrganizationKpp(int organizationKpp) {
+    public void setOrganizationKpp(Long organizationKpp) {
         this.organizationKpp = organizationKpp;
     }
 
@@ -104,11 +106,11 @@ public class Organization {
         this.organizationPhone = organizationPhone;
     }
 
-    public boolean isOrganizationIsactive() {
+    public Boolean getOrganizationIsactive() {
         return organizationIsactive;
     }
 
-    public void setOrganizationIsactive(boolean organizationIsactive) {
+    public void setOrganizationIsactive(Boolean organizationIsactive) {
         this.organizationIsactive = organizationIsactive;
     }
 
@@ -118,5 +120,20 @@ public class Organization {
 
     public void setOffices(List<Office> offices) {
         this.offices = offices;
+    }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "id=" + id +
+                ", organizationName='" + organizationName + '\'' +
+                ", organizationFullname='" + organizationFullname + '\'' +
+                ", organizationInn=" + organizationInn +
+                ", organizationKpp=" + organizationKpp +
+                ", organizationAddress='" + organizationAddress + '\'' +
+                ", organizationPhone='" + organizationPhone + '\'' +
+                ", organizationIsactive=" + organizationIsactive +
+                ", offices=" + offices +
+                '}';
     }
 }

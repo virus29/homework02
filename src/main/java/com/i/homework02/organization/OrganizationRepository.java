@@ -1,24 +1,26 @@
 package com.i.homework02.organization;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface OrganizationRepository extends JpaRepository<Organization, Long> {
-    @Query("SELECT o.id, o.organizationName, o.organizationIsactive FROM Organization o WHERE " +
-            "o.organizationName = :organizationName AND " +
-            "o.organizationInn = :organizationInn AND " +
-            "o.organizationIsactive = :organizationIsactive")
-    List<Organization> findBySearchParams(
-            @Param("organizationName") String organizationName,
-            @Param("organizationInn") int organizationInn,
-            @Param("organizationIsactive") Boolean organizationIsactive
-    );
+public interface OrganizationRepository extends JpaRepository<Organization, Long>, JpaSpecificationExecutor<Organization> {
+
 }
+//    @Query("SELECT o.id, o.organizationName, o.organizationIsactive FROM Organization o WHERE " +
+//            "o.organizationName = :organizationName AND " +
+//            "o.organizationInn = :organizationInn AND " +
+//            "o.organizationIsactive = :organizationIsactive")
+//    List<Object[]> findBySearchParams(
+//            @Param("organizationName") String organizationName,
+//            @Param("organizationInn") Long organizationInn,
+//            @Param("organizationIsactive") Boolean organizationIsactive
+//    );
+//}
 
 //4. api/organization/list
 //        In (фильтр):

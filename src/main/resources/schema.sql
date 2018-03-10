@@ -12,49 +12,49 @@ CREATE TABLE IF NOT EXISTS Document (
 
 CREATE TABLE IF NOT EXISTS Office (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version    INTEGER NOT NULL,
-    office_name    VARCHAR(50) NOT NULL,
-    office_address    VARCHAR(100) NOT NULL,
-    office_phone    VARCHAR(100) NOT NULL,
+    version    INTEGER,
+    office_name    VARCHAR(50),
+    office_address    VARCHAR(100),
+    office_phone    VARCHAR(100),
     office_isactive    BOOLEAN,
-    organization_id INTEGER NOT NULL
+    organization_id INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Organization (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version    INTEGER NOT NULL,
+    version    INTEGER,
     organization_name    VARCHAR(50) NOT NULL,
-    organization_fullname    VARCHAR(50) NOT NULL,
-    organization_inn    BIGINT NOT NULL,
-    organization_kpp    BIGINT NOT NULL,
-    organization_address    VARCHAR(100) NOT NULL,
-    organization_phone    VARCHAR(100) NOT NULL,
+    organization_fullname    VARCHAR(50),
+    organization_inn    BIGINT,
+    organization_kpp    BIGINT,
+    organization_address    VARCHAR(100),
+    organization_phone    VARCHAR(100),
     organization_isactive    BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS User (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version    INTEGER NOT NULL,
+    version    INTEGER,
     user_firstname    VARCHAR(50) NOT NULL,
-    user_secondname    VARCHAR(50) NOT NULL,
-    user_middlename    VARCHAR(50) NOT NULL,
-    user_position    VARCHAR(50) NOT NULL,
-    user_phone    VARCHAR(50) NOT NULL,
-    user_doccode    INTEGER NOT NULL,
-    user_docnumber    VARCHAR(50) NOT NULL,
-    user_docdate    VARCHAR(50) NOT NULL,
-    user_citizenshipcode    INTEGER NOT NULL,
+    user_lastname    VARCHAR(50),
+    user_middlename    VARCHAR(50),
+    user_position    VARCHAR(50),
+    user_phone    VARCHAR(50),
+    user_doccode    INTEGER,
+    user_docnumber    VARCHAR(50),
+    user_docdate    VARCHAR(50),
+    user_citizenshipcode    INTEGER,
     user_isidentified    BOOLEAN,
     office_id INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Account (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version    INTEGER NOT NULL,
+    version    INTEGER,
     login    VARCHAR(50) NOT NULL,
     password    VARCHAR(50) NOT NULL,
     name    VARCHAR(50) NOT NULL,
-    role    VARCHAR(50) NOT NULL,
+    role    VARCHAR(50),
     isactive BOOLEAN,
     activation_code    VARCHAR(200)
 );

@@ -16,7 +16,7 @@ public class Document {
 //Код документа
     @Id
     @Basic(optional = false)
-    private int documentCode;
+    private Long documentCode;
 
 //Название документа
     @Basic(optional = false)
@@ -25,11 +25,19 @@ public class Document {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "document", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> users;
 
-    public int getDocumentCode() {
+    public Long getDocumentCode() {
         return documentCode;
+    }
+
+    public void setDocumentCode(Long documentCode) {
+        this.documentCode = documentCode;
     }
 
     public String getDocumentName() {
         return documentName;
+    }
+
+    public void setDocumentName(String documentName) {
+        this.documentName = documentName;
     }
 }

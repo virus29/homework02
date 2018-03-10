@@ -24,17 +24,16 @@ INSERT INTO Document (version, document_code, document_name) VALUES (1,23,'Св�
 INSERT INTO Document (version, document_code, document_name) VALUES (1,24,'Удостоверение личности военнослужащего Российской Федерации');
 INSERT INTO Document (version, document_code, document_name) VALUES (1,91,'Иные документы');
 
-INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+INSERT INTO User (version, user_firstname, user_lastname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
           VALUES (1, 'Василий','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
-INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+INSERT INTO User (version, user_firstname, user_lastname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
           VALUES (1, 'Алекс','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
-INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+INSERT INTO User (version, user_firstname, user_lastname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
           VALUES (1, 'Джош','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
-INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+INSERT INTO User (version, user_firstname, user_lastname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
           VALUES (1, 'Федр','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
-INSERT INTO User (version, user_firstname, user_secondname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
+INSERT INTO User (version, user_firstname, user_lastname, user_middlename, user_position, user_phone, user_doccode, user_docnumber, user_docdate, user_citizenshipcode, user_isidentified, office_id)
           VALUES (1, 'Том','Иванов', 'Иванович', 'Менеджер', '+7 (495) 980-61-81', 21,'7754 159753', '15.04.2015', 643, TRUE, 1);
-
 
 INSERT INTO Account (version, login, password, name, role, isactive, activation_code)
 VALUES (1, 'admin','123456','Админ','Admin', FALSE, NULL );

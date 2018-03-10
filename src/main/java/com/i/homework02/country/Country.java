@@ -19,7 +19,7 @@ public class Country {
      */
     @Id
     @Basic(optional = false)
-    private int countryCode;
+    private Long countryCode;
 
     /**
      * Название страны
@@ -30,8 +30,16 @@ public class Country {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "country", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> users;
 
-    public int getCountryCode() {
+    public Long getCountryCode() {
         return countryCode;
+    }
+
+    public void setCountryCode(Long countryCode) {
+        this.countryCode = countryCode;
+    }
+
+    public void setCountryName(String countryName) {
+        this.countryName = countryName;
     }
 
     public String getCountryName() {

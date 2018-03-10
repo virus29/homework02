@@ -4,12 +4,13 @@ package com.i.homework02.organization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/organization", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -22,13 +23,14 @@ public class OrganizationController {
     @PostMapping(value = "/list")
     @ResponseStatus(HttpStatus.FOUND)
     public @ResponseBody
-    List<Organization> search(
-            @RequestParam(required = true) String organizationName,
-            @RequestParam(required = false) int organizationInn,
-            @RequestParam(required = false) boolean organizationIsactive
-    ){
-        return organizationService.search(organizationName, organizationInn, organizationIsactive);
+    List<Organization> search(@RequestBody @Valid Organization organization){
+        logger.info(organization.toString());
+        return organizationService.search(organization.getOrganizationName(), organization.getOrganizationInn(), organization.getOrganizationIsactive());
     }
+//    List<Map<String, Object>> search(@RequestBody @Valid Organization organization){
+//        logger.info(organization.toString());
+//        return organizationService.search(organization.getOrganizationName(), organization.getOrganizationInn(), organization.getOrganizationIsactive());
+//    }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.FOUND)
