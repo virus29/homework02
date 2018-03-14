@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Entity;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -19,15 +21,15 @@ public class OfficeController {
     final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
     @Autowired
-    private OfficeService officeService;
+    private OfficeServiceImpl officeServiceImpl;
 
-    @JsonView({OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class})
+    @JsonView(OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class)
     @PostMapping(value = "/list")
     @ResponseStatus(HttpStatus.FOUND)
     public @ResponseBody
-    List<Office> searchOffice(@RequestBody @Valid Office office){
+    List<Office> searchOffice(@Valid Office office){
         logger.info(office.toString());
-        return officeService.searchOffice(office.getOrganization().getId(), office.getOfficeName(), office.getOfficePhone(), office.isOfficeIsactive());
+        return officeServiceImpl.searchOffice(office.getOrganization().getId(), office.getName(), office.getPhone(), office.getActive());
     }
 
     @JsonView(OfficeView.OfficeFindById.class)
@@ -35,9 +37,31 @@ public class OfficeController {
     @ResponseStatus(HttpStatus.FOUND)
     public @ResponseBody
     Office findOfficeById(@PathVariable Long id) {
-        return officeService.findById(id);
+        return officeServiceImpl.findById(id);
+    }
+
+//    @JsonView(OfficeView.OfficeFindById.class)
+//    @PostMapping(value = "/update")
+//    public
+//    Entity officeUpdate (@RequestBody @Valid Office office) {
+//        officeServiceImpl.update(office);
+//        return new ResponseEntity<>()@ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
+//    }
+
+    @JsonView(OfficeView.OfficeFindById.class)
+    @PostMapping(value = "/save")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody
+    Office officeSave (@PathVariable Office office) {
+        return officeServiceImpl.save(office);
+    }
+
+    @JsonView(OfficeView.OfficeFindById.class)
+    @PostMapping(value = "/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    void officeDelete (@PathVariable Office office) {
+        officeServiceImpl.delete(office);
     }
 }
-
-
 

@@ -1,13 +1,22 @@
 package com.i.homework02.office;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.i.homework02.organization.Organization;
+import com.i.homework02.organization.OrganizationView;
 import com.i.homework02.user.User;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Basic;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Version;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import java.util.List;
 
 @Entity
@@ -20,33 +29,31 @@ public class Office {
 
 //Служебное поле hibernate
     @Version
-    private Integer version;
+    private Integer version=0;
 
 // Название офиса
     @JsonView({OfficeView.OfficeFindById.class,OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class})
     @Basic(optional = false)
-    private String officeName;
+    private String name;
 
 //Адрес
-    @JsonView({OfficeView.OfficeFindById.class})
     @Basic(optional = false)
-    private String officeAddress;
+    private String address;
 
 //Телефон
     @JsonView({OfficeView.OfficeFindById.class})
     @Basic(optional = false)
-    private String officePhone;
+    private String phone;
 
 //Активен ли офис
     @JsonView({OfficeView.OfficeFindById.class,OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class})
     @Basic(optional = false)
-    private Boolean officeIsactive;
+    private Boolean isActive;
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "office", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<User> users;
 
-    @JsonView({OfficeView.OfficeFindById.class})
 //    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organization_id")
@@ -56,48 +63,36 @@ public class Office {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
-    public String getOfficeName() {
-        return officeName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setOfficeName(String officeName) {
-        this.officeName = officeName;
+    public String getAddress() {
+        return address;
     }
 
-    public String getOfficeAddress() {
-        return officeAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setOfficeAddress(String officeAddress) {
-        this.officeAddress = officeAddress;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getOfficePhone() {
-        return officePhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public void setOfficePhone(String officePhone) {
-        this.officePhone = officePhone;
+    public Boolean getActive() {
+        return isActive;
     }
 
-    public Boolean isOfficeIsactive() {
-        return officeIsactive;
-    }
-
-    public void setOfficeIsactive(Boolean officeIsactive) {
-        this.officeIsactive = officeIsactive;
-    }
-
-    public Organization getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
     public List<User> getUsers() {
@@ -106,5 +101,13 @@ public class Office {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public Organization getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
     }
 }

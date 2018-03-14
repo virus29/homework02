@@ -1,14 +1,17 @@
 package com.i.homework02.user;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.i.homework02.country.Country;
-import com.i.homework02.document.Document;
+import com.i.homework02.document.DocType;
 import com.i.homework02.office.Office;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "User")
 public class User {
+    @JsonView(UserView.FindById.class)
     @Id
     @GeneratedValue
     @Column(name = "Id")
@@ -16,145 +19,184 @@ public class User {
 
 //Служебное поле hibernate
     @Version
-    private Integer version;
+    private Integer version=0;
 
 //Имя пользователя
+@JsonView(UserView.FindById.class)
     @Basic(optional = false)
-    private String userFirstname;
+    private String firstName;
 
 //Фамилия пользователя
+@JsonView(UserView.FindById.class)
     @Basic(optional = false)
-    private String userLastname;
+    private String secondName;
 
 //Отчество пользователя
+@JsonView(UserView.FindById.class)
     @Basic(optional = false)
-    private String userMiddlename;
+    private String middleName;
 
     //Занимаемая должность
+    @JsonView(UserView.FindById.class)
     @Basic(optional = false)
-    private String userPosition;
+    private String position;
 
     //Телефон
     @Basic(optional = false)
-    private String userPhone;
+    @JsonView(UserView.FindById.class)
+    private String phone;
 
 //Номер документа пользователя
+    @JsonView(UserView.FindById.class)
     @Basic(optional = false)
-    private String userDocnumber;
+    private String docNumber;
 
 //Дата выдачи документа пользователя
+    @JsonView(UserView.FindById.class)
     @Basic(optional = false)
-    private String userDocdate;
+    @Temporal(TemporalType.DATE)
+    private Date docDate;
 
 //Идентифицирован ли пользователь
+    @JsonView(UserView.FindById.class)
     @Basic(optional = false)
-    private String userIsidentified;
+    private String isIdentified;
+
+    @Transient
+    private Long officeId;
+
+    @Transient
+    private String citizenshipCode;
+
+    @Transient
+    private String docCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "office_id")
     private Office office;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_citizenshipcode")
+    @JoinColumn(name = "citizenship_code")
     private Country country;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_doccode")
-    private Document document;
+    @JoinColumn(name = "doc_code")
+    private DocType docType;
+
 
     public Long getId() {
         return id;
     }
 
-    public String getUserFirstname() {
-        return userFirstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getUserLastname() {
-        return userLastname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getUserMiddlename() {
-        return userMiddlename;
+    public String getSecondName() {
+        return secondName;
     }
 
-    public String getUserPosition() {
-        return userPosition;
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public String getUserDocnumber() {
-        return userDocnumber;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
-    public String getUserDocdate() {
-        return userDocdate;
+    public String getPosition() {
+        return position;
     }
 
-    public String getUserIsidentified() {
-        return userIsidentified;
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDocNumber() {
+        return docNumber;
+    }
+
+    public void setDocNumber(String docNumber) {
+        this.docNumber = docNumber;
+    }
+
+    public Date getDocDate() {
+        return docDate;
+    }
+
+    public void setDocDate(Date docDate) {
+        this.docDate = docDate;
+    }
+
+    public String getIsIdentified() {
+        return isIdentified;
+    }
+
+    public void setIsIdentified(String isIdentified) {
+        this.isIdentified = isIdentified;
     }
 
     public Office getOffice() {
         return office;
     }
 
-    public Country getCountry() {
-        return country;
-    }
-
-    public Document getDocument() {
-        return document;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setUserFirstname(String userFirstname) {
-        this.userFirstname = userFirstname;
-    }
-
-    public void setUserLastname(String userLastname) {
-        this.userLastname = userLastname;
-    }
-
-    public void setUserMiddlename(String userMiddlename) {
-        this.userMiddlename = userMiddlename;
-    }
-
-    public void setUserPosition(String userPosition) {
-        this.userPosition = userPosition;
-    }
-
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
-    public void setUserDocnumber(String userDocnumber) {
-        this.userDocnumber = userDocnumber;
-    }
-
-    public void setUserDocdate(String userDocdate) {
-        this.userDocdate = userDocdate;
-    }
-
-    public void setUserIsidentified(String userIsidentified) {
-        this.userIsidentified = userIsidentified;
-    }
-
     public void setOffice(Office office) {
         this.office = office;
+    }
+
+    public Country getCountry() {
+        return country;
     }
 
     public void setCountry(Country country) {
         this.country = country;
     }
 
-    public void setDocument(Document document) {
-        this.document = document;
+    public DocType getDocType() {
+        return docType;
+    }
+
+    public void setDocType(DocType docType) {
+        this.docType = docType;
+    }
+
+    public Long getOfficeId() {
+        return officeId;
+    }
+
+    public void setOfficeId(Long officeId) {
+        this.officeId = officeId;
+    }
+
+    public String getCitizenshipCode() {
+        return citizenshipCode;
+    }
+
+    public void setCitizenshipCode(String citizenshipCode) {
+        this.citizenshipCode = citizenshipCode;
+    }
+
+    public String getDocCode() {
+        return docCode;
+    }
+
+    public void setDocCode(String docCode) {
+        this.docCode = docCode;
     }
 }

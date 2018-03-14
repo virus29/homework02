@@ -6,13 +6,14 @@ import com.i.homework02.office.Office;
 import com.i.homework02.office.OfficeView;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Expression;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity(name = "Organization")
 public class Organization {
-    @NotNull
-    @JsonView(OfficeView.OfficeFindById.class)
+//    @NotNull
+    @JsonView(OrganizationView.FindById.class)
     @Id
     @GeneratedValue
     @Column(name = "Id")
@@ -21,32 +22,41 @@ public class Organization {
 //Служебное поле hibernate
     @Transient
     @Version
-    private Integer version;
+    private Integer version=0;
 
 // Краткое название организации
+@JsonView(OrganizationView.FindById.class)
     @NotNull
-    private String organizationName;
+    private String name;
 
 //Полное название оранизации
-    private String organizationFullname;
+@JsonView(OrganizationView.FindById.class)
+    private String fullName;
 
 //ИНН организации
-    private Long organizationInn;
+@JsonView(OrganizationView.FindById.class)
+    private Long inn;
 
 //КПП организации
-    private Long organizationKpp;
+@JsonView(OrganizationView.FindById.class)
+    private Long kpp;
 
 //Адрес организации
-    private String organizationAddress;
+@JsonView(OrganizationView.FindById.class)
+    private String address;
 
 //Телефон организации
-    private String organizationPhone;
+@JsonView(OrganizationView.FindById.class)
+    private String phone;
 
 //Активная ли организация
 @JsonProperty
-    private Boolean organizationIsactive;
+@JsonView(OrganizationView.FindById.class)
+    private Boolean isActive;
 
-    @Transient
+    @JsonView(OrganizationView.FindById.class)
+private Long officeId;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Office> offices;
 
@@ -54,64 +64,60 @@ public class Organization {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getName() {
+        return name;
     }
 
-    public String getOrganizationName() {
-        return organizationName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setOrganizationName(String organizationName) {
-        this.organizationName = organizationName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public String getOrganizationFullname() {
-        return organizationFullname;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public void setOrganizationFullname(String organizationFullname) {
-        this.organizationFullname = organizationFullname;
+    public Long getInn() {
+        return inn;
     }
 
-    public Long getOrganizationInn() {
-        return organizationInn;
+    public void setInn(Long inn) {
+        this.inn = inn;
     }
 
-    public void setOrganizationInn(Long organizationInn) {
-        this.organizationInn = organizationInn;
+    public Long getKpp() {
+        return kpp;
     }
 
-    public Long getOrganizationKpp() {
-        return organizationKpp;
+    public void setKpp(Long kpp) {
+        this.kpp = kpp;
     }
 
-    public void setOrganizationKpp(Long organizationKpp) {
-        this.organizationKpp = organizationKpp;
+    public String getAddress() {
+        return address;
     }
 
-    public String getOrganizationAddress() {
-        return organizationAddress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public void setOrganizationAddress(String organizationAddress) {
-        this.organizationAddress = organizationAddress;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getOrganizationPhone() {
-        return organizationPhone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public void setOrganizationPhone(String organizationPhone) {
-        this.organizationPhone = organizationPhone;
+    public Boolean getActive() {
+        return isActive;
     }
 
-    public Boolean getOrganizationIsactive() {
-        return organizationIsactive;
-    }
-
-    public void setOrganizationIsactive(Boolean organizationIsactive) {
-        this.organizationIsactive = organizationIsactive;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 
     public List<Office> getOffices() {
@@ -122,18 +128,7 @@ public class Organization {
         this.offices = offices;
     }
 
-    @Override
-    public String toString() {
-        return "Organization{" +
-                "id=" + id +
-                ", organizationName='" + organizationName + '\'' +
-                ", organizationFullname='" + organizationFullname + '\'' +
-                ", organizationInn=" + organizationInn +
-                ", organizationKpp=" + organizationKpp +
-                ", organizationAddress='" + organizationAddress + '\'' +
-                ", organizationPhone='" + organizationPhone + '\'' +
-                ", organizationIsactive=" + organizationIsactive +
-                ", offices=" + offices +
-                '}';
+    public void setOfficeId(Long officeId) {
+        this.officeId = officeId;
     }
 }

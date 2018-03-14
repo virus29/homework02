@@ -32,7 +32,7 @@ public class Account {
 
     //Is active account?
     @Basic(optional = false)
-    private Boolean isactive;
+    private Boolean isActive;
 
     //Activation code
     private String activationCode;
@@ -57,11 +57,11 @@ public class Account {
         return role;
     }
 
-    public Boolean getIsactive() {
-        return isactive;
+    public Boolean getActive() {
+        return isActive;
     }
 
-    public String getActivationCode() {
-        return activationCode;
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

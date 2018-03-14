@@ -6,5 +6,4 @@ public class OfficeView {
         public interface OfficeFindById{}
         public interface OfficeFindByOrgidOffnameOffPhoneOffisactive{}
 }
-//@JsonView({OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class})
 

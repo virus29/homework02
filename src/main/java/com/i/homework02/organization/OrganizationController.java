@@ -1,6 +1,9 @@
 package com.i.homework02.organization;
 
 
+import com.fasterxml.jackson.annotation.JsonView;
+import com.i.homework02.office.OfficeView;
+import com.i.homework02.user.UserView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,97 +13,61 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
+
+
 
 @RestController
 @RequestMapping(value = "/api/organization", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrganizationController {
-    final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
+
+    private final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
 
     @Autowired
-    private OrganizationService organizationService;
+    private OrganizationServiceImpl organizationServiceImpl;
 
+    //Поиск по officeId, firstName, secondName, middleName, position, docCode, citizenshipCode параметрам
+    @JsonView()
     @PostMapping(value = "/list")
     @ResponseStatus(HttpStatus.FOUND)
     public @ResponseBody
-    List<Organization> search(@RequestBody @Valid Organization organization){
-        logger.info(organization.toString());
-        return organizationService.search(organization.getOrganizationName(), organization.getOrganizationInn(), organization.getOrganizationIsactive());
+    List<Organization> searchUser(@Valid Organization organization){
+//        logger.info(user.toString());
+        return organizationServiceImpl.search(organization.getName(), organization.getInn(), organization.getActive());
     }
-//    List<Map<String, Object>> search(@RequestBody @Valid Organization organization){
-//        logger.info(organization.toString());
-//        return organizationService.search(organization.getOrganizationName(), organization.getOrganizationInn(), organization.getOrganizationIsactive());
-//    }
 
+    //Поиск Id
+    @JsonView(OrganizationView.FindById.class)
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.FOUND)
     public @ResponseBody
-    Organization findOrganizationById(@PathVariable Long id) {
-        return organizationService.findById(id);
+    Organization findOfficeById(@PathVariable Long id) {
+        return organizationServiceImpl.findById(id);
     }
 
+    //Изменение(обновление)
+    @PostMapping(value = "/update")
+    @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
+    public @ResponseBody
+    void updaterUser(Organization organization){
+//        logger.info(user.toString());
+         organizationServiceImpl.update(organization);
+    }
+
+    //Сохранение
     @PostMapping(value = "/save")
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
-    Organization create(@RequestBody Organization organization) {
-        organizationService.save(organization);
-        return organization;
+    void saveOrganization(@Valid Organization organization){
+//        logger.info(user.toString());
+         organizationServiceImpl.save(organization);
+    }
+
+    //Удаление
+    @PostMapping(value = "/delete")
+    @ResponseStatus(HttpStatus.OK)
+    public @ResponseBody
+    void updaterser(@Valid Organization organization){
+//        logger.info(user.toString());
+        organizationServiceImpl.delete(organization);
     }
 }
-//4. api/organization/list
-//        In (фильтр):
-//        {
-//        “name”:”organizationName”, //обязательный параметр
-//        “inn”:”organizationInn”,
-//        “isActive”:”organizationIsactive”
-//        }
-//        Out:
-//        [
-//        {
-//        “id”:””,
-//        “name”:””,
-//        “isActive”:”true”
-//        },
-//        ...
-//        ]
-//
-//        5. api/organization/{id:.+}
-//        method:GET
-//        Out:
-//        {
-//        “id”:””,
-//        “name”:””,
-//        “fullName”:””,
-//        “inn”:””,
-//        “kpp”:””,
-//        “address”:””,
-//        “phone”,””,
-//        “isActive”:”true”
-//        }
-//
-//        6. api/organization/update
-//        In:
-//        {
-//        “id”:””,
-//        “name”:””,
-//        “fullName”:””,
-//        “inn”:””,
-//        “kpp”:””,
-//        “address”:””,
-//        “phone”,””,
-//        “isActive”:”true”
-//        }
-//        Out: {“result”:”success”}
-//
-//        6. api/organization/save
-//        In:
-//        {
-//        “name”:””,
-//        “fullName”:””,
-//        “inn”:””,
-//        “kpp”:””,
-//        “address”:””,
-//        “phone”,””,
-//        “isActive”:”true”
-//        }
-//        Out: {“result”:”success”}

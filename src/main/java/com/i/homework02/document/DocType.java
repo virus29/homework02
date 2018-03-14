@@ -1,34 +1,26 @@
-package com.i.homework02.country;
+package com.i.homework02.document;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.i.homework02.user.User;
 import com.i.homework02.user.UserView;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Entity(name = "Country")
-public class Country {
+@Entity(name = "Doc_type")
+public class DocType {
 
-    /**
-     * Служебное поле hibernate
-     */
+//Служебное поле hibernate
     @Version
     private Integer version=0;
 
-    /**
-     * Код страны
-     */
+//Код документа
     @Id
-    @JsonView({CountryView.CountryList.class,UserView.FindById.class})
     @Basic(optional = false)
+    @JsonView({DocTypeView.DocumentList.class,UserView.FindById.class})
     private String code;
 
-    /**
-     * Название страны
-     */
-    @JsonView({CountryView.CountryList.class,UserView.FindById.class})
+//Название документа
     @Basic(optional = false)
+    @JsonView({DocTypeView.DocumentList.class,UserView.FindById.class})
     private String name;
 
 
@@ -48,4 +40,3 @@ public class Country {
         this.name = name;
     }
 }
-

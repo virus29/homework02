@@ -1,50 +1,50 @@
 CREATE TABLE IF NOT EXISTS Country (
     version    INTEGER NOT NULL,
-    country_code   INTEGER PRIMARY KEY,
-    country_name VARCHAR(100) NOT NULL
+    code   VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Document (
+CREATE TABLE IF NOT EXISTS Doc_type (
     version    INTEGER NOT NULL,
-    document_code   INTEGER PRIMARY KEY,
-    document_name VARCHAR(300) NOT NULL
+    code   VARCHAR(100) PRIMARY KEY,
+    name VARCHAR(300) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Office (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    office_name    VARCHAR(50),
-    office_address    VARCHAR(100),
-    office_phone    VARCHAR(100),
-    office_isactive    BOOLEAN,
+    name    VARCHAR(50),
+    address    VARCHAR(100),
+    phone    VARCHAR(100),
+    is_active    BOOLEAN,
     organization_id INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS Organization (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    organization_name    VARCHAR(50) NOT NULL,
-    organization_fullname    VARCHAR(50),
-    organization_inn    BIGINT,
-    organization_kpp    BIGINT,
-    organization_address    VARCHAR(100),
-    organization_phone    VARCHAR(100),
-    organization_isactive    BOOLEAN
+    name    VARCHAR(50) NOT NULL,
+    full_name    VARCHAR(50),
+    inn    BIGINT,
+    kpp    BIGINT,
+    address    VARCHAR(100),
+    phone    VARCHAR(100),
+    is_active    BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS User (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    user_firstname    VARCHAR(50) NOT NULL,
-    user_lastname    VARCHAR(50),
-    user_middlename    VARCHAR(50),
-    user_position    VARCHAR(50),
-    user_phone    VARCHAR(50),
-    user_doccode    INTEGER,
-    user_docnumber    VARCHAR(50),
-    user_docdate    VARCHAR(50),
-    user_citizenshipcode    INTEGER,
-    user_isidentified    BOOLEAN,
+    first_name    VARCHAR(50) NOT NULL,
+    second_name    VARCHAR(50),
+    middle_name    VARCHAR(50),
+    position    VARCHAR(50),
+    phone    VARCHAR(50),
+    doc_code    VARCHAR(100),
+    doc_number    VARCHAR(50),
+    doc_date    DATE,
+    citizenship_code    VARCHAR(100),
+    is_identified    BOOLEAN,
     office_id INTEGER
 );
 
@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS Account (
     password    VARCHAR(50) NOT NULL,
     name    VARCHAR(50) NOT NULL,
     role    VARCHAR(50),
-    isactive BOOLEAN,
+    is_active BOOLEAN,
     activation_code    VARCHAR(200)
 );
 
@@ -65,8 +65,8 @@ ALTER TABLE Office ADD FOREIGN KEY (organization_id) REFERENCES Organization(id)
 CREATE INDEX IX_User_Office_Id ON User (office_id);
 ALTER TABLE User ADD FOREIGN KEY (office_id) REFERENCES Office(id);
 
-CREATE INDEX IX_User_Country_Id ON User (user_citizenshipcode);
-ALTER TABLE User ADD FOREIGN KEY (user_citizenshipcode) REFERENCES Country(country_code);
 
-CREATE INDEX IX_User_Documents_Id ON User (user_doccode);
-ALTER TABLE User ADD FOREIGN KEY (user_doccode) REFERENCES Document(document_code);
+ALTER TABLE User ADD FOREIGN KEY (citizenship_code) REFERENCES Country(code);
+
+
+ALTER TABLE User ADD FOREIGN KEY (doc_code) REFERENCES Doc_type(code);
