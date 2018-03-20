@@ -1,8 +1,6 @@
 package com.i.homework02.office;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.i.homework02.organization.Organization;
-import com.i.homework02.organization.OrganizationView;
 import com.i.homework02.user.User;
 
 import javax.persistence.Entity;
@@ -14,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
 import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import java.util.List;
@@ -22,41 +19,39 @@ import java.util.List;
 @Entity
 @Table(name = "Office")
 public class Office {
-    @JsonView({OfficeView.OfficeFindById.class,OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class})
+    /**
+     * Id офиса
+     */
     @Id
     @GeneratedValue
     private Long id;
 
 //Служебное поле hibernate
     @Version
-    private Integer version=0;
+    private Integer version=1;
 
 // Название офиса
-    @JsonView({OfficeView.OfficeFindById.class,OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class})
-    @Basic(optional = false)
+//    @Basic(optional = false)
     private String name;
 
 //Адрес
     @Basic(optional = false)
     private String address;
 
+    private Long orgId;
+
 //Телефон
-    @JsonView({OfficeView.OfficeFindById.class})
-    @Basic(optional = false)
     private String phone;
 
 //Активен ли офис
-    @JsonView({OfficeView.OfficeFindById.class,OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class})
-    @Basic(optional = false)
     private Boolean isActive;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "office", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "office", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<User> users;
 
-//    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "organization_id")
+//    @JoinColumn(name = "organization_id")
     private Organization organization;
 
     public Long getId() {
@@ -110,4 +105,14 @@ public class Office {
     public void setOrganization(Organization organization) {
         this.organization = organization;
     }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+
 }

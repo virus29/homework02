@@ -1,20 +1,25 @@
 package com.i.homework02.office;
 
+import view.OfficeIdViewOut;
+import view.OfficeListViewIn;
+import view.OfficeListViewOut;
+import view.OfficeSaveView;
+
 import java.util.List;
 
 public interface OfficeService {
 
     //Поиск по нескольким параметрам
-    public List<Office> searchOffice(Long organizationId, String officeName, String officePhone, Boolean officeIsactive);
+    public List<OfficeListViewOut> searchOffice(OfficeListViewIn officeListViewIn);
 
     //Изменение(обновление)
     public void update(Office office);
 
     //Сохранение
-    public Office save(Office office);
+    public void save(OfficeSaveView officeSaveView);
 
     //Поиск по Id
-    public Office findById(Long id);
+    public OfficeIdViewOut findById(Long id);
 
     //Удаление
     public void delete(Office office);

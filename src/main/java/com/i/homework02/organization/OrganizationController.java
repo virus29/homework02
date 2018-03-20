@@ -2,18 +2,18 @@ package com.i.homework02.organization;
 
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.i.homework02.office.OfficeView;
-import com.i.homework02.user.UserView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import view.*;
+
 
 import javax.validation.Valid;
 import java.util.List;
-
 
 
 @RestController
@@ -26,48 +26,42 @@ public class OrganizationController {
     private OrganizationServiceImpl organizationServiceImpl;
 
     //Поиск по officeId, firstName, secondName, middleName, position, docCode, citizenshipCode параметрам
-    @JsonView()
     @PostMapping(value = "/list")
-    @ResponseStatus(HttpStatus.FOUND)
-    public @ResponseBody
-    List<Organization> searchUser(@Valid Organization organization){
-//        logger.info(user.toString());
-        return organizationServiceImpl.search(organization.getName(), organization.getInn(), organization.getActive());
+    public ResponseEntity searchOrganization(@RequestBody @Valid OrgListViewIn orgListViewIn) {
+        List<OrgListViewOut> listOrganizations = organizationServiceImpl.search(orgListViewIn);
+        DataView<List<OrgListViewOut>> dataView = new DataView<>(listOrganizations);
+        return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
     //Поиск Id
-    @JsonView(OrganizationView.FindById.class)
     @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public @ResponseBody
-    Organization findOfficeById(@PathVariable Long id) {
-        return organizationServiceImpl.findById(id);
+    public ResponseEntity findOfficeById(@PathVariable Long id) {
+        OrgIdViewOut orgIdViewOut = organizationServiceImpl.findById(id);
+        DataView<OrgIdViewOut> dataView = new DataView<>(orgIdViewOut);
+        return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
+
 
     //Изменение(обновление)
     @PostMapping(value = "/update")
-    @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
-    public @ResponseBody
-    void updaterUser(Organization organization){
-//        logger.info(user.toString());
-         organizationServiceImpl.update(organization);
+    public ResponseEntity updaterUser(@RequestBody @Valid Organization organization) {
+        organizationServiceImpl.update(organization);
+        return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
+
     }
+
 
     //Сохранение
     @PostMapping(value = "/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    void saveOrganization(@Valid Organization organization){
-//        logger.info(user.toString());
-         organizationServiceImpl.save(organization);
+    public ResponseEntity saveOrganization(@RequestBody @Valid Organization organization) {
+        organizationServiceImpl.save(organization);
+        return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
     //Удаление
     @PostMapping(value = "/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    void updaterser(@Valid Organization organization){
-//        logger.info(user.toString());
+    public ResponseEntity delete(@RequestBody Organization organization) {
         organizationServiceImpl.delete(organization);
+        return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 }

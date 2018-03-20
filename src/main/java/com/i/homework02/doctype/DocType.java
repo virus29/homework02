@@ -1,4 +1,4 @@
-package com.i.homework02.document;
+package com.i.homework02.doctype;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.i.homework02.user.UserView;
@@ -15,12 +15,10 @@ public class DocType {
 //Код документа
     @Id
     @Basic(optional = false)
-    @JsonView({DocTypeView.DocumentList.class,UserView.FindById.class})
     private String code;
 
 //Название документа
     @Basic(optional = false)
-    @JsonView({DocTypeView.DocumentList.class,UserView.FindById.class})
     private String name;
 
 

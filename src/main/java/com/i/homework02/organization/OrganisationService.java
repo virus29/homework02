@@ -1,11 +1,15 @@
 package com.i.homework02.organization;
 
+import view.OrgIdViewOut;
+import view.OrgListViewIn;
+import view.OrgListViewOut;
+
 import java.util.List;
 
 public interface OrganisationService {
 
         //Поиск по нескольким параметрам
-        public List<Organization> search(String name, Long inn, Boolean isActive);
+        public List<OrgListViewOut> search(OrgListViewIn orgListViewIn);
 
         //Изменение(обновление)
         public void update(Organization organization);
@@ -14,7 +18,7 @@ public interface OrganisationService {
         public void save(Organization organization);
 
         //Поиск по Id
-        public Organization findById(Long id);
+        public OrgIdViewOut findById(Long id);
 
         //Удаление
         public void delete(Organization organization);

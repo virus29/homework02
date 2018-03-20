@@ -1,5 +1,6 @@
 package com.i.homework02.country;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.i.homework02.user.User;
 import com.i.homework02.user.UserView;
@@ -20,14 +21,12 @@ public class Country {
      * Код страны
      */
     @Id
-    @JsonView({CountryView.CountryList.class,UserView.FindById.class})
     @Basic(optional = false)
     private String code;
 
     /**
      * Название страны
      */
-    @JsonView({CountryView.CountryList.class,UserView.FindById.class})
     @Basic(optional = false)
     private String name;
 

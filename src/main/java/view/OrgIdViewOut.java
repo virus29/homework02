@@ -1,34 +1,18 @@
-package com.i.homework02.organization;
+package view;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import com.i.homework02.office.Office;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Version;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.util.List;
 
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@Entity
-public class Organization {
-//    @NotNull
-    @Id
-    @GeneratedValue
-    @Column(name = "Id")
+public class OrgIdViewOut {
+
+    //Id организации
     private Long id;
 
-//Служебное поле hibernate
+    //Служебное поле hibernate
     @Version
     private Integer version=1;
 
-// Краткое название организации
+    // Краткое название организации
     private String name;
 
     //Полное название оранизации
@@ -48,9 +32,6 @@ public class Organization {
 
     //Активная ли организация
     private Boolean isActive;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = {CascadeType.ALL},orphanRemoval = true)
-    private List<Office> offices;
 
     public Long getId() {
         return id;
@@ -115,13 +96,5 @@ public class Organization {
     @JsonProperty(value = "isActive")
     public void setActive(Boolean active) {
         isActive = active;
-    }
-
-    public List<Office> getOffices() {
-        return offices;
-    }
-
-    public void setOffices(List<Office> offices) {
-        this.offices = offices;
     }
 }

@@ -1,7 +1,8 @@
 INSERT INTO Organization (id, version, name, full_name, inn, kpp, address, phone, is_active)
-VALUES (1, 1, 'БЕЛЛ ИНТЕГРАТОР','АКЦИОНЕРНОЕ ОБЩЕСТВО "БЕЛЛ ИНТЕГРАТОР"',7714923230,771401001,'125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4', '+7 (495) 980-61-81', TRUE);
+VALUES (1, 1, 'БЕЛЛ ИНТЕГРАТОР','АКЦИОНЕРНОЕ ОБЩЕСТВО "БЕЛЛ ИНТЕГРАТОР"','7714923230','771401001','125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4', '+7 (495) 980-61-81', TRUE);
 
-INSERT INTO Office (id, version, name, address, phone, is_active, organization_id) VALUES (1, 1, 'Московский филиал','115088, г. Москва, 2-й Южнопортовый проезд 18, стр. 2', '+7 (495) 980-61-81', TRUE, 1);
+INSERT INTO Office (id, version, name, address, phone, is_active, organization_id)
+VALUES (1, 1, 'Московский филиал','115088, г. Москва, 2-й Южнопортовый проезд 18, стр. 2', '+7 (495) 980-61-81', TRUE, 1);
 INSERT INTO Office (id, version, name, address, phone, is_active, organization_id) VALUES (2, 1, 'Пензенский филиал', '440000, Пенза, ул. Московская 27', '+7 (8412) 988-061', TRUE, 1);
 
 INSERT INTO Country (version, code, name) VALUES (1,'643','Российская Федерация');

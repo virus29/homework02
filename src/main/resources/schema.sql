@@ -23,10 +23,10 @@ CREATE TABLE IF NOT EXISTS Office (
 CREATE TABLE IF NOT EXISTS Organization (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    name    VARCHAR(50) NOT NULL,
+    name    VARCHAR(50),
     full_name    VARCHAR(50),
-    inn    BIGINT,
-    kpp    BIGINT,
+    inn    VARCHAR(20),
+    kpp    VARCHAR(20),
     address    VARCHAR(100),
     phone    VARCHAR(100),
     is_active    BOOLEAN
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS Organization (
 CREATE TABLE IF NOT EXISTS User (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    first_name    VARCHAR(50) NOT NULL,
+    first_name    VARCHAR(50),
     second_name    VARCHAR(50),
     middle_name    VARCHAR(50),
     position    VARCHAR(50),
@@ -50,10 +50,10 @@ CREATE TABLE IF NOT EXISTS User (
 
 CREATE TABLE IF NOT EXISTS Account (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
-    version    INTEGER,
+    version    INTEGER NOT NULL,
     login    VARCHAR(50) NOT NULL,
     password    VARCHAR(50) NOT NULL,
-    name    VARCHAR(50) NOT NULL,
+    name    VARCHAR(50),
     role    VARCHAR(50),
     is_active BOOLEAN,
     activation_code    VARCHAR(200)

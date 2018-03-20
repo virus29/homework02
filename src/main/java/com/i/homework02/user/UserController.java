@@ -2,19 +2,16 @@ package com.i.homework02.user;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
-import com.i.homework02.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import javax.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import view.*;
+
 
 import java.util.List;
 
@@ -25,45 +22,59 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-//    final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-
-
     //Поиск по officeId, firstName, secondName, middleName, position, docCode, citizenshipCode параметрам
-    @JsonView({UserView.FindByOffidFNameLNameMnamePositionDoccodeCitcode.class})
     @PostMapping(value = "/list")
-    @ResponseStatus(HttpStatus.FOUND)
-    public @ResponseBody
-    List<User> searchUser(@Valid User user){
-//        logger.info(user.toString());
-        return userServiceImpl.searchUser(user.getOfficeId(), user.getFirstName(),user.getSecondName(),user.getMiddleName(),user.getPosition(),user.getDocCode(), user.getCitizenshipCode());}
+    public ResponseEntity searchUser(@RequestBody @Valid UserListViewIn userListViewIn){
+        List<UserListViewOut> listUsers = userServiceImpl.searchUser(userListViewIn.getOfficeId(), userListViewIn.getFirstName(),userListViewIn.getSecondName(),userListViewIn.getMiddleName(),userListViewIn.getPosition(),userListViewIn.getDocCode(), userListViewIn.getCitizenshipCode());
+        DataView<List<UserListViewOut>> dataView =new DataView<>(listUsers);
+        return new ResponseEntity<>(dataView, HttpStatus.FOUND);
+    }
 
-    //Поиск Id
-    @JsonView(UserView.FindById.class)
+    //Поиск по Id
+    /**
+     *
+     * @param id
+     * @return
+     */
     @GetMapping(path = "/{id}")
-//    @ResponseStatus(HttpStatus.FOUND)
-    public @ResponseBody User findById(@PathVariable Long id) {
-        return userServiceImpl.findById(id);
+    public ResponseEntity findById(@PathVariable Long id) {
+        UserIdViewOut us=userServiceImpl.findById(id);
+        DataView<UserIdViewOut> dataView =new DataView<>(us);
+        return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
     //Изменение(обновление)
+    /**
+     *
+     * @param userUpdateView
+     * @return
+     */
     @PostMapping(value = "/update")
-    @ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
-    public @ResponseBody
-    User updaterUser(@Valid User user){
-    return userServiceImpl.update(user);}
+    public
+    ResponseEntity updaterUser(@RequestBody @Valid UserUpdateView userUpdateView){
+     userServiceImpl.update(userUpdateView);
+     return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);}
 
     //Сохранение
+    /**
+     *
+     * @param userSaveView
+     * @return
+     */
     @PostMapping(value = "/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    User addUser(@Valid User user){
-    return userServiceImpl.save(user);}
+    public ResponseEntity addUser(@RequestBody @Valid UserSaveView userSaveView){
+     userServiceImpl.save(userSaveView);
+     return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);}
 
     //Удаление
+
+    /**
+     *
+     * @param user
+     * @return
+     */
     @PostMapping(value = "/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    void updaterser(@Valid User user){
-    userServiceImpl.delete(user);}
+    public ResponseEntity delete(@RequestBody @Valid User user){
+    userServiceImpl.delete(user);
+    return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK); }
 }

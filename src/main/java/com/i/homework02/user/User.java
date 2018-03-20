@@ -2,7 +2,7 @@ package com.i.homework02.user;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.i.homework02.country.Country;
-import com.i.homework02.document.DocType;
+import com.i.homework02.doctype.DocType;
 import com.i.homework02.office.Office;
 
 import javax.persistence.*;
@@ -19,35 +19,29 @@ public class User {
 
 //Служебное поле hibernate
     @Version
-    private Integer version=0;
+    private Integer version=1;
 
 //Имя пользователя
-@JsonView(UserView.FindById.class)
     @Basic(optional = false)
     private String firstName;
 
 //Фамилия пользователя
-@JsonView(UserView.FindById.class)
     @Basic(optional = false)
     private String secondName;
 
 //Отчество пользователя
-@JsonView(UserView.FindById.class)
     @Basic(optional = false)
     private String middleName;
 
     //Занимаемая должность
-    @JsonView(UserView.FindById.class)
     @Basic(optional = false)
     private String position;
 
     //Телефон
     @Basic(optional = false)
-    @JsonView(UserView.FindById.class)
     private String phone;
 
 //Номер документа пользователя
-    @JsonView(UserView.FindById.class)
     @Basic(optional = false)
     private String docNumber;
 
@@ -58,18 +52,8 @@ public class User {
     private Date docDate;
 
 //Идентифицирован ли пользователь
-    @JsonView(UserView.FindById.class)
     @Basic(optional = false)
     private String isIdentified;
-
-    @Transient
-    private Long officeId;
-
-    @Transient
-    private String citizenshipCode;
-
-    @Transient
-    private String docCode;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "office_id")
@@ -174,29 +158,5 @@ public class User {
 
     public void setDocType(DocType docType) {
         this.docType = docType;
-    }
-
-    public Long getOfficeId() {
-        return officeId;
-    }
-
-    public void setOfficeId(Long officeId) {
-        this.officeId = officeId;
-    }
-
-    public String getCitizenshipCode() {
-        return citizenshipCode;
-    }
-
-    public void setCitizenshipCode(String citizenshipCode) {
-        this.citizenshipCode = citizenshipCode;
-    }
-
-    public String getDocCode() {
-        return docCode;
-    }
-
-    public void setDocCode(String docCode) {
-        this.docCode = docCode;
     }
 }

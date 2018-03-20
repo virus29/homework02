@@ -1,4 +1,4 @@
-package com.i.homework02.document;
+package com.i.homework02.doctype;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ public class DocTypeController {
     @Autowired
     DocTypeRepository docTypeRepository;
 
-    @JsonView({DocTypeView.DocumentList.class})
     @PostMapping("/docs")
     List<DocType> documents() {
             return this.docTypeRepository.findAll();

@@ -1,7 +1,5 @@
 package com.i.homework02.user;
 
-import com.i.homework02.Data;
-
 public class UserView {
     public interface FindById {}
     public interface FindByOffidFNameLNameMnamePositionDoccodeCitcode {}

@@ -1,19 +1,24 @@
 package com.i.homework02.user;
 
+import view.UserIdViewOut;
+import view.UserListViewOut;
+import view.UserSaveView;
+import view.UserUpdateView;
+
 import java.util.List;
 
 public interface UserService {
     //Поиск по нескольким параметрам
-    public List<User> searchUser (Long officeId, String firstName,String secondName,String middleName,String position,String docCode, String citizenshipCode);
+    public List<UserListViewOut> searchUser (Long officeId, String firstName, String secondName, String middleName, String position, String docCode, String citizenshipCode);
 
     //Изменение(обновление)
-    public User update(User user);
+    public void update(UserUpdateView userUpdateView);
 
     //Сохранение
-    public User save(User user);
+    public void save(UserSaveView userSaveView);
 
     //Поиск по Id
-    public User findById(Long id);
+    public UserIdViewOut findById(Long id);
 
     //Удаление
     public void delete(User user);

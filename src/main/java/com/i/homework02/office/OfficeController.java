@@ -1,16 +1,13 @@
 package com.i.homework02.office;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.i.homework02.organization.OrganizationController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import view.*;
 
-import javax.persistence.Entity;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -18,50 +15,43 @@ import java.util.List;
 @RequestMapping(value = "/api/office", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OfficeController {
 
-    final Logger logger = LoggerFactory.getLogger(OrganizationController.class);
-
     @Autowired
     private OfficeServiceImpl officeServiceImpl;
 
-    @JsonView(OfficeView.OfficeFindByOrgidOffnameOffPhoneOffisactive.class)
     @PostMapping(value = "/list")
-    @ResponseStatus(HttpStatus.FOUND)
-    public @ResponseBody
-    List<Office> searchOffice(@Valid Office office){
-        logger.info(office.toString());
-        return officeServiceImpl.searchOffice(office.getOrganization().getId(), office.getName(), office.getPhone(), office.getActive());
+    public
+    ResponseEntity searchOffice(@RequestBody @Valid OfficeListViewIn officeListViewIn){
+        List<OfficeListViewOut> listOffices = officeServiceImpl.searchOffice(officeListViewIn);
+        DataView<List<OfficeListViewOut>> dataView =new DataView<>(listOffices);
+        return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
-    @JsonView(OfficeView.OfficeFindById.class)
     @GetMapping(path = "/{id}")
-    @ResponseStatus(HttpStatus.FOUND)
-    public @ResponseBody
-    Office findOfficeById(@PathVariable Long id) {
-        return officeServiceImpl.findById(id);
+    public ResponseEntity findOfficeById(@PathVariable Long id) {
+        OfficeIdViewOut officeIdViewOut = officeServiceImpl.findById(id);
+        DataView<OfficeIdViewOut> dataView =new DataView<>(officeIdViewOut);
+        return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
-//    @JsonView(OfficeView.OfficeFindById.class)
-//    @PostMapping(value = "/update")
-//    public
-//    Entity officeUpdate (@RequestBody @Valid Office office) {
-//        officeServiceImpl.update(office);
-//        return new ResponseEntity<>()@ResponseStatus(HttpStatus.UPGRADE_REQUIRED)
-//    }
+    @PostMapping(value = "/update")
+    public
+    ResponseEntity officeUpdate (@RequestBody @Valid Office office) {
+        officeServiceImpl.update(office);
+        return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
+    }
 
-    @JsonView(OfficeView.OfficeFindById.class)
     @PostMapping(value = "/save")
-    @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody
-    Office officeSave (@PathVariable Office office) {
-        return officeServiceImpl.save(office);
+    public
+    ResponseEntity officeSave (@RequestBody OfficeSaveView officeSaveView) {
+        officeServiceImpl.save(officeSaveView);
+        return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
-    @JsonView(OfficeView.OfficeFindById.class)
     @PostMapping(value = "/delete")
-    @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody
-    void officeDelete (@PathVariable Office office) {
+    public
+    ResponseEntity officeDelete (@RequestBody Office office) {
         officeServiceImpl.delete(office);
+        return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 }
 
