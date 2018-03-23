@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import view.NegativeResponseView;
+import com.i.homework02.view.NegativeResponseView;
 
 
 @ControllerAdvice
@@ -41,13 +41,13 @@ public class MainExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      *
-     * @param re - runtime исключения
+     * @param e - исключения
      * @return - возврат объект, в котором содержится обработанное сообщение об ошибке
      */
     @ExceptionHandler({CustomAccountException.class, CustomOrganizationException.class, CustomOfficeException.class,CustomUserException.class})
-    protected @ResponseBody ResponseEntity<?> catcherAllCustomExceptions(RuntimeException re) {
-        log.error(re.getMessage(), re.getCause());
-        return new ResponseEntity<>(new NegativeResponseView(re.getMessage()), HttpStatus.BAD_REQUEST);
+    protected @ResponseBody ResponseEntity<?> catcherAllCustomExceptions(Exception e) {
+        log.error(e.getMessage(), e.getCause());
+        return new ResponseEntity<>(new NegativeResponseView(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 //
 //    /**

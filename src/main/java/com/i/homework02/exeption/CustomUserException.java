@@ -1,6 +1,6 @@
 package com.i.homework02.exeption;
 
-public class CustomUserException extends RuntimeException {
+public class CustomUserException extends Exception {
     public CustomUserException(String message) {
         super(message);
     }

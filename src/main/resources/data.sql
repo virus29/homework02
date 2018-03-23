@@ -1,5 +1,5 @@
 INSERT INTO Organization (id, version, name, full_name, inn, kpp, address, phone, is_active)
-VALUES (1, 1, 'БЕЛЛ ИНТЕГРАТОР','АКЦИОНЕРНОЕ ОБЩЕСТВО "БЕЛЛ ИНТЕГРАТОР"','7714923230','771401001','125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4', '+7 (495) 980-61-81', TRUE);
+VALUES (1, 1, 'БЕЛЛ ИНТЕГРАТОР','АКЦИОНЕРНОЕ ОБЩЕСТВО БЕЛЛ ИНТЕГРАТОР','7714923230','771401001','125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4', '+7 (495) 980-61-81', TRUE);
 
 INSERT INTO Office (id, version, name, address, phone, is_active, organization_id)
 VALUES (1, 1, 'Московский филиал','115088, г. Москва, 2-й Южнопортовый проезд 18, стр. 2', '+7 (495) 980-61-81', TRUE, 1);
@@ -39,14 +39,14 @@ INSERT INTO User (version, first_name, second_name, middle_name, position, phone
 
 
 INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'admin','123456','Админ','Admin', FALSE, NULL );
+VALUES (1, 'admin@mail.ru','123456','Админ','Admin', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'alex','123456','Алекс','User', FALSE, NULL );
+VALUES (1, 'alex@mail.ru','123456','Алекс','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'vasya','123456','Василий','User', FALSE, NULL );
+VALUES (1, 'vasya@mail.ru','123456','Василий','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'josh','123456','Джош','User', FALSE, NULL );
+VALUES (1, 'josh@mail.ru','123456','Джош','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'fedr','123456','Федр','User', FALSE, NULL );
+VALUES (1, 'fedr@mail.ru','123456','Федр','User', FALSE, NULL );
 INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'tom','123456','Том','User', FALSE, NULL );
+VALUES (1, 'tom@mail.ru','123456','Том','User', FALSE, NULL );
