@@ -131,22 +131,24 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional(readOnly = true)
     public boolean logIn(AccountView accountView) throws CustomAccountException {
-        if (accountRepository.findAccountByLogin(accountView.getLogin()) != null) {
-            if (accountRepository.findAccountByLogin(accountView.getLogin()).getActive() == true) {
-                String codingPassword = codingValue(accountView.getPassword());
+        String loginAcc=accountView.getLogin();
+        String password = accountView.getPassword();
+        if (accountRepository.findAccountByLogin(loginAcc)!= null) {
+            Account acc=accountRepository.findAccountByLogin(loginAcc);
+            if (acc.getActive()) {
+                String codingPassword = codingValue(password);
                 accountView.setPassword(codingPassword);
-                if (accountRepository.findAccountByLogin(accountView.getLogin()).getPassword().equals(accountView.getPassword())) {
+                if (acc.getPassword().equals(password)) {
                     return true;
                 } else {
-                    new CustomAccountException("Введен неверный пароль!");
+                   throw new CustomAccountException("Введен неверный пароль!");
                 }
             } else {
-                new CustomAccountException("Аккаунт не активирован, для входа в систему активируте код присланный на вашу электронную почту, который вы указали во время регистрации!");
+                throw new CustomAccountException("Аккаунт не активирован, для входа в систему активируте код присланный на вашу электронную почту, который вы указали во время регистрации!");
             }
         } else {
-            new CustomAccountException("Аккаунта с таким Логином не сущетвует! Введите свой Логин ли зарегистрируйтесь.");
+            throw new CustomAccountException("Аккаунта с таким Логином не сущетвует! Введите свой Логин ли зарегистрируйтесь.");
         }
-        return false;
     }
 }
 

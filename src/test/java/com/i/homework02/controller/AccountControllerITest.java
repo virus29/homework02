@@ -145,7 +145,7 @@ public class AccountControllerITest {
         String result = response.getBody();
         String expected = "{\"error\":\"Введен неверный пароль!\"}";
         assertEquals(expected, result, true);
-//        assertNotNull(accountRepository.findAccountByLogin("test@mail.ru"));
-//        assertTrue(accountRepository.findAccountByLogin("test@mail.ru").getActive());
+        assertNotNull(accountRepository.findAccountByLogin("test@mail.ru"));
+        assertTrue(accountRepository.findAccountByLogin("test@mail.ru").getActive());
     }
 }
