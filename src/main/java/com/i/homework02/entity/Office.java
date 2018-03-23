@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @Table(name = "Office")
 public class Office {
+
     /**
      * Id офиса
      */
@@ -23,22 +24,30 @@ public class Office {
     @GeneratedValue
     private Long id;
 
-//Служебное поле hibernate
+    /**
+     * Служебное поле hibernate
+     */
     @Version
     private Integer version=1;
 
-// Название офиса
-//    @Basic(optional = false)
+    /**
+     * Название офиса
+     */
     private String name;
 
-//Адрес
-    @Basic(optional = false)
+    /**
+     * Адрес офиса
+     */
     private String address;
 
-//Телефон
+    /**
+     * Телефон офиса
+     */
     private String phone;
 
-//Активен ли офис
+    /**
+     * Активен ли офис
+     */
     private Boolean isActive;
 
 

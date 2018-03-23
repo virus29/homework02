@@ -5,16 +5,22 @@ import javax.persistence.*;
 @Entity(name = "Doc_type")
 public class DocType {
 
-//Служебное поле hibernate
+    /**
+     * Служебное поле hibernate
+     */
     @Version
     private Integer version=1;
 
-//Код документа
+    /**
+     * Код документа
+     */
     @Id
     @Basic(optional = false)
     private String code;
 
-//Название документа
+    /**
+     * Название документа
+     */
     @Basic(optional = false)
     private String name;
 

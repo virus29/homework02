@@ -1,46 +1,76 @@
 package com.i.homework02.entity;
 
-import com.fasterxml.jackson.annotation.JsonView;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Version;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.JoinColumn;
 import java.util.Date;
 
 @Entity
 @Table(name = "User")
 public class User {
 
+    /**
+     * Id организации
+     */
     @Id
     @GeneratedValue
     @Column(name = "Id")
     private Long id;
 
-//Служебное поле hibernate
+    /**
+     * Служебное поле hibernate
+     */
     @Version
     private Integer version=1;
 
-//Имя пользователя
+    /**
+     * Имя пользователя
+     */
     private String firstName;
 
-//Фамилия пользователя
+    /**
+     * Фамилия пользователя
+     */
     private String secondName;
 
-//Отчество пользователя
+    /**
+     * Отчество пользователя
+     */
     private String middleName;
 
-    //Занимаемая должность
+    /**
+     * Занимаемая должность
+     */
     private String position;
 
-    //Телефон
+    /**
+     * Телефон
+     */
     private String phone;
 
-//Номер документа пользователя
+    /**
+     * Номер документа пользователя
+     */
     private String docNumber;
 
-//Дата выдачи документа пользователя
+    /**
+     * Дата выдачи документа пользователя
+     */
     @Temporal(TemporalType.DATE)
     private Date docDate;
 
-//Идентифицирован ли пользователь
+    /**
+     * Идентифицирован ли пользователь
+     */
     private Boolean isIdentified;
 
     @ManyToOne(fetch = FetchType.LAZY)

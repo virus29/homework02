@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.i.homework02.view.UserIdViewOut;
 import com.i.homework02.view.UserListViewOut;
-import com.i.homework02.view.UserSaveView;
+import com.i.homework02.view.UserSaveViewIn;
 import com.i.homework02.view.UserUpdateView;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Поиск списка сотрудников по параметрам
-     *
      * @param officeId        - Id офиса, которому принадлежит сотрудник
      * @param firstName       - имя сотрудника
      * @param secondName      -фамилия сотрудника
@@ -89,7 +88,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Изменение(обновление) параметров сотрудника по переданным парметрам в теле объекта userUpdateView
-     *
      * @param userUpdateView - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
      */
     @Override
@@ -131,61 +129,57 @@ public class UserServiceImpl implements UserService {
     /**
      * Сохранение
      * Запись нового сотрудника в базу, по переданным парметрам в теле объекта userUpdateView
-     *
-     * @param userSaveViewIn - объект содержащий параметры сотрудника, для сохранения их в базе
+     * @param userSaveViewInIn - объект содержащий параметры сотрудника, для сохранения их в базе
      */
     @Override
     @Transactional
-    public void save(UserSaveView userSaveViewIn) throws CustomUserException {
-        if (userSaveViewIn.getOfficeId() == null) {
+    public void save(UserSaveViewIn userSaveViewInIn) throws CustomUserException {
+        if (userSaveViewInIn.getOfficeId() == null) {
             throw new CustomUserException("Для заведения нового сотрудника, нужно прикрепить сотрудника к существующему офису, для этого нужно ввести существующий officeId");
         }
-        if (officeRepository.findOne(userSaveViewIn.getOfficeId()) != null) {
-            if (userSaveViewIn.getFirstName() == null &
-                    userSaveViewIn.getSecondName() == null &
-                    userSaveViewIn.getMiddleName() == null &
-                    userSaveViewIn.getPosition() == null &
-                    userSaveViewIn.getPhone() == null &
-                    userSaveViewIn.getDocCode() == null &
-                    userSaveViewIn.getDocNumber() == null &
-                    userSaveViewIn.getDocDate() == null &
-                    userSaveViewIn.getCitizenshipCode() == null &
-                    userSaveViewIn.getIsIdentified() == null
+        if (officeRepository.findOne(userSaveViewInIn.getOfficeId()) != null) {
+            if (userSaveViewInIn.getFirstName() == null &
+                    userSaveViewInIn.getSecondName() == null &
+                    userSaveViewInIn.getMiddleName() == null &
+                    userSaveViewInIn.getPosition() == null &
+                    userSaveViewInIn.getPhone() == null &
+                    userSaveViewInIn.getDocCode() == null &
+                    userSaveViewInIn.getDocNumber() == null &
+                    userSaveViewInIn.getDocDate() == null &
+                    userSaveViewInIn.getCitizenshipCode() == null &
+                    userSaveViewInIn.getIsIdentified() == null
                     ) {
                 throw new CustomUserException("Поля не заполнены! Для сохранения, необходимо заполнить, хотя бы, одно поле, помимо Id офиса!");
             }
             User sUser = new User();
-            if (userSaveViewIn.getFirstName() != null)
-                sUser.setFirstName(userSaveViewIn.getFirstName());
-            if (userSaveViewIn.getSecondName() != null)
-                sUser.setSecondName(userSaveViewIn.getSecondName());
-            if (userSaveViewIn.getMiddleName() != null)
-                sUser.setMiddleName(userSaveViewIn.getMiddleName());
-            if (userSaveViewIn.getPosition() != null)
-                sUser.setPosition(userSaveViewIn.getPosition());
-            if (userSaveViewIn.getPhone() != null)
-                sUser.setPhone(userSaveViewIn.getPhone());
-            if (userSaveViewIn.getDocCode() != null)
-                sUser.setDocType(docTypeRepository.findDocTypeByCode(userSaveViewIn.getDocCode()));
-//                sUser.getDocType().setCode(userSaveViewIn.getDocCode());
-            if (userSaveViewIn.getDocNumber() != null)
-                sUser.setDocNumber(userSaveViewIn.getDocNumber());
-            if (userSaveViewIn.getDocDate() != null)
-                sUser.setDocDate(userSaveViewIn.getDocDate());
-            if (userSaveViewIn.getCitizenshipCode() != null)
-                sUser.setCountry(countryRepository.findCountryByCode(userSaveViewIn.getCitizenshipCode()));
-//                sUser.getCountry().setCode(userSaveViewIn.getCitizenshipCode());
-            if (userSaveViewIn.getIsIdentified() != null)
-                sUser.setIdentified(userSaveViewIn.getIsIdentified());
+            if (userSaveViewInIn.getFirstName() != null)
+                sUser.setFirstName(userSaveViewInIn.getFirstName());
+            if (userSaveViewInIn.getSecondName() != null)
+                sUser.setSecondName(userSaveViewInIn.getSecondName());
+            if (userSaveViewInIn.getMiddleName() != null)
+                sUser.setMiddleName(userSaveViewInIn.getMiddleName());
+            if (userSaveViewInIn.getPosition() != null)
+                sUser.setPosition(userSaveViewInIn.getPosition());
+            if (userSaveViewInIn.getPhone() != null)
+                sUser.setPhone(userSaveViewInIn.getPhone());
+            if (userSaveViewInIn.getDocCode() != null)
+                sUser.setDocType(docTypeRepository.findDocTypeByCode(userSaveViewInIn.getDocCode()));
+            if (userSaveViewInIn.getDocNumber() != null)
+                sUser.setDocNumber(userSaveViewInIn.getDocNumber());
+            if (userSaveViewInIn.getDocDate() != null)
+                sUser.setDocDate(userSaveViewInIn.getDocDate());
+            if (userSaveViewInIn.getCitizenshipCode() != null)
+                sUser.setCountry(countryRepository.findCountryByCode(userSaveViewInIn.getCitizenshipCode()));
+            if (userSaveViewInIn.getIsIdentified() != null)
+                sUser.setIdentified(userSaveViewInIn.getIsIdentified());
             userRepository.save(sUser);
         } else {
-            throw new CustomUserException("По officeId: " + userSaveViewIn.getOfficeId() + " офис не найден! Для заведения нового сотрудника, нужно прикрепить сотрудника к существующему офису!");
+            throw new CustomUserException("По officeId: " + userSaveViewInIn.getOfficeId() + " офис не найден! Для заведения нового сотрудника, нужно прикрепить сотрудника к существующему офису!");
         }
     }
 
     /**
      * Поиск по Id Сотрудника
-     *
      * @param id - Id сотрудника
      * @return userIdViewOut - сотрудник найденый по Id
      */
@@ -214,7 +208,6 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Удаление из базы сотрудника по Id
-     *
      * @param userUpdateView - объект содержащий параметр Id сотрудника, для удаления по нему из базы
      */
     @Override

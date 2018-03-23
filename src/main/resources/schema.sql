@@ -1,3 +1,10 @@
+DROP TABLE IF EXISTS Account;
+DROP TABLE IF EXISTS Doc_type;
+DROP TABLE IF EXISTS Country;
+DROP TABLE IF EXISTS User;
+DROP TABLE IF EXISTS Organization;
+DROP TABLE IF EXISTS Office;
+
 CREATE TABLE IF NOT EXISTS Country (
     version    INTEGER NOT NULL,
     code   VARCHAR(100) PRIMARY KEY,
@@ -56,7 +63,8 @@ CREATE TABLE IF NOT EXISTS Account (
     name    VARCHAR(50),
     role    VARCHAR(50),
     is_active BOOLEAN,
-    activation_code    VARCHAR(200)
+    activation_code    VARCHAR(200),
+    code VARCHAR(200)
 );
 
 CREATE INDEX IX_Office_Organization_Id ON Office (organization_id);

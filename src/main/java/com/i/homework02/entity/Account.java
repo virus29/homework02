@@ -15,34 +15,51 @@ import javax.validation.constraints.NotNull;
 @Table(name = "Account")
 public class Account {
 
-    //Id аккаунта
+    /**
+     * Id аккаунта
+     */
     @Id
     @GeneratedValue
     private Long id;
 
-    //Служебное поле hibernate
+    /**
+     * Служебное поле hibernate
+     */
     @Version
     private Integer version;
 
-    // LogIn(as Email)
+
+    /**
+     * Логин(представлен ввиде Email)
+     */
     @Email
     @NotNull
     private String login;
 
-    //Password
+    /**
+     * Пароль аккаунта
+     */
     @NotNull
     private String password;
 
-    //Account name
+    /**
+     * Имя аккаунта
+     */
     private String name;
 
-    //Is active account?
+    /**
+     * Активный ли аккаунт?
+     */
     private Boolean isActive=false;
 
-    //Activation code
+    /**
+     * Активационный код
+     */
     private String activationCode;
 
-    //Иммитация полученного кода активации на электронную почту
+    /**
+     * Иммитация полученного кода активации на электронную почту
+     */
     private String code;
 
     public String getLogin() {

@@ -1,6 +1,5 @@
 package com.i.homework02.controller;
 
-import com.i.homework02.entity.User;
 import com.i.homework02.exeption.CustomUserException;
 import com.i.homework02.servise.serviceImpl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class UserController {
     /**
      * Поиск по нескольким параметрам сотрудника
      * @param userListViewIn
-     * @return
+     * @return список сотрудников исходя из параметров поиска
      */
     @PostMapping(value = "/list")
     public ResponseEntity searchUser(@RequestBody @Valid UserListViewIn userListViewIn) throws CustomUserException {
@@ -36,9 +35,9 @@ public class UserController {
     }
 
     /**
-     * Поиск по Id сотрудника
-     * @param id
-     * @return
+     * Поиск по Id Сотрудника
+     * @param id - Id сотрудника
+     * @return userIdViewOut - сотрудник найденый по Id
      */
     @GetMapping(path = "/{id}")
     public ResponseEntity findById(@PathVariable Long id) throws CustomUserException {
@@ -48,9 +47,8 @@ public class UserController {
     }
 
     /**
-     * Изменение(обновление) данных сотрудника
-     * @param userUpdateView
-     * @return
+     * Изменение(обновление) параметров сотрудника по переданным парметрам в теле объекта userUpdateView
+     * @param userUpdateView - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
      */
     @PostMapping(value = "/update")
     public
@@ -59,19 +57,18 @@ public class UserController {
      return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);}
 
     /**
-     * Сохранение сотрудника
-     * @param userSaveView
-     * @return
+     * Сохранение
+     * Запись нового сотрудника в базу, по переданным парметрам в теле объекта userUpdateView
+     * @param userSaveViewIn - объект содержащий параметры сотрудника, для сохранения их в базе
      */
     @PostMapping(value = "/save")
-    public ResponseEntity addUser(@RequestBody @Valid UserSaveView userSaveView) throws CustomUserException {
-     userServiceImpl.save(userSaveView);
+    public ResponseEntity addUser(@RequestBody @Valid UserSaveViewIn userSaveViewIn) throws CustomUserException {
+     userServiceImpl.save(userSaveViewIn);
      return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);}
 
     /**
-     *Удаление сотрудника
-     * @param userUpdateView
-     * @return
+     * Удаление из базы сотрудника по Id
+     * @param userUpdateView - объект содержащий параметр Id сотрудника, для удаления по нему из базы
      */
     @PostMapping(value = "/delete")
     public ResponseEntity delete(@RequestBody @Valid UserUpdateView userUpdateView) throws CustomUserException {

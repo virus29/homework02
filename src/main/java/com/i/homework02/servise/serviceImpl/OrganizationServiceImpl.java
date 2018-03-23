@@ -18,7 +18,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -71,7 +72,11 @@ public class OrganizationServiceImpl implements OrganisationService {
      **/
 
 
-    //Поиск офисов по нескольким параметрам.
+    /**
+     * Поиск организации по нескольким параметрам
+     * @param orgListViewIn - объект содержащий параметры для поиска
+     * @return список организаций подходящие критериям поиска
+     */
     @Override
     @Transactional(readOnly = true)
     public List<OrgListViewOut> search(OrgListViewIn orgListViewIn) throws CustomOrganizationException {
@@ -104,7 +109,10 @@ public class OrganizationServiceImpl implements OrganisationService {
         return result;
     }
 
-    //Изменение(обновление)
+    /**
+     * Изменение(обновление) организации
+     * @param orgViewIn - объект содержащий параметры для обновления
+     */
     @Transactional
     @Override
     public void update(OrgViewIn orgViewIn) throws CustomOrganizationException {
@@ -133,7 +141,10 @@ public class OrganizationServiceImpl implements OrganisationService {
         }
     }
 
-    //Сохранение
+    /**
+     * Сохранение организации
+     * @param orgViewIn - объект содержащий параметры для сохранения
+     */
     @Override
     @Transactional
     public void save(OrgViewIn orgViewIn) throws CustomOrganizationException {
@@ -158,7 +169,11 @@ public class OrganizationServiceImpl implements OrganisationService {
         organizationRepository.save(organization);
     }
 
-    //Поиск по Id
+    /**
+     * Поиск по Id организации
+     * @param id - Id организации
+     * @return - Организация найденная по id
+     */
     @Override
     @Transactional(readOnly = true)
     public OrgIdViewOut findById(Long id) throws CustomOrganizationException {
@@ -179,7 +194,10 @@ public class OrganizationServiceImpl implements OrganisationService {
         }
     }
 
-    //Удаление
+    /**
+     * Удаление организации
+     * @param orgViewIn - объект содержащий id организации
+     */
     @Override
     @Transactional
     public void delete(OrgViewIn orgViewIn) throws CustomOrganizationException {

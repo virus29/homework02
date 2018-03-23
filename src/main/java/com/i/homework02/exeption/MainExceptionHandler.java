@@ -40,7 +40,6 @@ public class MainExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     /**
-     *
      * @param e - исключения
      * @return - возврат объект, в котором содержится обработанное сообщение об ошибке
      */
@@ -49,20 +48,8 @@ public class MainExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(e.getMessage(), e.getCause());
         return new ResponseEntity<>(new NegativeResponseView(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
-//
-//    /**
-//     * Cбрабатывает исключения ввода/вывода
-//     * @param e исключение
-//     * @return - возврат объекта, в котором содержится обработанное сообщение об ошибке
-//     */
-//    @ExceptionHandler(EmptyResultDataAccessException.class)
-//    protected @ResponseBody ResponseEntity<?> handleDaoExceptions(RuntimeException e) {
-//        log.error(e.getMessage(), e.getCause());
-//        return new ResponseEntity<>(new CustomErrorResponse(e.getLocalizedMessage()), HttpStatus.NOT_FOUND);
-//    }
 
     /**
-     *
      * @param ex - Исключения
      * @return - возврат объект, в котором содержится обработанное сообщение об ошибке
      */

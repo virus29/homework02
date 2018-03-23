@@ -20,6 +20,11 @@ public class OfficeController {
     @Autowired
     private OfficeServiceImpl officeServiceImpl;
 
+    /**
+     * Поиск офиса(ов) по нескольким параметрам
+     * @param officeListViewIn - объект с параметрами поиска
+     * @return Список офисов полученый из параметров запроса
+     */
     @PostMapping(value = "/list")
     public
     ResponseEntity searchOffice(@RequestBody @Valid OfficeListViewIn officeListViewIn) throws CustomOfficeException {
@@ -28,6 +33,11 @@ public class OfficeController {
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
+    /**
+     * Поиск офиса по Id
+     * @param id - id офиса
+     * @return - офис найденный по id
+     */
     @GetMapping(path = "/{id}")
     public ResponseEntity findOfficeById(@PathVariable Long id) throws CustomOfficeException {
         OfficeIdViewOut officeIdViewOut = officeServiceImpl.findById(id);
@@ -35,6 +45,10 @@ public class OfficeController {
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
+    /**
+     * Изменение(обновление) параметров офиса
+     * @param officeViewIn - парметры офиса переданные для удаления
+     */
     @PostMapping(value = "/update")
     public
     ResponseEntity officeUpdate (@RequestBody @Valid OfficeViewIn officeViewIn) throws CustomOfficeException {
@@ -42,6 +56,10 @@ public class OfficeController {
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
+    /**
+     * Сохранение офиса
+     * @param officeSaveViewIn - объект с параметрами для сохранения
+     */
     @PostMapping(value = "/save")
     public
     ResponseEntity officeSave (@RequestBody OfficeSaveViewIn officeSaveViewIn) throws CustomOfficeException {
@@ -49,6 +67,10 @@ public class OfficeController {
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
+    /**
+     * Удаление офиса
+     * @param officeViewIn объект с параметром id офиса
+     */
     @PostMapping(value = "/delete")
     public
     ResponseEntity officeDelete (@RequestBody OfficeViewIn officeViewIn) throws CustomOfficeException {

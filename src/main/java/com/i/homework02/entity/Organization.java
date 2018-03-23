@@ -1,9 +1,7 @@
 package com.i.homework02.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.annotation.sql.DataSourceDefinition;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,34 +16,53 @@ import java.util.List;
 public class Organization {
 
 
+    /**
+     * Id организации
+     */
     @Id
     @GeneratedValue
     @Column(name = "Id")
     private Long id;
 
-//Служебное поле hibernate
+    /**
+     * Служебное поле hibernate
+     */
     @Version
     private Integer version=1;
 
-// Краткое название организации
+    /**
+     * Краткое название организации
+     */
     private String name;
 
-    //Полное название оранизации
+    /**
+     * Полное название оранизации
+     */
     private String fullName;
 
-    //ИНН организации
+    /**
+     * ИНН организации
+     */
     private String inn;
 
-    //КПП организации
+    /**
+     * КПП организации
+     */
     private String kpp;
 
-    //Адрес организации
+    /**
+     * Адрес организации
+     */
     private String address;
 
-    //Телефон организации
+    /**
+     * Телефон организации
+     */
     private String phone;
 
-    //Активная ли организация
+    /**
+     * Активная ли организация
+     */
     private Boolean isActive;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = {CascadeType.ALL},orphanRemoval = true)

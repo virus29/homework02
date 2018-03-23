@@ -10,34 +10,34 @@ public interface OfficeService {
 
 
     /**
-     * Поиск по нескольким параметрам
-     * @param officeListViewIn
-     * @return
+     * Поиск офиса(ов) по нескольким параметрам
+     * @param officeListViewIn - объект с параметрами поиска
+     * @return Список офисов полученый из параметров запроса
      */
     public List<OfficeListViewOut> searchOffice(OfficeListViewIn officeListViewIn) throws CustomOfficeException;
 
     /**
-     * Изменение(обновление)
-     * @param officeViewIn
+     * Изменение(обновление) параметров офиса
+     * @param officeViewIn - парметры офиса переданные для удаления
      */
     public void update(OfficeViewIn officeViewIn) throws CustomOfficeException;
 
     /**
-     * Сохранение
-     * @param officeSaveViewIn
+     * Сохранение офиса
+     * @param officeSaveViewIn - объект с параметрами для сохранения
      */
     public void save(OfficeSaveViewIn officeSaveViewIn) throws CustomOfficeException;
 
     /**
-     * Поиск по Id
-     * @param id
-     * @return
+     * Поиск офиса по Id
+     * @param id - id офиса
+     * @return - офис найденный по id
      */
     public OfficeIdViewOut findById(Long id) throws CustomOfficeException;
 
     /**
      * Удаление офиса
-     * @param officeViewIn
+     * @param officeViewIn объект с параметром id офиса
      */
     public void delete(OfficeViewIn officeViewIn) throws CustomOfficeException;
 }

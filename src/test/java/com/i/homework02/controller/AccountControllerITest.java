@@ -111,16 +111,16 @@ public class AccountControllerITest {
 
     @Test
     public void logInAccountPositiveTest() throws Exception {
-        AccountView accountView=new AccountView();
-        accountView.setLogin("test@mail.ru");
-        accountView.setPassword("123");
-        accountView.setName("Test");
-        accountServiceImpl.registration(accountView);
-        String code=accountServiceImpl.getActivationCode(accountView);
-        accountServiceImpl.activation(code);
+        Account account=new Account();
+        account.setLogin("admin@mail.ru");
+        account.setPassword("123456");
+        account.setActive(true);
+        accountRepository.save(account);
 
-        String body="{\"login\":\"test@mail.ru\"," +
-                "\"password\":\"123\"}";
+        String body = "{\n" +
+                "\"login\":\"admin@mail.ru\",\n" +
+                "\"password\":\"123456\"\n" +
+                "}";
         HttpEntity entity = new HttpEntity<>(body,headers);
         ResponseEntity<String> response = restTemplate.exchange("/api/login", HttpMethod.POST, entity, String.class);
         String result = response.getBody();
@@ -130,13 +130,11 @@ public class AccountControllerITest {
 
     @Test
     public void logInAccountNegativeTest() throws Exception {
-        AccountView accountView=new AccountView();
-        accountView.setLogin("test@mail.ru");
-        accountView.setPassword("123");
-        accountView.setName("Test");
-        accountServiceImpl.registration(accountView);
-        String code=accountServiceImpl.getActivationCode(accountView);
-        accountServiceImpl.activation(code);
+        Account account=new Account();
+        account.setLogin("test@mail.ru");
+        account.setPassword("123456");
+        account.setActive(true);
+        accountRepository.save(account);
 
         String body="{\"login\":\"test@mail.ru\"," +
                 "\"password\":\"jh;h;\"}";

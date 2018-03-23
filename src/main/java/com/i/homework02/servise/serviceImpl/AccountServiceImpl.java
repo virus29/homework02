@@ -27,7 +27,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Генерация рандомной строки
-     *
      * @return рандомная строка
      */
     public static String randomCode() {
@@ -42,7 +41,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Кодировщик
-     *
      * @param value - строка для хеширования и кодирования
      * @return захешированная и закодированная строка
      */
@@ -59,7 +57,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Иммитация получение активационного кода по электронной почте, для нужд тестирования
-     *
      * @param accountView
      * @return активационный код
      */
@@ -71,7 +68,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Иммитация метода, для отправка активационного кода на на электронную почту(здесь же сохраняем отдельным полем в таблице)
-     *
      * @param code    - активационный код
      * @param account - данные аккаунта пользователя
      */
@@ -84,7 +80,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Регистрация Аккаунта
-     *
      * @param accountView
      */
     @Override
@@ -107,7 +102,6 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Активация кода, присланного на электронную почту
-     *
      * @param code - код активации высланный на почту
      */
     @Override
@@ -124,17 +118,16 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Вход в систему(если прошло верификацию возвращаем true, если нет, то false)
-     *
      * @param accountView - аккаунт с передоваемыми параметрами login и password
      * @return если true, то вошли. если false, то не вошли
      */
     @Override
     @Transactional(readOnly = true)
     public boolean logIn(AccountView accountView) throws CustomAccountException {
-        String loginAcc=accountView.getLogin();
+        String login=accountView.getLogin();
         String password = accountView.getPassword();
-        if (accountRepository.findAccountByLogin(loginAcc)!= null) {
-            Account acc=accountRepository.findAccountByLogin(loginAcc);
+        if (accountRepository.findAccountByLogin(login)!= null) {
+            Account acc=accountRepository.findAccountByLogin(login);
             if (acc.getActive()) {
                 String codingPassword = codingValue(password);
                 accountView.setPassword(codingPassword);

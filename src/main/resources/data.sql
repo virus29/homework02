@@ -38,15 +38,15 @@ INSERT INTO User (version, first_name, second_name, middle_name, position, phone
 
 
 
-INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'admin@mail.ru','123456','Админ','Admin', FALSE, NULL );
-INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'alex@mail.ru','123456','Алекс','User', FALSE, NULL );
-INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'vasya@mail.ru','123456','Василий','User', FALSE, NULL );
-INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'josh@mail.ru','123456','Джош','User', FALSE, NULL );
-INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'fedr@mail.ru','123456','Федр','User', FALSE, NULL );
-INSERT INTO Account (version, login, password, name, role, is_active, activation_code)
-VALUES (1, 'tom@mail.ru','123456','Том','User', FALSE, NULL );
+INSERT INTO Account (version, login, password, name, role, is_active, activation_code, code)
+VALUES (1, 'admin@mail.ru','123456','Админ','Admin', TRUE , NULL, NULL );
+INSERT INTO Account (version, login, password, name, role, is_active, activation_code, code)
+VALUES (1, 'alex@mail.ru','123456','Алекс','User', FALSE, NULL , NULL);
+INSERT INTO Account (version, login, password, name, role, is_active, activation_code, code)
+VALUES (1, 'vasya@mail.ru','123456','Василий','User', FALSE, NULL , NULL);
+INSERT INTO Account (version, login, password, name, role, is_active, activation_code, code)
+VALUES (1, 'josh@mail.ru','123456','Джош','User', FALSE, NULL , NULL);
+INSERT INTO Account (version, login, password, name, role, is_active, activation_code, code)
+VALUES (1, 'fedr@mail.ru','123456','Федр','User', FALSE, NULL , NULL);
+INSERT INTO Account (version, login, password, name, role, is_active, activation_code, code)
+VALUES (1, 'tom@mail.ru','123456','Том','User', FALSE, NULL , NULL);

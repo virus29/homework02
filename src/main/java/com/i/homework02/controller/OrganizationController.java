@@ -27,7 +27,11 @@ public class OrganizationController {
     @Autowired
     private OrganizationServiceImpl organizationServiceImpl;
 
-    //Поиск по officeId, firstName, secondName, middleName, position, docCode, citizenshipCode параметрам
+    /**
+     * Поиск организации по нескольким параметрам
+     * @param orgListViewIn - объект содержащий параметры для поиска
+     * @return список организаций подходящие критериям поиска
+     */
     @PostMapping(value = "/list")
     public ResponseEntity searchOrganization(@RequestBody @Valid OrgListViewIn orgListViewIn) throws CustomOrganizationException {
         List<OrgListViewOut> listOrganizations = organizationServiceImpl.search(orgListViewIn);
@@ -35,7 +39,11 @@ public class OrganizationController {
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
-    //Поиск Id
+    /**
+     * Поиск по Id организации
+     * @param id - Id организации
+     * @return - Организация найденная по id
+     */
     @GetMapping(path = "/{id}")
     public ResponseEntity findOrganizationById(@PathVariable Long id) throws CustomOrganizationException {
         OrgIdViewOut orgIdViewOut = organizationServiceImpl.findById(id);
@@ -43,24 +51,30 @@ public class OrganizationController {
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
 
-
-    //Изменение(обновление)
+    /**
+     * Изменение(обновление) организации
+     * @param orgViewIn - объект содержащий параметры для обновления
+     */
     @PostMapping(value = "/update")
     public ResponseEntity updaterOrganization(@RequestBody @Valid OrgViewIn orgViewIn) throws CustomOrganizationException {
         organizationServiceImpl.update(orgViewIn);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
-
     }
 
-
-    //Сохранение
+    /**
+     * Сохранение организации
+     * @param orgViewIn - объект содержащий параметры для сохранения
+     */
     @PostMapping(value = "/save")
     public ResponseEntity saveOrganization(@RequestBody @Valid OrgViewIn orgViewIn) throws CustomOrganizationException {
         organizationServiceImpl.save(orgViewIn);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
-    //Удаление
+    /**
+     * Удаление организации
+     * @param orgViewIn - объект содержащий id организации
+     */
     @PostMapping(value = "/delete")
     public ResponseEntity deleteOrganization(@RequestBody OrgViewIn orgViewIn) throws CustomOrganizationException {
         organizationServiceImpl.delete(orgViewIn);

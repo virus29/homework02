@@ -7,7 +7,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import java.util.Date;
 
-public class UserSaveView {
+public class UserSaveViewIn {
 
     //Id Офиса пользователя
     private Long officeId;

@@ -11,34 +11,34 @@ import java.util.List;
 
 public interface OrganisationService {
         /**
-         * Поиск по нескольким параметрам
-         * @param orgListViewIn
-         * @return
+         * Поиск организации по нескольким параметрам
+         * @param orgListViewIn - объект содержащий параметры для поиска
+         * @return список организаций подходящие критериям поиска
          */
         public List<OrgListViewOut> search(OrgListViewIn orgListViewIn) throws CustomOrganizationException;
 
         /**
-         * Изменение(обновление)
-         * @param orgViewIn
+         * Изменение(обновление) организации
+         * @param orgViewIn - объект содержащий параметры для обновления
          */
         public void update(OrgViewIn orgViewIn) throws CustomOrganizationException;
 
         /**
-         * Сохранение
-         * @param orgViewIn
+         * Сохранение организации
+         * @param orgViewIn - объект содержащий параметры для сохранения
          */
         public void save(OrgViewIn orgViewIn) throws CustomOrganizationException;
 
         /**
-         * Поиск по Id
-         * @param id
-         * @return
+         * Поиск по Id организации
+         * @param id - Id организации
+         * @return - Организация найденная по id
          */
         public OrgIdViewOut findById(Long id) throws CustomOrganizationException;
 
         /**
-         * Удаление
-         * @param orgViewIn
+         * Удаление организации
+         * @param orgViewIn - объект содержащий id организации
          */
         public void delete(OrgViewIn orgViewIn) throws CustomOrganizationException;
 }

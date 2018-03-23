@@ -24,23 +24,19 @@ public class AccountController {
     @Autowired
     AccountServiceImpl accountServiceImpl;
 
-    //Регистрация аккаунта
     /**
-     *
-     * @param accountView
-     * @return
+     * Регистрация аккаунта
+     * @param accountView - обЪект, который содержит login, password, name аккаунта
      */
     @PostMapping(value = "/register")
     public ResponseEntity registrationAccount(@RequestBody @Valid AccountView accountView) throws CustomAccountException {
         accountServiceImpl.registration(accountView);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
-    //Активация аккаунта по коду
 
     /**
-     *
-     * @param code
-     * @return
+     * Активация аккаунта по коду
+     * @param code - код активации высланный на почту
      */
     @GetMapping(path = "/activation/{code}")
     public ResponseEntity findOfficeById(@PathVariable String code) throws CustomAccountException {
@@ -48,12 +44,10 @@ public class AccountController {
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
-    //Вход в систему, через верификация аккаунта
-
     /**
-     *
-     * @param accountView
-     * @return
+     * Вход в систему, через верификация аккаунта
+     * @param accountView обЪект, который содержит login, password аккаунта
+     * @return подтверждение входа true или false
      */
     @PostMapping(value = "/login")
     public ResponseEntity logInAccount(@RequestBody @Valid AccountView accountView) throws CustomAccountException {
@@ -61,12 +55,10 @@ public class AccountController {
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
-    //Иммитация получение активационного кода по электронной почте, для нужд тестирования
-
     /**
-     *
-     * @param accountView
-     * @return
+     * Иммитация получение активационного кода по электронной почте, для нужд тестирования
+     * @param accountView -содержит login аккаунта
+     * @return возвращает активационный код аккаунта
      */
     @PostMapping(value = "/getactivationcode")
     public ResponseEntity getActivationCode(@RequestBody AccountView accountView) {

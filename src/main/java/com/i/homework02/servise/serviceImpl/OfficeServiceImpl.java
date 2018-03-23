@@ -6,7 +6,11 @@ import com.i.homework02.repository.OfficeRepository;
 import com.i.homework02.repository.OrganizationRepository;
 import com.i.homework02.repository.UserRepository;
 import com.i.homework02.servise.OfficeService;
-import com.i.homework02.view.*;
+import com.i.homework02.view.OfficeIdViewOut;
+import com.i.homework02.view.OfficeListViewIn;
+import com.i.homework02.view.OfficeListViewOut;
+import com.i.homework02.view.OfficeSaveViewIn;
+import com.i.homework02.view.OfficeViewIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -27,7 +31,11 @@ public class OfficeServiceImpl implements OfficeService {
     @Autowired
     private OfficeRepository officeRepository;
 
-    //Поиск офисов по нескольким параметрам.
+    /**
+     * Поиск офиса(ов) по нескольким параметрам
+     * @param officeListViewIn - объект с параметрами поиска
+     * @return Список офисов полученый из параметров запроса
+     */
     @Override
     @Transactional(readOnly = true)
     public List<OfficeListViewOut> searchOffice(OfficeListViewIn officeListViewIn) throws CustomOfficeException {
@@ -66,7 +74,10 @@ public class OfficeServiceImpl implements OfficeService {
         return result;
     }
 
-    //Изменение(обновление) параметров офиса
+    /**
+     * Изменение(обновление) параметров офиса
+     * @param officeViewIn - парметры офиса переданные для удаления
+     */
     @Override
     @Transactional
     public void update(OfficeViewIn officeViewIn) throws CustomOfficeException {
@@ -86,7 +97,10 @@ public class OfficeServiceImpl implements OfficeService {
     @Autowired
     OrganizationRepository organizationRepository;
 
-    //Добавление офиса
+    /**
+     * Сохранение офиса
+     * @param officeSaveViewIn - объект с параметрами для сохранения
+     */
     @Override
     @Transactional
     public void save(OfficeSaveViewIn officeSaveViewIn) throws CustomOfficeException {
@@ -117,7 +131,11 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
 
-    //Поиск офиса по Id
+    /**
+     * Поиск офиса по Id
+     * @param id - id офиса
+     * @return - офис найденный по id
+     */
     @Override
     @Transactional(readOnly = true)
     public OfficeIdViewOut findById(Long id) throws CustomOfficeException {
@@ -139,7 +157,10 @@ public class OfficeServiceImpl implements OfficeService {
     @Autowired
     UserRepository userRepository;
 
-    //Удаление офиса
+    /**
+     * Удаление офиса
+     * @param officeViewIn объект с параметром id офиса
+     */
     @Override
     @Transactional
     public void delete(OfficeViewIn officeViewIn) throws CustomOfficeException {
