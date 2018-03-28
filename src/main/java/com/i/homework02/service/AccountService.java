@@ -1,4 +1,4 @@
-package com.i.homework02.servise;
+package com.i.homework02.service;
 
 import com.i.homework02.exeption.CustomAccountException;
 import com.i.homework02.view.AccountView;

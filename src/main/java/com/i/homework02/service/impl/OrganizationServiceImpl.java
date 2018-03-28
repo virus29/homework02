@@ -1,9 +1,9 @@
-package com.i.homework02.servise.serviceImpl;
+package com.i.homework02.service.impl;
 
 import com.i.homework02.entity.Organization;
 import com.i.homework02.exeption.CustomOrganizationException;
 import com.i.homework02.repository.OrganizationRepository;
-import com.i.homework02.servise.OrganisationService;
+import com.i.homework02.service.OrganisationService;
 import com.i.homework02.view.OrgViewIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;

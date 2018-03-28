@@ -1,11 +1,11 @@
-package com.i.homework02.servise.serviceImpl;
+package com.i.homework02.service.impl;
 
 import com.i.homework02.entity.Office;
 import com.i.homework02.exeption.CustomOfficeException;
 import com.i.homework02.repository.OfficeRepository;
 import com.i.homework02.repository.OrganizationRepository;
 import com.i.homework02.repository.UserRepository;
-import com.i.homework02.servise.OfficeService;
+import com.i.homework02.service.OfficeService;
 import com.i.homework02.view.OfficeIdViewOut;
 import com.i.homework02.view.OfficeListViewIn;
 import com.i.homework02.view.OfficeListViewOut;

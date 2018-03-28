@@ -1,7 +1,7 @@
 package com.i.homework02.controller;
 
 import com.i.homework02.exeption.CustomUserException;
-import com.i.homework02.servise.serviceImpl.UserServiceImpl;
+import com.i.homework02.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

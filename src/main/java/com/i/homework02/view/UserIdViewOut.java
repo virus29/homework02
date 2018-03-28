@@ -12,10 +12,6 @@ public class UserIdViewOut {
     //Id пользователя
     private Long id;
 
-    //Служебное поле hibernate
-    @Version
-    private Integer version=1;
-
     //Имя пользователя
     private String firstName;
 

@@ -1,6 +1,5 @@
-package com.i.homework02.servise;
+package com.i.homework02.service;
 
-import com.i.homework02.entity.Office;
 import com.i.homework02.exeption.CustomOfficeException;
 import com.i.homework02.view.*;
 

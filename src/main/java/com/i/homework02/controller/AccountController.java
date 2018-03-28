@@ -1,7 +1,7 @@
 package com.i.homework02.controller;
 
 import com.i.homework02.exeption.CustomAccountException;
-import com.i.homework02.servise.serviceImpl.AccountServiceImpl;
+import com.i.homework02.service.impl.AccountServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

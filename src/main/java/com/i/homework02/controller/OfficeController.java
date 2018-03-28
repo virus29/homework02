@@ -1,8 +1,7 @@
 package com.i.homework02.controller;
 
-import com.i.homework02.entity.Office;
 import com.i.homework02.exeption.CustomOfficeException;
-import com.i.homework02.servise.serviceImpl.OfficeServiceImpl;
+import com.i.homework02.service.impl.OfficeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

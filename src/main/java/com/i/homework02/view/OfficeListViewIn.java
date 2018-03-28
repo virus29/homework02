@@ -9,10 +9,6 @@ public class OfficeListViewIn {
     //Id организации
     private Long orgId;
 
-    //Служебное поле hibernate
-    @Version
-    private Integer version=1;
-
     // Название офиса
     private String name;
 

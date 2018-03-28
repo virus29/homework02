@@ -12,10 +12,6 @@ public class UserSaveViewIn {
     //Id Офиса пользователя
     private Long officeId;
 
-    //Служебное поле hibernate
-    @Version
-    private Integer version=1;
-
     //Имя пользователя
     private String firstName;
 

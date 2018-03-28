@@ -7,10 +7,6 @@ public class OrgViewIn {
     //Id организации
     private Long id;
 
-    //Служебное поле hibernate
-    @Version
-    private Integer version=1;
-
     // Краткое название организации
     private String name;
 

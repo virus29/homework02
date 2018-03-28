@@ -9,29 +9,39 @@ import java.util.Date;
 
 public class UserUpdateView {
 
-    //Id пользователя
+    /**
+     * Id пользователя
+     */
     private Long id;
 
-    //Служебное поле hibernate
-    @Version
-    private Integer version=1;
-
-    //Имя пользователя
+    /**
+     * Имя пользователя
+     */
     private String firstName;
 
-    //Фамилия пользователя
+    /**
+     * Фамилия пользователя
+     */
     private String secondName;
 
-    //Отчество пользователя
+    /**
+     * Отчество пользователя
+     */
     private String middleName;
 
-    //Занимаемая должность
+    /**
+     * Занимаемая должность
+     */
     private String position;
 
-    //Телефон
+    /**
+     * Телефон
+     */
     private String phone;
 
-    //Номер документа пользователя
+    /**
+     * Номер документа пользователя
+     */
     private String docName;
 
     //Номер документа пользователя

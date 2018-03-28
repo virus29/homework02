@@ -1,9 +1,9 @@
-package com.i.homework02.servise.serviceImpl;
+package com.i.homework02.service.impl;
 
 import com.i.homework02.repository.AccountRepository;
 import com.i.homework02.entity.Account;
 import com.i.homework02.exeption.CustomAccountException;
-import com.i.homework02.servise.AccountService;
+import com.i.homework02.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,6 @@ public class AccountServiceImpl implements AccountService {
      * @param value - строка для хеширования и кодирования
      * @return захешированная и закодированная строка
      */
-    @Transactional(readOnly = true)
     public String codingValue(String value) throws CustomAccountException {
         try {
             MessageDigest encoder = MessageDigest.getInstance("SHA-256");

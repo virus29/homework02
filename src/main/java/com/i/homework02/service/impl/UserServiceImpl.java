@@ -1,4 +1,4 @@
-package com.i.homework02.servise.serviceImpl;
+package com.i.homework02.service.impl;
 
 import com.i.homework02.entity.User;
 import com.i.homework02.exeption.CustomUserException;
@@ -6,7 +6,7 @@ import com.i.homework02.repository.CountryRepository;
 import com.i.homework02.repository.DocTypeRepository;
 import com.i.homework02.repository.OfficeRepository;
 import com.i.homework02.repository.UserRepository;
-import com.i.homework02.servise.UserService;
+import com.i.homework02.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;

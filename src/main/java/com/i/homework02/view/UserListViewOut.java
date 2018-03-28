@@ -7,9 +7,6 @@ public class UserListViewOut {
     //Id пользователя
     private Long id;
 
-    @Version
-    private Integer version=1;
-
     //Имя пользователя
     private String firstName;
 

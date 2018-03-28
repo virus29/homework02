@@ -3,8 +3,6 @@ package com.i.homework02.controller;
 import com.i.homework02.Homework02Application;
 import com.i.homework02.repository.OrganizationRepository;
 import com.i.homework02.entity.Organization;
-import com.i.homework02.servise.serviceImpl.OrganizationServiceImpl;
-import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,9 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
-
-import org.junit.After;
-import org.springframework.http.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;

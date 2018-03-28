@@ -6,11 +6,8 @@ import javax.validation.constraints.NotNull;
 public class UserListViewIn {
 
 @NotNull
-    private Long officeId;
 
-    //Служебное поле hibernate
-    @Version
-    private Integer version=1;
+    private Long officeId;
 
     //Имя пользователя
     private String firstName;

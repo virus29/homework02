@@ -1,9 +1,8 @@
 package com.i.homework02.controller;
 
 
-import com.i.homework02.entity.Organization;
 import com.i.homework02.exeption.CustomOrganizationException;
-import com.i.homework02.servise.serviceImpl.OrganizationServiceImpl;
+import com.i.homework02.service.impl.OrganizationServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
