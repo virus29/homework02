@@ -1,20 +1,36 @@
 package com.i.homework02.view;
 
-public class DataView<ResEntity> {
-    private ResEntity data;
+import java.util.Objects;
 
-    public DataView() {
-    }
+public class DataView<E> {
 
-    public DataView(ResEntity data) {
+    private E data;
+
+    public DataView() {}
+
+    public DataView(E data) {
         this.data = data;
     }
 
-    public ResEntity getData() {
+    public E getData() {
         return data;
     }
 
-    public void setData(ResEntity data) {
+    public void setData(E data) {
         this.data = data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DataView)) return false;
+        DataView<?> dataView = (DataView<?>) o;
+        return Objects.equals(data, dataView.data);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(data);
     }
 }

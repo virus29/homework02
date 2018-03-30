@@ -1,19 +1,21 @@
 package com.i.homework02.service.impl;
 
-import com.i.homework02.repository.AccountRepository;
 import com.i.homework02.entity.Account;
+import com.i.homework02.repository.AccountRepository;
 import com.i.homework02.exeption.CustomAccountException;
 import com.i.homework02.service.AccountService;
+import com.i.homework02.view.AccountViewRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.i.homework02.view.AccountView;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.ParseException;
 import java.util.Base64;
 import java.util.stream.Collectors;
 
@@ -56,13 +58,13 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Иммитация получение активационного кода по электронной почте, для нужд тестирования
-     * @param accountView
+     * @param account
      * @return активационный код
      */
     @Override
     @Transactional(readOnly = true)
-    public String getActivationCode(AccountView accountView) {
-        return accountRepository.findAccountByLogin(accountView.getLogin()).getCode();
+    public String getActivationCode(com.i.homework02.entity.Account account) {
+        return accountRepository.findAccountByLogin(account.getLogin()).getCode();
     }
 
     /**
@@ -71,7 +73,7 @@ public class AccountServiceImpl implements AccountService {
      * @param account - данные аккаунта пользователя
      */
     @Transactional(readOnly = true)
-    public void sendMessageWithCodeToEmail(String code, Account account) {
+    public void sendMessageWithCodeToEmail(String code, com.i.homework02.entity.Account account) {
         account.setCode(code);
         accountRepository.save(account);
 
@@ -79,17 +81,17 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Регистрация Аккаунта
-     * @param accountView
+     * @param account
      */
     @Override
     @Transactional
-    public void registration(AccountView accountView) throws CustomAccountException {
-        if (accountRepository.findAccountByLogin(accountView.getLogin()) == null) {
+    public void registration(Account account) throws CustomAccountException {
+        if (accountRepository.findAccountByLogin(account.getLogin()) == null) {
             String code = randomCode();
-            Account sAccount = new Account();
-            sAccount.setPassword(codingValue(accountView.getPassword()));
-            sAccount.setLogin(accountView.getLogin());
-            sAccount.setName(accountView.getName());
+            com.i.homework02.entity.Account sAccount = new com.i.homework02.entity.Account();
+            sAccount.setPassword(codingValue(account.getPassword()));
+            sAccount.setLogin(account.getLogin());
+            sAccount.setName(account.getName());
             sAccount.setActivationCode(codingValue(code));
             accountRepository.save(sAccount);
             //отправляем активационный код на электронную почту
@@ -107,7 +109,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void activation(String code) throws CustomAccountException {
         if (accountRepository.findAccountByActivationCode(codingValue(code)) != null) {
-            Account account = accountRepository.findAccountByActivationCode(codingValue(code));
+            com.i.homework02.entity.Account account = accountRepository.findAccountByActivationCode(codingValue(code));
             account.setActive(true);
             accountRepository.save(account);
         } else {
@@ -117,19 +119,19 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Вход в систему(если прошло верификацию возвращаем true, если нет, то false)
-     * @param accountView - аккаунт с передоваемыми параметрами login и password
+     * @param account - аккаунт с передоваемыми параметрами login и password
      * @return если true, то вошли. если false, то не вошли
      */
     @Override
     @Transactional(readOnly = true)
-    public boolean logIn(AccountView accountView) throws CustomAccountException {
-        String login=accountView.getLogin();
-        String password = accountView.getPassword();
+    public boolean logIn(com.i.homework02.entity.Account account) throws CustomAccountException {
+        String login= account.getLogin();
+        String password = account.getPassword();
         if (accountRepository.findAccountByLogin(login)!= null) {
-            Account acc=accountRepository.findAccountByLogin(login);
+            com.i.homework02.entity.Account acc=accountRepository.findAccountByLogin(login);
             if (acc.getActive()) {
                 String codingPassword = codingValue(password);
-                accountView.setPassword(codingPassword);
+                account.setPassword(codingPassword);
                 if (acc.getPassword().equals(password)) {
                     return true;
                 } else {
@@ -141,6 +143,13 @@ public class AccountServiceImpl implements AccountService {
         } else {
             throw new CustomAccountException("Аккаунта с таким Логином не сущетвует! Введите свой Логин ли зарегистрируйтесь.");
         }
+    }
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public Account convertToEntity(AccountViewRequest accountViewRequest) throws ParseException {
+        Account account=modelMapper.map(accountViewRequest, Account.class);
+        return account;
     }
 }
 

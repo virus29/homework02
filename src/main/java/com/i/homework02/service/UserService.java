@@ -1,10 +1,11 @@
 package com.i.homework02.service;
 
+import com.i.homework02.entity.User;
 import com.i.homework02.exeption.CustomUserException;
-import com.i.homework02.view.UserIdViewOut;
-import com.i.homework02.view.UserListViewOut;
-import com.i.homework02.view.UserSaveViewIn;
-import com.i.homework02.view.UserUpdateView;
+import com.i.homework02.view.UserIdViewResponse;
+import com.i.homework02.view.UserListViewResponse;
+import com.i.homework02.view.UserSaveViewRequest;
+import com.i.homework02.view.UserUpdateViewRequest;
 
 import java.util.List;
 
@@ -12,41 +13,35 @@ public interface UserService {
 
     /**
      * Поиск списка сотрудников по параметрам
-     * @param officeId        - Id офиса, которому принадлежит сотрудник
-     * @param firstName       - имя сотрудника
-     * @param secondName      -фамилия сотрудника
-     * @param middleName      - отчество сотрудника
-     * @param position        - позиция(должность) сотрудника занимаемая в организации
-     * @param docCode         -Код документа сотрудника
-     * @param citizenshipCode - Код страны, гражданином, которой сотрудник является
+     * @param user        - Объект содержащий параметры для поиска сотрудника
      * @return List<User> - список сотрудников, отвечающий критериям поиска
      */
-    public List<UserListViewOut> searchUser (Long officeId, String firstName, String secondName, String middleName, String position, String docCode, String citizenshipCode) throws CustomUserException;
+    public List<UserListViewResponse> searchUser (User user) throws CustomUserException;
 
 
     /**
-     * Изменение(обновление) параметров сотрудника по переданным парметрам в теле объекта userUpdateView
-     * @param userUpdateView - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
+     * Изменение(обновление) параметров сотрудника по переданным парметрам в теле объекта userUpdateViewRequest
+     * @param user - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
      */
-    public void update(UserUpdateView userUpdateView) throws CustomUserException;
+    public void update(User user) throws CustomUserException;
 
     /**
      * Сохранение
      * Запись нового сотрудника в базу, по переданным парметрам в теле объекта userUpdateView
-     * @param userSaveViewIn - объект содержащий параметры сотрудника, для сохранения их в базе
+     * @param user - объект содержащий параметры сотрудника, для сохранения их в базе
      */
-    public void save(UserSaveViewIn userSaveViewIn) throws CustomUserException;
+    public void save(User user) throws CustomUserException;
 
     /**
      * Поиск по Id Сотрудника
      * @param id - Id сотрудника
      * @return userIdViewOut - сотрудник найденый по Id
      */
-    public UserIdViewOut findById(Long id) throws CustomUserException;
+    public UserIdViewResponse findById(Long id) throws CustomUserException;
 
     /**
      * Удаление из базы сотрудника по Id
-     * @param userUpdateView - объект содержащий параметр Id сотрудника, для удаления по нему из базы
+     * @param user - объект содержащий параметр Id сотрудника, для удаления по нему из базы
      */
-    public void delete(UserUpdateView userUpdateView) throws CustomUserException;
+    public void delete(User user) throws CustomUserException;
 }

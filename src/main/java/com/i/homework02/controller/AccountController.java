@@ -1,7 +1,9 @@
 package com.i.homework02.controller;
 
+import com.i.homework02.entity.Account;
 import com.i.homework02.exeption.CustomAccountException;
 import com.i.homework02.service.impl.AccountServiceImpl;
+import com.i.homework02.view.AccountViewRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.i.homework02.view.AccountView;
 import com.i.homework02.view.PositiveResponseView;
 
 import javax.validation.Valid;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,11 +28,12 @@ public class AccountController {
 
     /**
      * Регистрация аккаунта
-     * @param accountView - обЪект, который содержит login, password, name аккаунта
+     * @param accountViewRequest - обЪект, который содержит login, password, name аккаунта
      */
     @PostMapping(value = "/register")
-    public ResponseEntity registrationAccount(@RequestBody @Valid AccountView accountView) throws CustomAccountException {
-        accountServiceImpl.registration(accountView);
+    public ResponseEntity registrationAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
+        Account account=accountServiceImpl.convertToEntity(accountViewRequest);
+        accountServiceImpl.registration(account);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -46,23 +49,25 @@ public class AccountController {
 
     /**
      * Вход в систему, через верификация аккаунта
-     * @param accountView обЪект, который содержит login, password аккаунта
+     * @param accountViewRequest обЪект, который содержит login, password аккаунта
      * @return подтверждение входа true или false
      */
     @PostMapping(value = "/login")
-    public ResponseEntity logInAccount(@RequestBody @Valid AccountView accountView) throws CustomAccountException {
-        accountServiceImpl.logIn(accountView);
+    public ResponseEntity logInAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
+        com.i.homework02.entity.Account account=accountServiceImpl.convertToEntity(accountViewRequest);
+        accountServiceImpl.logIn(account);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
     /**
      * Иммитация получение активационного кода по электронной почте, для нужд тестирования
-     * @param accountView -содержит login аккаунта
+     * @param accountViewRequest -содержит login аккаунта
      * @return возвращает активационный код аккаунта
      */
     @PostMapping(value = "/getactivationcode")
-    public ResponseEntity getActivationCode(@RequestBody AccountView accountView) {
-        String s = accountServiceImpl.getActivationCode(accountView);
+    public ResponseEntity getActivationCode(@RequestBody AccountViewRequest accountViewRequest) throws ParseException {
+        com.i.homework02.entity.Account account=accountServiceImpl.convertToEntity(accountViewRequest);
+        String s = accountServiceImpl.getActivationCode(account);
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 }

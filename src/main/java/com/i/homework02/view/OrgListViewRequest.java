@@ -1,14 +1,23 @@
 package com.i.homework02.view;
 
-public class OrgListViewIn {
+import javax.validation.constraints.NotNull;
 
-    // Краткое название организации
+public class OrgListViewRequest {
+
+    /**
+     * Краткое название организации
+     */
+    @NotNull
     private String name;
 
-    //ИНН организации
+    /**
+     * ИНН организации
+     */
     private String inn;
 
-    //Активная ли организация
+    /**
+     * Активная ли организация
+     */
     private Boolean isActive;
 
     public String getName() {

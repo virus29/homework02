@@ -4,20 +4,28 @@ import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
 
-public class AccountView {
-    //Login(Email)
+public class AccountViewRequest {
+    /**
+     * Логин(представленный ввиде Email)
+     */
     @Email
     @NotNull
     private String login;
 
-    //Password
+    /**
+     * Пароль
+     */
     @NotNull
     private String password;
 
-    //Account name
+    /**
+     * Имя аккаунта
+     */
     private String name;
 
-    //Activation code
+    /**
+     * Активационный код
+     */
     private String activationCode;
 
     public String getLogin() {

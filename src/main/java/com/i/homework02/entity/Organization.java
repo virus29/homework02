@@ -63,6 +63,7 @@ public class Organization {
     /**
      * Активная ли организация
      */
+    @JsonProperty(value = "isActive")
     private Boolean isActive;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = {CascadeType.ALL},orphanRemoval = true)
@@ -144,7 +145,6 @@ public class Organization {
         return isActive;
     }
 
-    @JsonProperty(value = "isActive")
     public void setActive(Boolean active) {
         isActive = active;
     }

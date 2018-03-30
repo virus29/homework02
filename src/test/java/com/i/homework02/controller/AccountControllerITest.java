@@ -4,7 +4,6 @@ import com.i.homework02.Homework02Application;
 import com.i.homework02.entity.Account;
 import com.i.homework02.repository.AccountRepository;
 import com.i.homework02.service.impl.AccountServiceImpl;
-import com.i.homework02.view.AccountView;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,7 +56,7 @@ public class AccountControllerITest {
 
     @Test
     public void registrationAccountNegativeTest() throws Exception {
-        Account account=new Account();
+        com.i.homework02.entity.Account account=new com.i.homework02.entity.Account();
         account.setLogin("test@mail.ru");
         account.setPassword("1234");
         accountRepository.save(account);
@@ -75,12 +74,12 @@ public class AccountControllerITest {
 
     @Test
     public void getActivationCodePositiveTest() throws Exception {
-        AccountView accountView=new AccountView();
-        accountView.setLogin("test@mail.ru");
-        accountView.setPassword("123");
-        accountView.setName("Test");
-        accountServiceImpl.registration(accountView);
-        String code=accountServiceImpl.getActivationCode(accountView);
+        Account account =new Account();
+        account.setLogin("test@mail.ru");
+        account.setPassword("123");
+        account.setName("Test");
+        accountServiceImpl.registration(account);
+        String code=accountServiceImpl.getActivationCode(account);
 
         HttpEntity entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange("/api/activation/"+code, HttpMethod.GET, entity, String.class);
@@ -93,12 +92,12 @@ public class AccountControllerITest {
 
     @Test
     public void getActivationCodeNegativeTest() throws Exception {
-        AccountView accountView=new AccountView();
-        accountView.setLogin("test@mail.ru");
-        accountView.setPassword("123");
-        accountView.setName("Test");
-        accountServiceImpl.registration(accountView);
-        String code=accountServiceImpl.getActivationCode(accountView);
+        Account account =new Account();
+        account.setLogin("test@mail.ru");
+        account.setPassword("123");
+        account.setName("Test");
+        accountServiceImpl.registration(account);
+        String code=accountServiceImpl.getActivationCode(account);
         String fakeCode="khhfdjdkdthrsfdrexfcgvfdfg345678";
 
         HttpEntity entity = new HttpEntity<>(headers);
@@ -111,7 +110,7 @@ public class AccountControllerITest {
 
     @Test
     public void logInAccountPositiveTest() throws Exception {
-        Account account=new Account();
+        com.i.homework02.entity.Account account=new com.i.homework02.entity.Account();
         account.setLogin("admin@mail.ru");
         account.setPassword("123456");
         account.setActive(true);
@@ -130,7 +129,7 @@ public class AccountControllerITest {
 
     @Test
     public void logInAccountNegativeTest() throws Exception {
-        Account account=new Account();
+        com.i.homework02.entity.Account account=new com.i.homework02.entity.Account();
         account.setLogin("test@mail.ru");
         account.setPassword("123456");
         account.setActive(true);

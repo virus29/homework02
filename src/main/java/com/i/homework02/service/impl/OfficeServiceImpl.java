@@ -1,16 +1,14 @@
 package com.i.homework02.service.impl;
 
 import com.i.homework02.entity.Office;
+import com.i.homework02.entity.Organization;
 import com.i.homework02.exeption.CustomOfficeException;
 import com.i.homework02.repository.OfficeRepository;
 import com.i.homework02.repository.OrganizationRepository;
 import com.i.homework02.repository.UserRepository;
 import com.i.homework02.service.OfficeService;
-import com.i.homework02.view.OfficeIdViewOut;
-import com.i.homework02.view.OfficeListViewIn;
-import com.i.homework02.view.OfficeListViewOut;
-import com.i.homework02.view.OfficeSaveViewIn;
-import com.i.homework02.view.OfficeViewIn;
+import com.i.homework02.view.*;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
@@ -21,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,24 +32,24 @@ public class OfficeServiceImpl implements OfficeService {
 
     /**
      * Поиск офиса(ов) по нескольким параметрам
-     * @param officeListViewIn - объект с параметрами поиска
+     * @param office - объект с параметрами поиска
      * @return Список офисов полученый из параметров запроса
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OfficeListViewOut> searchOffice(OfficeListViewIn officeListViewIn) throws CustomOfficeException {
+    public List<OfficeListViewResponse> searchOffice(Office office) throws CustomOfficeException {
         Specification<Office> findOfficeByParam = new Specification<Office>() {
             @Override
             public Predicate toPredicate(Root<Office> r, CriteriaQuery<?> cq, CriteriaBuilder cb) {
                 List<Predicate> prs = new ArrayList<>();
-                if (officeListViewIn.getOrgId() != null)
-                    prs.add(cb.equal(r.get("organization").get("id"), officeListViewIn.getOrgId()));
-                if (officeListViewIn.getName() != null)
-                    prs.add(cb.like(r.get("name"), "%" + officeListViewIn.getName() + "%"));
-                if (officeListViewIn.getPhone() != null)
-                    prs.add(cb.equal(r.get("phone"), officeListViewIn.getPhone()));
-                if (officeListViewIn.getActive() != null)
-                    prs.add(cb.equal(r.get("isActive"), officeListViewIn.getActive()));
+                if (office.getOrganization().getId() != null)
+                    prs.add(cb.equal(r.get("organization").get("id"), office.getOrganization().getId()));
+                if (office.getName() != null)
+                    prs.add(cb.like(r.get("name"), "%" + office.getName() + "%"));
+                if (office.getPhone() != null)
+                    prs.add(cb.equal(r.get("phone"), office.getPhone()));
+                if (office.getActive() != null)
+                    prs.add(cb.equal(r.get("isActive"), office.getActive()));
                 if (prs.isEmpty()) {
                     return cb.createQuery(Office.class).select(r).getRestriction();
                 } else {
@@ -62,35 +61,35 @@ public class OfficeServiceImpl implements OfficeService {
             throw new CustomOfficeException("По заданным параметрам ничего не найдено");
         }
         List<Office> os = officeRepository.findAll(findOfficeByParam);
-        List<OfficeListViewOut> result = new ArrayList<>();
-        for (Office office : os
+        List<OfficeListViewResponse> result = new ArrayList<>();
+        for (Office officeN : os
                 ) {
-            OfficeListViewOut officeListViewOut = new OfficeListViewOut();
-            officeListViewOut.setId(office.getId());
-            officeListViewOut.setName(office.getName());
-            officeListViewOut.setActive(office.getActive());
-            result.add(officeListViewOut);
+            OfficeListViewResponse officeListViewResponse = new OfficeListViewResponse();
+            officeListViewResponse.setId(officeN.getId());
+            officeListViewResponse.setName(officeN.getName());
+            officeListViewResponse.setActive(officeN.getActive());
+            result.add(officeListViewResponse);
         }
         return result;
     }
 
     /**
      * Изменение(обновление) параметров офиса
-     * @param officeViewIn - парметры офиса переданные для удаления
+     * @param office - парметры офиса переданные для удаления
      */
     @Override
     @Transactional
-    public void update(OfficeViewIn officeViewIn) throws CustomOfficeException {
-        if (officeViewIn.getId() == null) throw new CustomOfficeException("Не передан обязательный параметр ID");
-        Office officeUpdate = officeRepository.findOne(officeViewIn.getId());
+    public void update(Office office) throws CustomOfficeException {
+        if (office.getId() == null) throw new CustomOfficeException("Не передан обязательный параметр ID");
+        Office officeUpdate = officeRepository.findOne(office.getId());
         if (officeUpdate != null) {
-            officeUpdate.setName(officeViewIn.getName());
-            officeUpdate.setAddress(officeViewIn.getAddress());
-            officeUpdate.setPhone(officeViewIn.getPhone());
-            officeUpdate.setActive(officeViewIn.getActive());
+            officeUpdate.setName(office.getName());
+            officeUpdate.setAddress(office.getAddress());
+            officeUpdate.setPhone(office.getPhone());
+            officeUpdate.setActive(office.getActive());
             officeRepository.save(officeUpdate);
         } else {
-            throw new CustomOfficeException("Не найден офис с ID: " + officeViewIn.getId());
+            throw new CustomOfficeException("Не найден офис с ID: " + office.getId());
         }
     }
 
@@ -99,34 +98,22 @@ public class OfficeServiceImpl implements OfficeService {
 
     /**
      * Сохранение офиса
-     * @param officeSaveViewIn - объект с параметрами для сохранения
+     * @param office - объект с параметрами для сохранения
      */
     @Override
     @Transactional
-    public void save(OfficeSaveViewIn officeSaveViewIn) throws CustomOfficeException {
-        if (organizationRepository.findOne(officeSaveViewIn.getOrgId()) != null) {
-            if (officeSaveViewIn.getName() == null &
-                    officeSaveViewIn.getAddress() == null &
-                    officeSaveViewIn.getPhone() == null &
-                    officeSaveViewIn.getActive() == null
+    public void save(Office office) throws CustomOfficeException {
+        if (organizationRepository.exists(office.getOrganization().getId())) {
+            if (office.getName() == null &
+                    office.getAddress() == null &
+                    office.getPhone() == null &
+                    office.getActive() == null
                     ) {
                 throw new CustomOfficeException("Поля не заполнены! Для сохранения, необходимо заполнить, хотя бы, одно поле, помимо Id организации!");
             }
-            Office sOffice = new Office();
-            if (officeSaveViewIn.getOrgId() != null)
-                sOffice.setOrganization(organizationRepository.findOne(officeSaveViewIn.getOrgId()));
-            if (officeSaveViewIn.getName() != null)
-                sOffice.setName(officeSaveViewIn.getName());
-            if (officeSaveViewIn.getAddress() != null)
-                sOffice.setAddress(officeSaveViewIn.getAddress());
-            if (officeSaveViewIn.getPhone() != null)
-                sOffice.setPhone(officeSaveViewIn.getPhone());
-            if (officeSaveViewIn.getActive() != null)
-                sOffice.setActive(officeSaveViewIn.getActive());
-
-            officeRepository.save(sOffice);
+            officeRepository.save(office);
         } else {
-            throw new CustomOfficeException("Не возможно добавить офис, принадлежащий организациии, с ID: " + officeSaveViewIn.getOrgId() + ", отсутствующим в базе");
+            throw new CustomOfficeException("Не возможно добавить офис, принадлежащий организациии, с ID: " + office.getOrganization().getId() + ", отсутствующим в базе");
         }
     }
 
@@ -138,16 +125,16 @@ public class OfficeServiceImpl implements OfficeService {
      */
     @Override
     @Transactional(readOnly = true)
-    public OfficeIdViewOut findById(Long id) throws CustomOfficeException {
+    public OfficeViewResponse findById(Long id) throws CustomOfficeException {
         if (officeRepository.findOne(id) != null) {
             Office of = officeRepository.findOne(id);
-            OfficeIdViewOut officeIdViewOut = new OfficeIdViewOut();
-            officeIdViewOut.setId(of.getId());
-            if (of.getName() != null) officeIdViewOut.setName(of.getName());
-            if (of.getAddress() != null) officeIdViewOut.setAddress(of.getAddress());
-            if (of.getPhone() != null) officeIdViewOut.setPhone(of.getPhone());
-            if (of.getActive() != null) officeIdViewOut.setActive(of.getActive());
-            return officeIdViewOut;
+            OfficeViewResponse officeViewResponse = new OfficeViewResponse();
+            officeViewResponse.setId(of.getId());
+            if (of.getName() != null) officeViewResponse.setName(of.getName());
+            if (of.getAddress() != null) officeViewResponse.setAddress(of.getAddress());
+            if (of.getPhone() != null) officeViewResponse.setPhone(of.getPhone());
+            if (of.getActive() != null) officeViewResponse.setActive(of.getActive());
+            return officeViewResponse;
         } else {
             throw new CustomOfficeException("С Id = " + id + ", офисов не найдено! Введите существующий Id.");
         }
@@ -159,18 +146,47 @@ public class OfficeServiceImpl implements OfficeService {
 
     /**
      * Удаление офиса
-     * @param officeViewIn объект с параметром id офиса
+     * @param office объект с параметром id офиса
      */
     @Override
     @Transactional
-    public void delete(OfficeViewIn officeViewIn) throws CustomOfficeException {
-        if (officeViewIn.getId() == null) {
-            throw new CustomOfficeException("Для удаления, Id офиса не должно быть пустым");
-        }
-        if (officeRepository.exists(officeViewIn.getId())) {
-            officeRepository.delete(officeViewIn.getId());
+    public void delete(Office office) throws CustomOfficeException {
+        if (officeRepository.findOne(office.getId())!=null) {
+            officeRepository.delete(office.getId());
         } else {
             throw new CustomOfficeException("С данным Id, офис не найден!");
         }
     }
+
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public Office convertToEntity(OfficeDeleteViewRequest officeDeleteViewRequest) throws ParseException {
+        Office office = modelMapper.map(officeDeleteViewRequest,Office.class);
+        return office;
+    }
+
+    public Office convertToEntity(OfficeListViewRequest officeListViewRequest) throws ParseException {
+        Office office=modelMapper.map(officeListViewRequest,Office.class);
+        Organization organization = new Organization();
+        organization.setId(officeListViewRequest.getOrgId());
+        office.setOrganization(organization);
+        return office;
+    }
+
+    public Office convertToEntity(OfficeSaveViewRequest officeSaveViewRequest) throws ParseException {
+        Office office=modelMapper.map(officeSaveViewRequest,Office.class);
+        Organization organization = new Organization();
+        organization.setId(officeSaveViewRequest.getOrgId());
+        office.setOrganization(organization);
+        return office;
+    }
+
+    public Office convertToEntity(OfficeUpdateViewRequest officeUpdateViewRequest) throws ParseException {
+        Office office=modelMapper.map(officeUpdateViewRequest,Office.class);
+        return office;
+    }
+
+
+
 }

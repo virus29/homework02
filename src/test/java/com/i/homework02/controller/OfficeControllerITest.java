@@ -5,14 +5,22 @@ import com.i.homework02.entity.Office;
 import com.i.homework02.entity.Organization;
 import com.i.homework02.repository.OfficeRepository;
 import com.i.homework02.repository.OrganizationRepository;
+import com.i.homework02.view.DataView;
+import com.i.homework02.view.OfficeListViewRequest;
+import com.i.homework02.view.OfficeListViewResponse;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
@@ -50,19 +58,27 @@ public class OfficeControllerITest {
         officeRepository.save(office);
         Long officeId = officeRepository.findOfficeByName(office.getName()).getId();
         Long orgId = organizationRepository.findOrganizationByName("Тестовая организация").getId();
-        String body = "{\"orgId\":" + orgId + "," +
-                "\"name\":\"Тестовый офис\"," +
-                "\"phone\":\"+7(8532)45-45-45\"," +
-                "\"isActive\":true}";
+        OfficeListViewRequest officeListViewRequest = new OfficeListViewRequest();
+        officeListViewRequest.setOrgId(orgId);
+        officeListViewRequest.setName("Тестовый офис");
+        officeListViewRequest.setPhone("+7(8532)45-45-45");
+        officeListViewRequest.setActive(true);
 
-        HttpEntity entity = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/list", HttpMethod.POST, entity, String.class);
-        String expected = "{\"data\":[" +
-                "{\"id\":" + officeId + "," +
-                "\"name\":\"Тестовый офис\"," +
-                "\"isActive\":true}]}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        HttpEntity entity = new HttpEntity<>(officeListViewRequest, headers);
+        ResponseEntity<DataView<List<OfficeListViewResponse>>> response = restTemplate.exchange("/api/office/list", HttpMethod.POST, entity, new ParameterizedTypeReference<DataView<List<OfficeListViewResponse>>>() {});
+        DataView<List<OfficeListViewResponse>> result = response.getBody();
+
+        OfficeListViewResponse officeListViewResponse=new OfficeListViewResponse();
+        officeListViewResponse.setId(officeId);
+        officeListViewResponse.setName("Тестовый офис");
+        officeListViewResponse.setActive(true);
+
+        List<OfficeListViewResponse> officeList = new ArrayList<>();
+        officeList.add(officeListViewResponse);
+
+        DataView<List<OfficeListViewResponse>> expected = new DataView<>(officeList);
+
+        Assert.assertEquals(expected, result);
     }
 
     @Test

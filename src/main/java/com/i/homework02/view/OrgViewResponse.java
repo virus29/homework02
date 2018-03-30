@@ -1,8 +1,9 @@
 package com.i.homework02.view;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.Version;
 
-public class OrgViewIn {
+public class OrgViewResponse {
 
     //Id организации
     private Long id;
@@ -88,6 +89,7 @@ public class OrgViewIn {
         return isActive;
     }
 
+    @JsonProperty(value = "isActive")
     public void setActive(Boolean active) {
         isActive = active;
     }

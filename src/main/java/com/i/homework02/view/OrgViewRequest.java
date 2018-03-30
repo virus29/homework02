@@ -2,21 +2,30 @@ package com.i.homework02.view;
 
 import javax.persistence.Version;
 
-public class OfficeViewIn {
+public class OrgViewRequest {
 
-    //Id офиса
+    //Id организации
     private Long id;
 
-    // Название офиса
+    // Краткое название организации
     private String name;
 
-    //Адрес
+    //Полное название оранизации
+    private String fullName;
+
+    //ИНН организации
+    private String inn;
+
+    //КПП организации
+    private String kpp;
+
+    //Адрес организации
     private String address;
 
-    //Телефон
+    //Телефон организации
     private String phone;
 
-    //Активен ли офис
+    //Активная ли организация
     private Boolean isActive;
 
     public Long getId() {
@@ -33,6 +42,30 @@ public class OfficeViewIn {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getInn() {
+        return inn;
+    }
+
+    public void setInn(String inn) {
+        this.inn = inn;
+    }
+
+    public String getKpp() {
+        return kpp;
+    }
+
+    public void setKpp(String kpp) {
+        this.kpp = kpp;
     }
 
     public String getAddress() {

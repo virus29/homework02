@@ -3,6 +3,11 @@ package com.i.homework02.controller;
 import com.i.homework02.Homework02Application;
 import com.i.homework02.entity.*;
 import com.i.homework02.repository.*;
+import com.i.homework02.view.DataView;
+import com.i.homework02.view.UserListViewRequest;
+import com.i.homework02.view.UserListViewResponse;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,12 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -49,11 +55,7 @@ public class UserControllerITest {
     @Before
     public void init() {
         headers.setContentType(MediaType.APPLICATION_JSON);
-        organizationRepository.deleteAll();
-        officeRepository.deleteAll();
-        userRepository.deleteAll();
-        countryRepository.deleteAll();
-        docTypeRepository.deleteAll();
+
 
         Organization organization = new Organization("Тестовая организация");
         organizationRepository.save(organization);
@@ -81,38 +83,57 @@ public class UserControllerITest {
         userRepository.save(user);
     }
 
+    @After
+    public void after() {
+        organizationRepository.deleteAll();
+        officeRepository.deleteAll();
+        userRepository.deleteAll();
+        countryRepository.deleteAll();
+        docTypeRepository.deleteAll();
+    }
+
     @Test
     public void searchUserPositiveTest() throws Exception {
-
         Long userId = userRepository.findUserByFirstName("Тест").getId();
         Long officeId = officeRepository.findOfficeByName("Тестовый офис").getId();
-        String body = "{\"officeId\":" + officeId + "," +
-                "\"firstName\":\"Тест\"," +
-                "\"secondName\":\"Тестов\"," +
-                "\"middleName\":\"Тестович\"," +
-                "\"position\":\"Менеджер\"," +
-                "\"docCode\":\"21\"," +
-                "\"citizenshipCode\":\"643\"}";
 
-        HttpEntity entity = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/list", HttpMethod.POST, entity, String.class);
-        String expected = "{\"data\":[" +
-                "{\"id\":" + userId + "," +
-                "\"firstName\":\"Тест\"," +
-                "\"secondName\":\"Тестов\"," +
-                "\"middleName\":\"Тестович\"," +
-                "\"position\":\"Менеджер\"}]}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        UserListViewRequest userListViewRequest = new UserListViewRequest();
+
+        userListViewRequest.setOfficeId(officeId);
+        userListViewRequest.setFirstName("Тест");
+        userListViewRequest.setSecondName("Тестов");
+        userListViewRequest.setMiddleName("Тестович");
+        userListViewRequest.setPosition("Менеджер");
+        userListViewRequest.setDocCode("21");
+        userListViewRequest.setCitizenshipCode("643");
+
+        HttpEntity entity = new HttpEntity<>(userListViewRequest, headers);
+        ResponseEntity<DataView<List<UserListViewResponse>>> response = restTemplate.exchange("/api/user/list", HttpMethod.POST, entity, new ParameterizedTypeReference<DataView<List<UserListViewResponse>>>() {});
+        DataView<List<UserListViewResponse>> result = response.getBody();
+
+        UserListViewResponse userListViewResponse = new UserListViewResponse();
+        userListViewResponse.setId(userId);
+        userListViewResponse.setFirstName("Тест");
+        userListViewResponse.setSecondName("Тестов");
+        userListViewResponse.setMiddleName("Тестович");
+        userListViewResponse.setPosition("Менеджер");
+        List<UserListViewResponse> listUsers = new ArrayList<>();
+        listUsers.add(userListViewResponse);
+        DataView<List<UserListViewResponse>> expected = new DataView(listUsers);
+
+        Assert.assertEquals(expected, result);
     }
 
 
     @Test
     public void searchUserNegativeTest() throws Exception {
-        String body = "{\"officeId\":" + 5000L + "," +
-                "\"firstName\":\"Тест\"}";
 
-        HttpEntity entity = new HttpEntity<>(body, headers);
+        UserListViewRequest userListViewRequest = new UserListViewRequest();
+
+        userListViewRequest.setOfficeId(5000L);
+        userListViewRequest.setFirstName("Тест");
+
+        HttpEntity entity = new HttpEntity<>(userListViewRequest, headers);
         ResponseEntity<String> response = restTemplate.exchange("/api/user/list", HttpMethod.POST, entity, String.class);
         String expected = "{\"error\": \"По заданным параметрам ничего не найдено\"}";
         String result = response.getBody();
@@ -132,7 +153,8 @@ public class UserControllerITest {
                 "\"middleName\": \"Тестович\"," +
                 "\"position\": \"Менеджер\"," +
                 "\"phone\": \"+7(8532)45-45-45\"," +
-                "\"docName\": \"Паспорт гражданина Российской Федерации\",\n" +
+                "\"docName\": \"Паспорт гражданина Российской Федерации\"," +
+                "\"docCode\": \"21\"," +
                 "\"docNumber\": \"4554\"," +
                 "\"docDate\": \"2015-06-25\"," +/*06/24/2015 @ 12:00am (UTC)*/
                 "\"citizenshipName\": \"Российская Федерация\"," +

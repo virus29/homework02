@@ -1,43 +1,49 @@
 package com.i.homework02.service;
 
+import com.i.homework02.entity.Organization;
 import com.i.homework02.exeption.CustomOrganizationException;
-import com.i.homework02.view.OrgIdViewOut;
-import com.i.homework02.view.OrgListViewIn;
-import com.i.homework02.view.OrgListViewOut;
-import com.i.homework02.view.OrgViewIn;
+import com.i.homework02.view.*;
 
 import java.util.List;
 
 public interface OrganisationService {
+//        /**
+//         * Поиск организации по нескольким параметрам
+//         * @param orgListViewRequest - объект содержащий параметры для поиска
+//         * @return список организаций подходящие критериям поиска
+//         */
+//        public List<OrgListViewResponse> search(OrgListViewRequest orgListViewRequest) throws CustomOrganizationException;
+
+
         /**
          * Поиск организации по нескольким параметрам
-         * @param orgListViewIn - объект содержащий параметры для поиска
+         * @param organization - объект содержащий параметры для поиска
          * @return список организаций подходящие критериям поиска
          */
-        public List<OrgListViewOut> search(OrgListViewIn orgListViewIn) throws CustomOrganizationException;
+        public List<OrgListViewResponse> search(Organization organization) throws CustomOrganizationException;
 
         /**
          * Изменение(обновление) организации
-         * @param orgViewIn - объект содержащий параметры для обновления
+         * @param organization - объект содержащий параметры для обновления
          */
-        public void update(OrgViewIn orgViewIn) throws CustomOrganizationException;
+        public void update(Organization organization) throws CustomOrganizationException;
 
         /**
          * Сохранение организации
-         * @param orgViewIn - объект содержащий параметры для сохранения
+         * @param organization - объект содержащий параметры для сохранения
          */
-        public void save(OrgViewIn orgViewIn) throws CustomOrganizationException;
+        public void save(Organization organization) throws CustomOrganizationException;
 
         /**
          * Поиск по Id организации
          * @param id - Id организации
          * @return - Организация найденная по id
          */
-        public OrgIdViewOut findById(Long id) throws CustomOrganizationException;
+        public OrgViewResponse findById(Long id) throws CustomOrganizationException;
 
         /**
          * Удаление организации
-         * @param orgViewIn - объект содержащий id организации
+         * @param organization - объект содержащий id организации
          */
-        public void delete(OrgViewIn orgViewIn) throws CustomOrganizationException;
+        public void delete(Organization organization) throws CustomOrganizationException;
 }
