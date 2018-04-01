@@ -184,24 +184,29 @@ public class UserControllerITest {
     @Test
     public void updaterUserPositiveTest() throws Exception {
         Long userId = userRepository.findUserByFirstName("Тест").getId();
-        String body = "{\"id\":" + userId + "," +
-                "\"firstName\": \"Тест1\"," +
-                "\"secondName\": \"Тестов1\"," +
-                "\"middleName\": \"Тестович1\"," +
-                "\"position\": \"Менеджер1\"," +
-                "\"phone\": \"+7(8532)45-45-46\"," +
-                "\"docName\": \"Паспорт гражданина Российской Федерации\"," +
-                "\"docNumber\": \"4555\"," +
-                "\"docDate\": \"2015-06-30\"," +/*06/24/2015 @ 12:00am (UTC)*/
-                "\"citizenshipName\": \"Российская Федерация\"," +
-                "\"citizenshipCode\": \"643\"," +
-                "\"isIdentified\": true}}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/update", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"data\":{\"result\":\"success\"}}";
-        assertEquals(expected, result, true);
+        UserUpdateViewRequest userUpdateViewRequest = new UserUpdateViewRequest();
+        userUpdateViewRequest.setId(userId);
+        userUpdateViewRequest.setFirstName("Тест1");
+        userUpdateViewRequest.setSecondName("Тестов1");
+        userUpdateViewRequest.setMiddleName("Тестович1");
+        userUpdateViewRequest.setPosition("Менеджер1");
+        userUpdateViewRequest.setPhone("+7(8532)45-45-45");
+        userUpdateViewRequest.setDocName("Паспорт гражданина Российской Федерации");
+        userUpdateViewRequest.setDocNumber("4554");
+        userUpdateViewRequest.setDocDate(new Date(1435190400000L));/*06/25/2015 @ 12:00am (UTC)*/
+        userUpdateViewRequest.setCitizenshipName("Российская Федерация");
+        userUpdateViewRequest.setCitizenshipCode("643");
+        userUpdateViewRequest.setIdentified(null);
+
+        HttpEntity entity = new HttpEntity<>(userUpdateViewRequest, headers);
+
+        ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/user/update", HttpMethod.POST, entity, PositiveResponseView.class);
+
+        PositiveResponseView result = response.getBody();
+        PositiveResponseView expected = new PositiveResponseView();
+
+        Assert.assertEquals(expected, result);
         assertNotNull(userRepository.findUserByFirstName("Тест1"));
     }
 
