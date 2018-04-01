@@ -1,0 +1,42 @@
+<RestClientRequest>
+  <option name="biscuits">
+    <list />
+  </option>
+  <option name="httpMethod" value="GET" />
+  <option name="urlBase" value="http://localhost:8080" />
+  <option name="urlPath" value="/api/office/list" />
+  <option name="headers">
+    <list>
+      <KeyValuePair>
+        <option name="key" value="Accept" />
+        <option name="value" value="*/*" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="Cache-Control" />
+        <option name="value" value="no-cache" />
+      </KeyValuePair>
+    </list>
+  </option>
+  <option name="parameters">
+    <list>
+      <KeyValuePair>
+        <option name="key" value="organizationName" />
+        <option name="value" value="&quot;БЕЛЛ ИНТЕГРАТОР2&quot;" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="organizationInn" />
+        <option name="value" value="7714923231" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="organizationIsactive" />
+        <option name="value" value="TRUE" />
+      </KeyValuePair>
+    </list>
+  </option>
+  <option name="parametersEnabled" value="true" />
+  <option name="haveTextToSend" value="false" />
+  <option name="haveFileToSend" value="false" />
+  <option name="isFileUpload" value="false" />
+  <option name="textToSend" value="" />
+  <option name="filesToSend" value="" />
+</RestClientRequest>
