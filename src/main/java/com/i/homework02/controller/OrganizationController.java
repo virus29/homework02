@@ -20,7 +20,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/api/organization", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api/organization")
 public class OrganizationController {
 
     private final Logger logger = LoggerFactory.getLogger(OrganizationController.class);

@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 public class Organization {
 
-
     /**
      * Id организации
      */

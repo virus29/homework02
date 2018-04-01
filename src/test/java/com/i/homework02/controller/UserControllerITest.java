@@ -3,9 +3,7 @@ package com.i.homework02.controller;
 import com.i.homework02.Homework02Application;
 import com.i.homework02.entity.*;
 import com.i.homework02.repository.*;
-import com.i.homework02.view.DataView;
-import com.i.homework02.view.UserListViewRequest;
-import com.i.homework02.view.UserListViewResponse;
+import com.i.homework02.view.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -98,7 +96,6 @@ public class UserControllerITest {
         Long officeId = officeRepository.findOfficeByName("Тестовый офис").getId();
 
         UserListViewRequest userListViewRequest = new UserListViewRequest();
-
         userListViewRequest.setOfficeId(officeId);
         userListViewRequest.setFirstName("Тест");
         userListViewRequest.setSecondName("Тестов");
@@ -134,10 +131,11 @@ public class UserControllerITest {
         userListViewRequest.setFirstName("Тест");
 
         HttpEntity entity = new HttpEntity<>(userListViewRequest, headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/list", HttpMethod.POST, entity, String.class);
-        String expected = "{\"error\": \"По заданным параметрам ничего не найдено\"}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/user/list", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected=new NegativeResponseView("По заданным параметрам ничего не найдено");
+        Assert.assertEquals(expected, result);
         assertNotNull(userRepository.findUserByFirstName("Тест"));
     }
 
@@ -146,22 +144,29 @@ public class UserControllerITest {
         Long userId = userRepository.findUserByFirstName("Тест").getId();
 
         HttpEntity entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/" + userId, HttpMethod.GET, entity, String.class);
-        String expected = "{\"data\":{\"id\": " + userId + "," +
-                "\"firstName\": \"Тест\"," +
-                "\"secondName\": \"Тестов\"," +
-                "\"middleName\": \"Тестович\"," +
-                "\"position\": \"Менеджер\"," +
-                "\"phone\": \"+7(8532)45-45-45\"," +
-                "\"docName\": \"Паспорт гражданина Российской Федерации\"," +
-                "\"docCode\": \"21\"," +
-                "\"docNumber\": \"4554\"," +
-                "\"docDate\": \"2015-06-25\"," +/*06/24/2015 @ 12:00am (UTC)*/
-                "\"citizenshipName\": \"Российская Федерация\"," +
-                "\"citizenshipCode\": \"643\"," +
-                "\"isIdentified\": null}}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+
+        ResponseEntity<DataView<UserIdViewResponse>> response = restTemplate.exchange("/api/user/" + userId, HttpMethod.GET, entity, new ParameterizedTypeReference<DataView<UserIdViewResponse>>() {});
+
+        DataView<UserIdViewResponse> result = response.getBody();
+
+        UserIdViewResponse userIdViewResponse = new UserIdViewResponse();
+        userIdViewResponse.setId(userId);
+        userIdViewResponse.setFirstName("Тест");
+        userIdViewResponse.setSecondName("Тестов");
+        userIdViewResponse.setMiddleName("Тестович");
+        userIdViewResponse.setPosition("Менеджер");
+        userIdViewResponse.setPhone("+7(8532)45-45-45");
+        userIdViewResponse.setDocName("Паспорт гражданина Российской Федерации");
+        userIdViewResponse.setDocCode("21");
+        userIdViewResponse.setDocNumber("4554");
+        userIdViewResponse.setDocDate(new Date(1435190400000L));/*06/25/2015 @ 12:00am (UTC)*/
+        userIdViewResponse.setCitizenshipName("Российская Федерация");
+        userIdViewResponse.setCitizenshipCode("643");
+        userIdViewResponse.setIdentified(null);
+
+        DataView<UserIdViewResponse> expected=new DataView<UserIdViewResponse>(userIdViewResponse);
+
+        Assert.assertEquals(expected, result);
     }
 
     @Test
@@ -169,10 +174,11 @@ public class UserControllerITest {
 
         Long userId = 5000L;
         HttpEntity entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/" + userId, HttpMethod.GET, entity, String.class);
-        String expected = "{\"error\": \"С Id = " + userId + ", сотрудники не найдены! Введите существующий Id.\"}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/user/" + userId, HttpMethod.GET, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected=new NegativeResponseView("С Id = " + userId + ", сотрудники не найдены! Введите существующий Id.");
+        Assert.assertEquals(expected, result);
     }
 
     @Test

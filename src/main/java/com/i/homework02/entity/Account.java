@@ -12,7 +12,7 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "AccountViewRequest")
+@Table
 public class Account {
 
     /**

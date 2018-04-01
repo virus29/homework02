@@ -5,9 +5,8 @@ import com.i.homework02.entity.Office;
 import com.i.homework02.entity.Organization;
 import com.i.homework02.repository.OfficeRepository;
 import com.i.homework02.repository.OrganizationRepository;
-import com.i.homework02.view.DataView;
-import com.i.homework02.view.OfficeListViewRequest;
-import com.i.homework02.view.OfficeListViewResponse;
+import com.i.homework02.view.*;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,14 +43,19 @@ public class OfficeControllerITest {
 
     @Before
     public void init() {
-
         headers.setContentType(MediaType.APPLICATION_JSON);
+    }
+
+    @After
+    public void after(){
         organizationRepository.deleteAll();
         officeRepository.deleteAll();
     }
 
     @Test
     public void searchOfficePositiveTest() throws Exception {
+        organizationRepository.deleteAll();
+        officeRepository.deleteAll();
         Organization organization = new Organization("Тестовая организация");
         organizationRepository.save(organization);
         Office office = new Office("Тестовый офис", "Киров, ул. Серова, д.2", "+7(8532)45-45-45", true, organizationRepository.findOrganizationByName("Тестовая организация"));
@@ -87,13 +91,17 @@ public class OfficeControllerITest {
         organizationRepository.save(organization);
         Office office = new Office("Тестовый офис", "Киров, ул. Серова, д.2", "+7(8532)45-45-45", true, organizationRepository.findOrganizationByName("Тестовая организация"));
         officeRepository.save(office);
-        String body = "{\"orgId\":" + 5000 + "}";
 
-        HttpEntity entity = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/list", HttpMethod.POST, entity, String.class);
-        String expected = "{\"error\": \"По заданным параметрам ничего не найдено\"}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        OfficeListViewRequest officeListViewRequest = new OfficeListViewRequest();
+        officeListViewRequest.setOrgId(5000L);
+
+        HttpEntity entity = new HttpEntity<>(officeListViewRequest, headers);
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/office/list", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected = new  NegativeResponseView("По заданным параметрам ничего не найдено");
+
+        Assert.assertEquals(expected, result);
         assertNotNull(officeRepository.findOfficeByName("Тестовый офис"));
     }
 
@@ -106,15 +114,18 @@ public class OfficeControllerITest {
         Long officeId = officeRepository.findOfficeByName(office.getName()).getId();
 
         HttpEntity entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/" + officeId, HttpMethod.GET, entity, String.class);
-        String expected = "{\"data\":" +
-                "{\"id\":" + officeId + "," +
-                "\"name\":\"Тестовый офис\"," +
-                "\"address\":\"Киров, ул. Серова, д.2\"," +
-                "\"phone\":\"+7(8532)45-45-45\"," +
-                "\"isActive\":true}}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        ResponseEntity<DataView<OfficeViewResponse>> response = restTemplate.exchange("/api/office/" + officeId, HttpMethod.GET, entity, new ParameterizedTypeReference<DataView<OfficeViewResponse>>() {});
+
+        OfficeViewResponse officeViewResponse = new OfficeViewResponse();
+        officeViewResponse.setId(officeId);
+        officeViewResponse.setName("Тестовый офис");
+        officeViewResponse.setAddress("Киров, ул. Серова, д.2");
+        officeViewResponse.setPhone("+7(8532)45-45-45");
+        officeViewResponse.setActive(true);
+        DataView<OfficeViewResponse> expected=new DataView(officeViewResponse);
+
+        DataView<OfficeViewResponse> result = response.getBody();
+        Assert.assertEquals(expected, result);
     }
 
     @Test
@@ -125,10 +136,12 @@ public class OfficeControllerITest {
         officeRepository.save(office);
 
         HttpEntity entity = new HttpEntity<>(headers);
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/" + 5000, HttpMethod.GET, entity, String.class);
-        String expected = "{\"error\": \"С Id = " + 5000 + ", офисов не найдено! Введите существующий Id.\"}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/office/" + 5000, HttpMethod.GET, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected = new  NegativeResponseView("С Id = " + 5000 + ", офисов не найдено! Введите существующий Id.");
+
+        Assert.assertEquals(expected, result);
     }
 
     @Test
@@ -138,17 +151,20 @@ public class OfficeControllerITest {
         Office office = new Office("Тестовый офис", "Киров, ул. Серова, д.2", "+7(8532)45-45-45", true, organizationRepository.findOrganizationByName("Тестовая организация"));
         officeRepository.save(office);
         Long officeId = officeRepository.findOfficeByName(office.getName()).getId();
-        String body = "{\"id\":" + officeId + "," +
-                "\"name\":\"Новый Тестовый офис\"," +
-                "\"address\":\"Самара, ул. Серова, д.3\"," +
-                "\"phone\":\"+7(8579)45-45-97\"," +
-                "\"isActive\":false}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/update", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"data\":{\"result\":\"success\"}}";
-        assertEquals(expected, result, true);
+        OfficeUpdateViewRequest officeUpdateViewRequest =new OfficeUpdateViewRequest();
+        officeUpdateViewRequest.setId(officeId);
+        officeUpdateViewRequest.setName("Новый Тестовый офис");
+        officeUpdateViewRequest.setAddress("Самара, ул. Серова, д.3");
+        officeUpdateViewRequest.setPhone("+7(8579)45-45-97");
+        officeUpdateViewRequest.setActive(false);
+
+        HttpEntity entity = new HttpEntity<>(officeUpdateViewRequest, headers);
+
+        ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/office/update", HttpMethod.POST, entity, PositiveResponseView.class);
+        PositiveResponseView result = response.getBody();
+        PositiveResponseView expected = new PositiveResponseView();
+        Assert.assertEquals(expected, result);
         assertNotNull(officeRepository.findOfficeByName("Новый Тестовый офис"));
     }
 
@@ -159,35 +175,43 @@ public class OfficeControllerITest {
         Office office = new Office("Тестовый офис", "Киров, ул. Серова, д.2", "+7(8532)45-45-45", true, organizationRepository.findOrganizationByName("Тестовая организация"));
         officeRepository.save(office);
         Long officeId = Long.valueOf(5000);
-        String body = "{\"id\":" + officeId + "," +
-                "\"name\": \"Новый Тестовый офис\"," +
-                "\"address\":\"Самара, ул. Серова, д.3\"," +
-                "\"phone\":\"+7(8579)45-45-97\"," +
-                "\"isActive\":false}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/update", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"error\" : \"Не найден офис с ID: " + officeId + "\"}";
-        assertEquals(expected, result, true);
+        OfficeUpdateViewRequest officeUpdateViewRequest =new OfficeUpdateViewRequest();
+        officeUpdateViewRequest.setId(officeId);
+        officeUpdateViewRequest.setName("Новый Тестовый офис");
+        officeUpdateViewRequest.setAddress("Самара, ул. Серова, д.3");
+        officeUpdateViewRequest.setPhone("+7(8579)45-45-97");
+        officeUpdateViewRequest.setActive(false);
+
+        HttpEntity entity = new HttpEntity<>(officeUpdateViewRequest, headers);
+
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/office/update", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected = new  NegativeResponseView("Не найден офис с ID: " + officeId);
+
+        Assert.assertEquals(expected, result);
         assertNull(organizationRepository.findOrganizationByName("Новый Тестовый офис"));
     }
 
     @Test
-    public void saveOrganisationPositiveTest() throws Exception {
+    public void saveOfficePositiveTest() throws Exception {
         Organization organization = new Organization("Тестовая организация");
         organizationRepository.save(organization);
         Long orgId = organizationRepository.findOrganizationByName("Тестовая организация").getId();
-        String body = "{\"orgId\":" + orgId + "," +
-                "\"name\":\"Тестовый офис\"," +
-                "\"phone\":\"+7(8532)45-45-45\"," +
-                "\"isActive\":true}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/save", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"data\":{\"result\":\"success\"}}";
-        assertEquals(expected, result, true);
+        OfficeSaveViewRequest officeSaveViewRequest=new OfficeSaveViewRequest();
+        officeSaveViewRequest.setOrgId(orgId);
+        officeSaveViewRequest.setName("Тестовый офис");
+        officeSaveViewRequest.setPhone("+7(8532)45-45-45");
+        officeSaveViewRequest.setActive(true);
+
+        HttpEntity entity = new HttpEntity<>(officeSaveViewRequest, headers);
+
+        ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/office/save", HttpMethod.POST, entity, PositiveResponseView.class);
+        PositiveResponseView result = response.getBody();
+        PositiveResponseView expected = new PositiveResponseView();
+        Assert.assertEquals(expected, result);
         assertNotNull(officeRepository.findOfficeByName("Тестовый офис"));
     }
 
@@ -196,13 +220,17 @@ public class OfficeControllerITest {
         Organization organization = new Organization("Тестовая организация");
         organizationRepository.save(organization);
         Long orgId = Long.valueOf(5000);
-        String body = "{\"orgId\":" + orgId + "}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
+        OfficeSaveViewRequest officeSaveViewRequest=new OfficeSaveViewRequest();
+        officeSaveViewRequest.setOrgId(orgId);
+        HttpEntity entity = new HttpEntity<>(officeSaveViewRequest, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/save", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"error\" : \"Не возможно добавить офис, принадлежащий организациии, с ID: " + orgId + ", отсутствующим в базе\"}";
-        assertEquals(expected, result, true);
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/office/save", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected = new  NegativeResponseView("Не возможно добавить офис, принадлежащий организациии, с ID: " + orgId + ", отсутствующим в базе");
+
+        Assert.assertEquals(expected, result);
+
 //        assertNull(organizationRepository.findOrganizationByName(null));
     }
 
@@ -213,13 +241,14 @@ public class OfficeControllerITest {
         Office office = new Office("Тестовый офис", "Киров, ул. Серова, д.2", "+7(8532)45-45-45", true, organizationRepository.findOrganizationByName("Тестовая организация"));
         officeRepository.save(office);
         Long officeId = officeRepository.findOfficeByName(office.getName()).getId();
-        String body = "{\"id\" : " + officeId + "}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
+        OfficeDeleteViewRequest officeDeleteViewRequest=new OfficeDeleteViewRequest();
+        officeDeleteViewRequest.setId(officeId);
+        HttpEntity entity = new HttpEntity<>(officeDeleteViewRequest, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/delete", HttpMethod.POST, entity, String.class);
-        String expected = "{\"data\":{\"result\":\"success\"}}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/office/delete", HttpMethod.POST, entity, PositiveResponseView.class);
+        PositiveResponseView result = response.getBody();
+        PositiveResponseView expected = new PositiveResponseView();
+        Assert.assertEquals(expected, result);
         assertNull(officeRepository.findOfficeByName(office.getName()));
     }
 
@@ -230,15 +259,18 @@ public class OfficeControllerITest {
         Office office = new Office("Тестовый офис", "Киров, ул. Серова, д.2", "+7(8532)45-45-45", true, organizationRepository.findOrganizationByName("Тестовая организация"));
         officeRepository.save(office);
 
-        String body = "{\"id\" : 5000}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
+        OfficeDeleteViewRequest officeDeleteViewRequest = new OfficeDeleteViewRequest();
+        officeDeleteViewRequest.setId(5000L);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/office/delete", HttpMethod.POST, entity, String.class);
+        HttpEntity entity = new HttpEntity<>(officeDeleteViewRequest, headers);
 
-        String expected = "{\"error\": \"С данным Id, офис не найден!\"}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/office/delete", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected = new  NegativeResponseView("С данным Id, офис не найден!");
+
+        Assert.assertEquals(expected, result);
+
         assertNotNull(officeRepository.findOfficeByName(office.getName()));
     }
-
 }

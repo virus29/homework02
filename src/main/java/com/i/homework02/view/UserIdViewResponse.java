@@ -114,4 +114,38 @@ public class UserIdViewResponse extends UserListViewResponse{
     public void setIdentified(Boolean identified) {
         isIdentified = identified;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        UserIdViewResponse that = (UserIdViewResponse) o;
+
+        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
+        if (docName != null ? !docName.equals(that.docName) : that.docName != null) return false;
+        if (docCode != null ? !docCode.equals(that.docCode) : that.docCode != null) return false;
+        if (docNumber != null ? !docNumber.equals(that.docNumber) : that.docNumber != null) return false;
+        if (docDate != null ? !docDate.equals(that.docDate) : that.docDate != null) return false;
+        if (citizenshipName != null ? !citizenshipName.equals(that.citizenshipName) : that.citizenshipName != null)
+            return false;
+        if (citizenshipCode != null ? !citizenshipCode.equals(that.citizenshipCode) : that.citizenshipCode != null)
+            return false;
+        return isIdentified != null ? isIdentified.equals(that.isIdentified) : that.isIdentified == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (docName != null ? docName.hashCode() : 0);
+        result = 31 * result + (docCode != null ? docCode.hashCode() : 0);
+        result = 31 * result + (docNumber != null ? docNumber.hashCode() : 0);
+        result = 31 * result + (docDate != null ? docDate.hashCode() : 0);
+        result = 31 * result + (citizenshipName != null ? citizenshipName.hashCode() : 0);
+        result = 31 * result + (citizenshipCode != null ? citizenshipCode.hashCode() : 0);
+        result = 31 * result + (isIdentified != null ? isIdentified.hashCode() : 0);
+        return result;
+    }
 }

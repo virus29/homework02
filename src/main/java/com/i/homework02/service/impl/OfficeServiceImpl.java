@@ -96,6 +96,10 @@ public class OfficeServiceImpl implements OfficeService {
     @Autowired
     OrganizationRepository organizationRepository;
 
+
+
+
+
     /**
      * Сохранение офиса
      * @param office - объект с параметрами для сохранения

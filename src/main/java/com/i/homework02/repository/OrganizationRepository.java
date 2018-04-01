@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface OrganizationRepository extends JpaRepository<Organization, Long>, JpaSpecificationExecutor<Organization> {
     Organization findOrganizationByName(String name);
-    Organization findOrganizationByInn(String name);
+    Organization findOrganizationByInn(String inn);
+
 }
