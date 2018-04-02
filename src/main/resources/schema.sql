@@ -7,22 +7,22 @@ DROP TABLE IF EXISTS Office;
 
 CREATE TABLE IF NOT EXISTS Country (
     version    INTEGER NOT NULL,
-    code   VARCHAR(100) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL
+    code   VARCHAR PRIMARY KEY,
+    name VARCHAR NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Doc_type (
     version    INTEGER NOT NULL,
-    code   VARCHAR(100) PRIMARY KEY,
-    name VARCHAR(300) NOT NULL
+    code   VARCHAR PRIMARY KEY,
+    name VARCHAR NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Office (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    name    VARCHAR(50),
-    address    VARCHAR(100),
-    phone    VARCHAR(100),
+    name    VARCHAR,
+    address    VARCHAR,
+    phone    VARCHAR,
     is_active    BOOLEAN,
     organization_id INTEGER
 );
@@ -30,27 +30,27 @@ CREATE TABLE IF NOT EXISTS Office (
 CREATE TABLE IF NOT EXISTS Organization (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    name    VARCHAR(50),
-    full_name    VARCHAR(50),
-    inn    VARCHAR(20),
-    kpp    VARCHAR(20),
-    address    VARCHAR(100),
-    phone    VARCHAR(100),
+    name    VARCHAR,
+    full_name    VARCHAR,
+    inn    VARCHAR,
+    kpp    VARCHAR,
+    address    VARCHAR,
+    phone    VARCHAR,
     is_active    BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS User (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER,
-    first_name    VARCHAR(50),
-    second_name    VARCHAR(50),
-    middle_name    VARCHAR(50),
-    position    VARCHAR(50),
-    phone    VARCHAR(50),
-    doc_code    VARCHAR(100),
-    doc_number    VARCHAR(50),
+    first_name    VARCHAR,
+    second_name    VARCHAR,
+    middle_name    VARCHAR,
+    position    VARCHAR,
+    phone    VARCHAR,
+    doc_code    VARCHAR,
+    doc_number    VARCHAR,
     doc_date    DATE,
-    citizenship_code    VARCHAR(100),
+    citizenship_code    VARCHAR,
     is_identified    BOOLEAN,
     office_id INTEGER
 );
@@ -58,13 +58,13 @@ CREATE TABLE IF NOT EXISTS User (
 CREATE TABLE IF NOT EXISTS Account (
     id         INTEGER  PRIMARY KEY AUTO_INCREMENT,
     version    INTEGER NOT NULL,
-    login    VARCHAR(50) NOT NULL,
-    password    VARCHAR(50) NOT NULL,
-    name    VARCHAR(50),
-    role    VARCHAR(50),
+    login    VARCHAR NOT NULL,
+    password    VARCHAR NOT NULL,
+    name    VARCHAR,
+    role    VARCHAR,
     is_active BOOLEAN,
-    activation_code    VARCHAR(200),
-    code VARCHAR(200)
+    activation_code    VARCHAR,
+    code VARCHAR
 );
 
 CREATE INDEX IX_Office_Organization_Id ON Office (organization_id);

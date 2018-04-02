@@ -213,96 +213,119 @@ public class UserControllerITest {
     @Test
     public void updaterUserNegativeTest() throws Exception {
         Long userId = 5000L;
-        String body = "{\"id\":" + userId + "," +
-                "\"firstName\": \"Тест1\"," +
-                "\"secondName\": \"Тестов1\"," +
-                "\"middleName\": \"Тестович1\"," +
-                "\"position\": \"Менеджер1\"," +
-                "\"phone\": \"+7(8532)45-45-46\"," +
-                "\"docName\": \"Паспорт гражданина Российской Федерации\"," +
-                "\"docNumber\": \"4555\"," +
-                "\"docDate\": \"2015-06-30\"," +/*06/24/2015 @ 12:00am (UTC)*/
-                "\"citizenshipName\": \"Российская Федерация\"," +
-                "\"citizenshipCode\": \"643\"," +
-                "\"isIdentified\": true}}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/update", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"error\" : \"Сотрудник с Id: " + userId + " не найден!\"}";
-        assertEquals(expected, result, true);
+        UserUpdateViewRequest userUpdateViewRequest = new UserUpdateViewRequest();
+        userUpdateViewRequest.setId(userId);
+        userUpdateViewRequest.setFirstName("Тест1");
+        userUpdateViewRequest.setSecondName("Тестов1");
+        userUpdateViewRequest.setMiddleName("Тестович1");
+        userUpdateViewRequest.setPosition("Менеджер1");
+        userUpdateViewRequest.setPhone("+7(8532)45-45-45");
+        userUpdateViewRequest.setDocName("Паспорт гражданина Российской Федерации");
+        userUpdateViewRequest.setDocNumber("4554");
+        userUpdateViewRequest.setDocDate(new Date(1435190400000L));/*06/25/2015 @ 12:00am (UTC)*/
+        userUpdateViewRequest.setCitizenshipName("Российская Федерация");
+        userUpdateViewRequest.setCitizenshipCode("643");
+        userUpdateViewRequest.setIdentified(null);
+
+        HttpEntity entity = new HttpEntity<>(userUpdateViewRequest, headers);
+
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/user/update", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected=new NegativeResponseView("Сотрудник с Id: " + userId + " не найден!");
+        Assert.assertEquals(expected, result);
+
         assertNull(userRepository.findUserByFirstName("Тест1"));
     }
 
     @Test
     public void saveUserPositiveTest() throws Exception {
         Long officeId = officeRepository.findOfficeByName("Тестовый офис").getId();
-        String body = "{\"officeId\":" + officeId + "," +
-                "\"firstName\": \"Тест1\"," +
-                "\"secondName\": \"Тестов1\"," +
-                "\"middleName\": \"Тестович1\"," +
-                "\"position\": \"Менеджер1\"," +
-                "\"phone\": \"+7(8532)45-45-46\"," +
-                "\"docCode\": \"21\"," +
-                "\"docNumber\": \"4555\"," +
-                "\"docDate\": \"2015-06-30\"," +
-                "\"citizenshipCode\": \"643\"," +
-                "\"isIdentified\": true}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/save", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"data\":{\"result\":\"success\"}}";
-        assertEquals(expected, result, true);
+        UserSaveViewRequest userSaveViewRequest = new UserSaveViewRequest();
+        userSaveViewRequest.setOfficeId(officeId);
+        userSaveViewRequest.setFirstName("Тест1");
+        userSaveViewRequest.setSecondName("Тестов1");
+        userSaveViewRequest.setMiddleName("Тестович1");
+        userSaveViewRequest.setPosition("Менеджер1");
+        userSaveViewRequest.setPhone("+7(8532)45-45-45");
+        userSaveViewRequest.setDocCode("21");
+        userSaveViewRequest.setDocNumber("4554");
+        userSaveViewRequest.setDocDate(new Date(1435190400000L));/*06/25/2015 @ 12:00am (UTC)*/
+        userSaveViewRequest.setCitizenshipCode("643");
+        userSaveViewRequest.setIdentified(true);
+
+        HttpEntity entity = new HttpEntity<>(userSaveViewRequest, headers);
+
+        ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/user/save", HttpMethod.POST, entity, PositiveResponseView.class);
+
+        PositiveResponseView result = response.getBody();
+        PositiveResponseView expected = new PositiveResponseView();
+
+        Assert.assertEquals(expected, result);
         assertNotNull(userRepository.findUserByFirstName("Тест1"));
     }
 
     @Test
     public void saveUserNegativeTest() throws Exception {
         Long officeId = 5000L;
-        String body = "{\"officeId\":" + officeId + "," +
-                "\"firstName\": \"Тест1\"," +
-                "\"secondName\": \"Тестов1\"," +
-                "\"middleName\": \"Тестович1\"," +
-                "\"position\": \"Менеджер1\"," +
-                "\"phone\": \"+7(8532)45-45-46\"," +
-                "\"docCode\": \"21\"," +
-                "\"docNumber\": \"4555\"," +
-                "\"docDate\": \"2015-06-30\"," +/*06/24/2015 @ 12:00am (UTC)*/
-                "\"citizenshipCode\": \"643\"," +
-                "\"isIdentified\": true}}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
+        UserSaveViewRequest userSaveViewRequest = new UserSaveViewRequest();
+        userSaveViewRequest.setOfficeId(officeId);
+        userSaveViewRequest.setFirstName("Тест1");
+        userSaveViewRequest.setSecondName("Тестов1");
+        userSaveViewRequest.setMiddleName("Тестович1");
+        userSaveViewRequest.setPosition("Менеджер1");
+        userSaveViewRequest.setPhone("+7(8532)45-45-45");
+        userSaveViewRequest.setDocCode("21");
+        userSaveViewRequest.setDocNumber("4554");
+        userSaveViewRequest.setDocDate(new Date(1435190400000L));/*06/25/2015 @ 12:00am (UTC)*/
+        userSaveViewRequest.setCitizenshipCode("643");
+        userSaveViewRequest.setIdentified(true);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/save", HttpMethod.POST, entity, String.class);
-        String result = response.getBody();
-        String expected = "{\"error\" : \"По officeId: " + officeId + " офис не найден! Для заведения нового сотрудника, нужно прикрепить сотрудника к существующему офису!\"}";
-        assertEquals(expected, result, true);
+        HttpEntity entity = new HttpEntity<>(userSaveViewRequest, headers);
+
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/user/save", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected=new NegativeResponseView("По officeId: " + officeId + " офис не найден! Для заведения нового сотрудника, нужно прикрепить сотрудника к существующему офису!");
+        Assert.assertEquals(expected, result);
 //        assertNull(organizationRepository.findOrganizationByName(null));
     }
 
     @Test
     public void deleteUserPositiveTest() throws Exception {
         Long userId = userRepository.findUserByFirstName("Тест").getId();
-        String body = "{\"id\" : " + userId + "}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/delete", HttpMethod.POST, entity, String.class);
-        String expected = "{\"data\":{\"result\":\"success\"}}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        UserDeleteViewRequest userDeleteViewRequest = new UserDeleteViewRequest();
+        userDeleteViewRequest.setId(userId);
+
+        HttpEntity entity = new HttpEntity<>(userDeleteViewRequest, headers);
+
+        ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/user/delete", HttpMethod.POST, entity, PositiveResponseView.class);
+
+        PositiveResponseView result = response.getBody();
+        PositiveResponseView expected = new PositiveResponseView();
+
+        Assert.assertEquals(expected, result);
         assertNull(userRepository.findUserByFirstName("Тест"));
     }
 
     @Test
     public void deleteUserNegativeTest() throws Exception {
-        String body = "{\"id\" : 5000}";
-        HttpEntity entity = new HttpEntity<>(body, headers);
+        Long userId = 5000L;
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/user/delete", HttpMethod.POST, entity, String.class);
+        UserDeleteViewRequest userDeleteViewRequest = new UserDeleteViewRequest();
+        userDeleteViewRequest.setId(userId);
 
-        String expected = "{\"error\": \"С данным Id, сотрудник не найден!\"}";
-        String result = response.getBody();
-        assertEquals(expected, result, true);
+        HttpEntity entity = new HttpEntity<>(userDeleteViewRequest, headers);
+
+        ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/user/delete", HttpMethod.POST, entity, NegativeResponseView.class);
+
+        NegativeResponseView result = response.getBody();
+        NegativeResponseView expected=new NegativeResponseView("С данным Id, сотрудник не найден!");
+
+        Assert.assertEquals(expected, result);
         assertNotNull(userRepository.findUserByFirstName("Тест"));
     }
 
