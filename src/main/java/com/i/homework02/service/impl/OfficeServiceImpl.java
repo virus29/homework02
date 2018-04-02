@@ -80,7 +80,6 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     @Transactional
     public void update(Office office) throws CustomOfficeException {
-        if (office.getId() == null) throw new CustomOfficeException("Не передан обязательный параметр ID");
         Office officeUpdate = officeRepository.findOne(office.getId());
         if (officeUpdate != null) {
             officeUpdate.setName(office.getName());

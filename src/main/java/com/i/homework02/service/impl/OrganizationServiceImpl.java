@@ -115,9 +115,6 @@ public class OrganizationServiceImpl implements OrganisationService {
     @Transactional
     @Override
     public void update(Organization organization) throws CustomOrganizationException {
-        if (organization.getId() == null) {
-            throw new CustomOrganizationException("Введите Id организации для изменения её параметров");
-        }
         if (organizationRepository.exists(organization.getId())) {
             Organization updateOrganization = organizationRepository.findOne(organization.getId());
             if (organization.getName() != null)
@@ -192,9 +189,6 @@ public class OrganizationServiceImpl implements OrganisationService {
     @Override
     @Transactional
     public void delete(Organization organization) throws CustomOrganizationException {
-        if (organization.getId() == null) {
-            throw new CustomOrganizationException("Для удаления, Id организации не должно быть пустым");
-        }
         if (organizationRepository.exists(organization.getId())){
             organizationRepository.delete(organization.getId());
         } else {
