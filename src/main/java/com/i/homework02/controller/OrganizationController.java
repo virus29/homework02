@@ -35,8 +35,7 @@ public class OrganizationController {
      */
     @PostMapping(value = "/list")
     public ResponseEntity searchOrganization(@RequestBody @Valid OrgListViewRequest orgListViewRequest) throws CustomOrganizationException, ParseException {
-        Organization organization=organizationServiceImpl.convertToEntity(orgListViewRequest);
-        List<OrgListViewResponse> listOrganizations = organizationServiceImpl.search(organization);
+        List<OrgListViewResponse> listOrganizations = organizationServiceImpl.search(orgListViewRequest);
         DataView<List<OrgListViewResponse>> dataView = new DataView<>(listOrganizations);
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
@@ -59,19 +58,17 @@ public class OrganizationController {
      */
     @PostMapping(value = "/update")
     public ResponseEntity updaterOrganization(@RequestBody @Valid OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException {
-        Organization organization=organizationServiceImpl.convertToEntity(orgViewRequest);
-        organizationServiceImpl.update(organization);
+        organizationServiceImpl.update(orgViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
     /**
      * Сохранение организации
-     * @param orgViewRequest - объект содержащий параметры для сохранения
+     * @param orgSaveViewRequest - объект содержащий параметры для сохранения
      */
     @PostMapping(value = "/save")
-    public ResponseEntity saveOrganization(@RequestBody @Valid OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException {
-        Organization organization=organizationServiceImpl.convertToEntity(orgViewRequest);
-        organizationServiceImpl.save(organization);
+    public ResponseEntity saveOrganization(@RequestBody @Valid OrgSaveViewRequest orgSaveViewRequest) throws CustomOrganizationException, ParseException {
+        organizationServiceImpl.save(orgSaveViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -81,8 +78,7 @@ public class OrganizationController {
      */
     @PostMapping(value = "/delete")
     public ResponseEntity deleteOrganization(@RequestBody OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException {
-        Organization organization=organizationServiceImpl.convertToEntity(orgViewRequest);
-        organizationServiceImpl.delete(organization);
+        organizationServiceImpl.delete(orgViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 }

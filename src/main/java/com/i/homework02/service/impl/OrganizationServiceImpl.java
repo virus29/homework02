@@ -28,57 +28,16 @@ public class OrganizationServiceImpl implements OrganisationService {
     @Autowired
     private OrganizationRepository organizationRepository;
 
-    //поисковик(старый вариант)
-
-    /**
-     * @PersistenceContext private EntityManager em;
-     * public static Specification<Organization> findByParamNameInnIsactive(String name, String inn, Boolean isActive) {
-     * return (r, cq, cb) -> cb.and(
-     * cb.equal(r.get("name"), name),
-     * cb.equal(r.get("inn"), inn),
-     * cb.equal(r.get("isActive"), isActive));
-     * }
-     * public static Specification<Organization> findByParamNameIsactive(String name, Boolean isActive) {
-     * return (r, cq, cb) -> cb.and(
-     * cb.equal(r.get("name"), name),
-     * cb.equal(r.get("isActive"), isActive));
-     * }
-     * public static Specification<Organization> findByParamNameInn(String name, String inn) {
-     * return (r, cq, cb) -> cb.and(
-     * cb.equal(r.get("name"), name),
-     * cb.equal(r.get("inn"), inn));
-     * }
-     * public static Specification<Organization> findByParamName(String name) {
-     * return (r, cq, cb) -> cb.and(
-     * cb.equal(r.get("name"), name));
-     * }
-     * //Поиск по нескольким параметрам
-     * @Override public List<Organization> search(String name, String inn, Boolean isActive) {
-     * if (inn == null) {
-     * if (isActive == null) {
-     * return organizationRepository.findAll(findByParamName(name));
-     * } else {
-     * return organizationRepository.findAll(findByParamNameIsactive(name, isActive));
-     * }
-     * } else {
-     * if (isActive == null) {
-     * return organizationRepository.findAll(findByParamNameInn(name, inn));
-     * } else {
-     * return organizationRepository.findAll(findByParamNameInnIsactive(name, inn, isActive));
-     * }
-     * }
-     * }
-     **/
-
-
     /**
      * Поиск организации по нескольким параметрам
-     * @param organization - объект содержащий параметры для поиска
+     *
+     * @param orgListViewRequest - объект содержащий параметры для поиска
      * @return список организаций подходящие критериям поиска
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OrgListViewResponse> search(Organization organization) throws CustomOrganizationException {
+    public List<OrgListViewResponse> search(OrgListViewRequest orgListViewRequest) throws CustomOrganizationException, ParseException {
+        Organization organization = convertToEntity(orgListViewRequest);
         Specification<Organization> findOrganizationByParam = new Specification<Organization>() {
             @Override
             public Predicate toPredicate(Root<Organization> r, CriteriaQuery<?> cq, CriteriaBuilder cb) {
@@ -110,27 +69,22 @@ public class OrganizationServiceImpl implements OrganisationService {
 
     /**
      * Изменение(обновление) организации
-     * @param organization - объект содержащий параметры для обновления
+     *
+     * @param orgViewRequest - объект содержащий параметры для обновления
      */
     @Transactional
     @Override
-    public void update(Organization organization) throws CustomOrganizationException {
+    public void update(OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException {
+        Organization organization = convertToEntity(orgViewRequest);
         if (organizationRepository.exists(organization.getId())) {
             Organization updateOrganization = organizationRepository.findOne(organization.getId());
-            if (organization.getName() != null)
-                updateOrganization.setName(organization.getName());
-            if (organization.getFullName() != null)
-                updateOrganization.setFullName(organization.getFullName());
-            if (organization.getInn() != null)
-                updateOrganization.setInn(organization.getInn());
-            if (organization.getKpp() != null)
-                updateOrganization.setKpp(organization.getKpp());
-            if (organization.getAddress() != null)
-                updateOrganization.setAddress(organization.getAddress());
-            if (organization.getPhone() != null)
-                updateOrganization.setPhone(organization.getPhone());
-            if (organization.getActive() != null)
-                updateOrganization.setActive(organization.getActive());
+            updateOrganization.setName(organization.getName());
+            updateOrganization.setFullName(organization.getFullName());
+            updateOrganization.setInn(organization.getInn());
+            updateOrganization.setKpp(organization.getKpp());
+            updateOrganization.setAddress(organization.getAddress());
+            updateOrganization.setPhone(organization.getPhone());
+            updateOrganization.setActive(organization.getActive());
             organizationRepository.save(updateOrganization);
         } else {
             throw new CustomOrganizationException("Организация с Id: " + organization.getId() + " не найдена!");
@@ -139,26 +93,23 @@ public class OrganizationServiceImpl implements OrganisationService {
 
     /**
      * Сохранение организации
-     * @param organization - объект содержащий параметры для сохранения
+     *
+     * @param orgSaveViewRequest - объект содержащий параметры для сохранения
      */
     @Override
     @Transactional
-    public void save(Organization organization) throws CustomOrganizationException {
-        if (organization.getName() == null &
-                organization.getFullName() == null &
-                organization.getInn() == null &
-                organization.getKpp() == null &
-                organization.getAddress() == null &
-                organization.getPhone() == null &
-                organization.getActive() == null
-                ) {
-            throw new CustomOrganizationException("Поля не заполнены! Для сохранения, необходимо заполнить, хотя бы, одно поле!");
+    public void save(OrgSaveViewRequest orgSaveViewRequest) throws CustomOrganizationException, ParseException {
+        Organization organization = convertToEntity(orgSaveViewRequest);
+        if (organizationRepository.findOrganizationByName(organization.getName()) == null) {
+            organizationRepository.save(organization);
+        } else {
+            throw new CustomOrganizationException("Организация с name: " + organization.getName() + " уже существует введите оригинальное имя");
         }
-        organizationRepository.save(organization);
     }
 
     /**
      * Поиск по Id организации
+     *
      * @param id - Id организации
      * @return - Организация найденная по id
      */
@@ -184,12 +135,14 @@ public class OrganizationServiceImpl implements OrganisationService {
 
     /**
      * Удаление организации
-     * @param organization - объект содержащий id организации
+     *
+     * @param orgViewRequest - объект содержащий id организации
      */
     @Override
     @Transactional
-    public void delete(Organization organization) throws CustomOrganizationException {
-        if (organizationRepository.exists(organization.getId())){
+    public void delete(OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException {
+        Organization organization = convertToEntity(orgViewRequest);
+        if (organizationRepository.exists(organization.getId())) {
             organizationRepository.delete(organization.getId());
         } else {
             throw new CustomOrganizationException("С данным Id, организация не найдена!");
@@ -199,13 +152,18 @@ public class OrganizationServiceImpl implements OrganisationService {
     @Autowired
     private ModelMapper modelMapper;
 
+    public Organization convertToEntity(OrgSaveViewRequest orgSaveViewRequest) throws ParseException {
+        Organization organization = modelMapper.map(orgSaveViewRequest, Organization.class);
+        return organization;
+    }
+
     public Organization convertToEntity(OrgListViewRequest orgListViewRequest) throws ParseException {
-        Organization organization=modelMapper.map(orgListViewRequest,Organization.class);
+        Organization organization = modelMapper.map(orgListViewRequest, Organization.class);
         return organization;
     }
 
     public Organization convertToEntity(OrgViewRequest orgViewRequest) throws ParseException {
-        Organization organization=modelMapper.map(orgViewRequest,Organization.class);
+        Organization organization = modelMapper.map(orgViewRequest, Organization.class);
         return organization;
     }
 

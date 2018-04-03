@@ -4,6 +4,7 @@ import com.i.homework02.entity.Office;
 import com.i.homework02.exeption.CustomOfficeException;
 import com.i.homework02.view.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface OfficeService {
@@ -11,22 +12,22 @@ public interface OfficeService {
 
     /**
      * Поиск офиса(ов) по нескольким параметрам
-     * @param office - объект с параметрами поиска
+     * @param officeListViewRequest - объект с параметрами поиска
      * @return Список офисов полученый из параметров запроса
      */
-    public List<OfficeListViewResponse> searchOffice(Office office) throws CustomOfficeException;
+    public List<OfficeListViewResponse> searchOffice(OfficeListViewRequest officeListViewRequest) throws CustomOfficeException, ParseException;
 
     /**
      * Изменение(обновление) параметров офиса
-     * @param office - парметры офиса переданные для удаления
+     * @param officeUpdateViewRequest - парметры офиса переданные для удаления
      */
-    public void update(Office office) throws CustomOfficeException;
+    public void update(OfficeUpdateViewRequest officeUpdateViewRequest) throws CustomOfficeException, ParseException;
 
     /**
      * Сохранение офиса
-     * @param office - объект с параметрами для сохранения
+     * @param officeSaveViewRequest - объект с параметрами для сохранения
      */
-    public void save(Office office) throws CustomOfficeException;
+    public void save(OfficeSaveViewRequest officeSaveViewRequest) throws CustomOfficeException, ParseException;
 
     /**
      * Поиск офиса по Id
@@ -37,7 +38,7 @@ public interface OfficeService {
 
     /**
      * Удаление офиса
-     * @param office объект с параметром id офиса
+     * @param officeDeleteViewRequest объект с параметром id офиса
      */
-    public void delete(Office office) throws CustomOfficeException;
+    public void delete(OfficeDeleteViewRequest officeDeleteViewRequest) throws CustomOfficeException, ParseException;
 }

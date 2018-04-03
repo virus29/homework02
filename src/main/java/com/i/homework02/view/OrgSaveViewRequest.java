@@ -1,13 +1,9 @@
 package com.i.homework02.view;
 
-import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
-public class OrgViewRequest {
-
-    //Id организации
-    @NotNull
-    private Long id;
+public class OrgSaveViewRequest {
 
     // Краткое название организации
     private String name;
@@ -29,14 +25,6 @@ public class OrgViewRequest {
 
     //Активная ли организация
     private Boolean isActive;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -97,30 +85,20 @@ public class OrgViewRequest {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrgViewRequest that = (OrgViewRequest) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (fullName != null ? !fullName.equals(that.fullName) : that.fullName != null) return false;
-        if (inn != null ? !inn.equals(that.inn) : that.inn != null) return false;
-        if (kpp != null ? !kpp.equals(that.kpp) : that.kpp != null) return false;
-        if (address != null ? !address.equals(that.address) : that.address != null) return false;
-        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-        return isActive != null ? isActive.equals(that.isActive) : that.isActive == null;
+        if (!(o instanceof OrgSaveViewRequest)) return false;
+        OrgSaveViewRequest that = (OrgSaveViewRequest) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(fullName, that.fullName) &&
+                Objects.equals(inn, that.inn) &&
+                Objects.equals(kpp, that.kpp) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(phone, that.phone) &&
+                Objects.equals(isActive, that.isActive);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (fullName != null ? fullName.hashCode() : 0);
-        result = 31 * result + (inn != null ? inn.hashCode() : 0);
-        result = 31 * result + (kpp != null ? kpp.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (isActive != null ? isActive.hashCode() : 0);
-        return result;
+
+        return Objects.hash(name, fullName, inn, kpp, address, phone, isActive);
     }
 }

@@ -169,7 +169,6 @@ public class OrganizationControllerITest {
         Assert.assertEquals(expected, result);
 
         assertNotNull(organizationRepository.findOrganizationByName("БЕЛЛ ИНТЕГРАТОР1"));
-        assertNotNull(organizationRepository.findOrganizationByInn("774565646"));
     }
 
     @Test
@@ -198,16 +197,16 @@ public class OrganizationControllerITest {
     @Test
     public void saveOrganisationPositiveTest() throws Exception {
 
-        OrgViewRequest orgViewRequest = new OrgViewRequest();
-        orgViewRequest.setName("БЕЛЛ ИНТЕГРАТОР1");
-        orgViewRequest.setFullName("АКЦИОНЕРНОЕ ОБЩЕСТВО БЕЛЛ ИНТЕГРАТОР1");
-        orgViewRequest.setInn("7714923230");
-        orgViewRequest.setKpp("771401001");
-        orgViewRequest.setAddress("125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4");
-        orgViewRequest.setPhone("+7 (495) 980-61-81");
-        orgViewRequest.setActive(true);
+        OrgSaveViewRequest orgSaveViewRequest = new OrgSaveViewRequest();
+        orgSaveViewRequest.setName("БЕЛЛ ИНТЕГРАТОР1");
+        orgSaveViewRequest.setFullName("АКЦИОНЕРНОЕ ОБЩЕСТВО БЕЛЛ ИНТЕГРАТОР1");
+        orgSaveViewRequest.setInn("7714923230");
+        orgSaveViewRequest.setKpp("771401001");
+        orgSaveViewRequest.setAddress("125167, ГОРОД МОСКВА, УЛИЦА ПЛАНЕТНАЯ УЛИЦА, ДОМ 11, ПОМЕЩЕНИЕ 9/10 РМ-4");
+        orgSaveViewRequest.setPhone("+7 (495) 980-61-81");
+        orgSaveViewRequest.setActive(true);
 
-        HttpEntity entity = new HttpEntity<>(orgViewRequest, headers);
+        HttpEntity entity = new HttpEntity<>(orgSaveViewRequest, headers);
 
         ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/organization/save", HttpMethod.POST, entity, PositiveResponseView.class);
         PositiveResponseView result = response.getBody();
@@ -218,9 +217,14 @@ public class OrganizationControllerITest {
 
     @Test
     public void saveOrganisationNegativeTest() throws Exception {
+        Organization organization = new Organization();
+        organization.setName("Тестовая");
+        organizationRepository.save(organization);
+
+        String name = organization.getName();
 
         OrgViewRequest orgViewRequest = new OrgViewRequest();
-        orgViewRequest.setName(null);
+        orgViewRequest.setName("Тестовая");
         orgViewRequest.setFullName(null);
         orgViewRequest.setInn(null);
         orgViewRequest.setKpp(null);
@@ -230,7 +234,7 @@ public class OrganizationControllerITest {
         ResponseEntity<NegativeResponseView> response = restTemplate.exchange("/api/organization/save", HttpMethod.POST, entity, NegativeResponseView.class);
 
         NegativeResponseView result = response.getBody();
-        NegativeResponseView expected = new  NegativeResponseView("Поля не заполнены! Для сохранения, необходимо заполнить, хотя бы, одно поле!");
+        NegativeResponseView expected = new  NegativeResponseView("Организация с name: " + name + " уже существует введите оригинальное имя");
         Assert.assertEquals(expected, result);
 //        assertNull(organizationRepository.findOrganizationByName(null));
     }

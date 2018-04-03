@@ -56,14 +56,16 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+
     /**
      * Иммитация получение активационного кода по электронной почте, для нужд тестирования
-     * @param account
+     * @param accountViewRequest
      * @return активационный код
      */
     @Override
     @Transactional(readOnly = true)
-    public String getActivationCode(com.i.homework02.entity.Account account) {
+    public String getActivationCode(AccountViewRequest accountViewRequest) throws ParseException {
+        Account account = convertToEntity(accountViewRequest);
         return accountRepository.findAccountByLogin(account.getLogin()).getCode();
     }
 
@@ -73,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
      * @param account - данные аккаунта пользователя
      */
     @Transactional(readOnly = true)
-    public void sendMessageWithCodeToEmail(String code, com.i.homework02.entity.Account account) {
+    public void sendMessageWithCodeToEmail(String code, Account account) {
         account.setCode(code);
         accountRepository.save(account);
 
@@ -81,14 +83,15 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Регистрация Аккаунта
-     * @param account
+     * @param accountViewRequest
      */
     @Override
     @Transactional
-    public void registration(Account account) throws CustomAccountException {
+    public void registration(AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
+        Account account = convertToEntity(accountViewRequest);
         if (accountRepository.findAccountByLogin(account.getLogin()) == null) {
             String code = randomCode();
-            com.i.homework02.entity.Account sAccount = new com.i.homework02.entity.Account();
+            Account sAccount = new Account();
             sAccount.setPassword(codingValue(account.getPassword()));
             sAccount.setLogin(account.getLogin());
             sAccount.setName(account.getName());
@@ -109,7 +112,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void activation(String code) throws CustomAccountException {
         if (accountRepository.findAccountByActivationCode(codingValue(code)) != null) {
-            com.i.homework02.entity.Account account = accountRepository.findAccountByActivationCode(codingValue(code));
+            Account account = accountRepository.findAccountByActivationCode(codingValue(code));
             account.setActive(true);
             accountRepository.save(account);
         } else {
@@ -119,12 +122,13 @@ public class AccountServiceImpl implements AccountService {
 
     /**
      * Вход в систему(если прошло верификацию возвращаем true, если нет, то false)
-     * @param account - аккаунт с передоваемыми параметрами login и password
+     * @param accountViewRequest - аккаунт с передоваемыми параметрами login и password
      * @return если true, то вошли. если false, то не вошли
      */
     @Override
     @Transactional(readOnly = true)
-    public boolean logIn(com.i.homework02.entity.Account account) throws CustomAccountException {
+    public boolean logIn(AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
+        Account account = convertToEntity(accountViewRequest);
         String login= account.getLogin();
         String password = account.getPassword();
         if (accountRepository.findAccountByLogin(login)!= null) {

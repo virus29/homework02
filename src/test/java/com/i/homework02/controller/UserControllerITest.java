@@ -192,10 +192,9 @@ public class UserControllerITest {
         userUpdateViewRequest.setMiddleName("Тестович1");
         userUpdateViewRequest.setPosition("Менеджер1");
         userUpdateViewRequest.setPhone("+7(8532)45-45-45");
-        userUpdateViewRequest.setDocName("Паспорт гражданина Российской Федерации");
+        userUpdateViewRequest.setDocCode("21");
         userUpdateViewRequest.setDocNumber("4554");
         userUpdateViewRequest.setDocDate(new Date(1435190400000L));/*06/25/2015 @ 12:00am (UTC)*/
-        userUpdateViewRequest.setCitizenshipName("Российская Федерация");
         userUpdateViewRequest.setCitizenshipCode("643");
         userUpdateViewRequest.setIdentified(null);
 

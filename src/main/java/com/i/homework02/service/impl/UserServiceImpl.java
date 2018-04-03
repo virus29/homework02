@@ -45,12 +45,13 @@ public class UserServiceImpl implements UserService {
     /**
      * Поиск списка сотрудников по параметрам
      *
-     * @param user - Объект содержащий параметры для поиска сотрудника
+     * @param userListViewRequest - Объект содержащий параметры для поиска сотрудника
      * @return List<User> - список сотрудников, отвечающий критериям поиска
      */
     @Transactional(readOnly = true)
     @Override
-    public List<UserListViewResponse> searchUser(User user) throws CustomUserException {
+    public List<UserListViewResponse> searchUser(UserListViewRequest userListViewRequest) throws CustomUserException, ParseException {
+        User user = convertToEntity(userListViewRequest);
         Specification<User> findUserByParam = new Specification<User>() {
             @Override
             public Predicate toPredicate(Root<User> r, CriteriaQuery<?> cq, CriteriaBuilder cb) {
@@ -91,36 +92,26 @@ public class UserServiceImpl implements UserService {
     /**
      * Изменение(обновление) параметров сотрудника по переданным парметрам в теле объекта userUpdateViewRequest
      *
-     * @param user - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
+     * @param userUpdateViewRequest - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
      */
     @Override
     @Transactional
-    public void update(User user) throws CustomUserException {
-
+    public void update(UserUpdateViewRequest userUpdateViewRequest) throws CustomUserException, ParseException {
+        User user = convertToEntity(userUpdateViewRequest);
         if (userRepository.findOne(user.getId()) == null) {
             throw new CustomUserException("Сотрудник с Id: " + user.getId() + " не найден!");
         }
         User updateUser = userRepository.findOne(user.getId());
-        if (user.getFirstName() != null)
-            updateUser.setFirstName(user.getFirstName());
-        if (user.getSecondName() != null)
-            updateUser.setSecondName(user.getSecondName());
-        if (user.getMiddleName() != null)
-            updateUser.setMiddleName(user.getMiddleName());
-        if (user.getPosition() != null)
-            updateUser.setPosition(user.getPosition());
-        if (user.getPhone() != null)
-            updateUser.setPhone(user.getPhone());
-        if (user.getDocType().getCode() != null)
-            updateUser.getDocType().setCode(user.getDocType().getCode());
-        if (user.getDocNumber() != null)
-            updateUser.setDocNumber(user.getDocNumber());
-        if (user.getDocDate() != null)
-            updateUser.setDocDate(user.getDocDate());
-        if (user.getCountry().getCode() != null)
-            updateUser.getCountry().setCode(user.getCountry().getCode());
-        if (user.getIdentified() != null)
-            updateUser.setIdentified(user.getIdentified());
+        updateUser.setFirstName(user.getFirstName());
+        updateUser.setSecondName(user.getSecondName());
+        updateUser.setMiddleName(user.getMiddleName());
+        updateUser.setPosition(user.getPosition());
+        updateUser.setPhone(user.getPhone());
+        updateUser.getDocType().setCode(user.getDocType().getCode());
+        updateUser.setDocNumber(user.getDocNumber());
+        updateUser.setDocDate(user.getDocDate());
+        updateUser.getCountry().setCode(user.getCountry().getCode());
+        updateUser.setIdentified(user.getIdentified());
         userRepository.save(updateUser);
     }
 
@@ -129,46 +120,30 @@ public class UserServiceImpl implements UserService {
      * Сохранение
      * Запись нового сотрудника в базу, по переданным парметрам в теле объекта userUpdateView
      *
-     * @param user - объект содержащий параметры сотрудника, для сохранения их в базе
+     * @param userSaveViewRequest - объект содержащий параметры сотрудника, для сохранения их в базе
      */
     @Override
     @Transactional
-    public void save(User user) throws CustomUserException {
+    public void save(UserSaveViewRequest userSaveViewRequest) throws CustomUserException, ParseException {
+        User user = convertToEntity(userSaveViewRequest);
         if (officeRepository.findOne(user.getOffice().getId()) != null) {
-            if (user.getFirstName() == null &
-                    user.getSecondName() == null &
-                    user.getMiddleName() == null &
-                    user.getPosition() == null &
-                    user.getPhone() == null &
-                    user.getDocType().getCode() == null &
-                    user.getDocNumber() == null &
-                    user.getDocDate() == null &
-                    user.getCountry().getCode() == null &
-                    user.getIdentified() == null
+            if (user.getFirstName() == null & user.getSecondName() == null
                     ) {
-                throw new CustomUserException("Поля не заполнены! Для сохранения, необходимо заполнить, хотя бы, одно поле, помимо Id офиса!");
+                throw new CustomUserException("Поля: firstName и secondName не заполнены! Для сохранения, необходимо заполнить Имя и Фамилию, помимо Id офиса!");
             }
             User sUser = new User();
-            if (user.getFirstName() != null)
-                sUser.setFirstName(user.getFirstName());
-            if (user.getSecondName() != null)
-                sUser.setSecondName(user.getSecondName());
-            if (user.getMiddleName() != null)
-                sUser.setMiddleName(user.getMiddleName());
-            if (user.getPosition() != null)
-                sUser.setPosition(user.getPosition());
-            if (user.getPhone() != null)
-                sUser.setPhone(user.getPhone());
-            if (user.getDocType().getCode() != null)
-                sUser.setDocType(docTypeRepository.findDocTypeByCode(user.getDocType().getCode()));
-            if (user.getDocNumber() != null)
-                sUser.setDocNumber(user.getDocNumber());
-            if (user.getDocDate() != null)
-                sUser.setDocDate(user.getDocDate());
-            if (user.getCountry().getCode() != null)
-                sUser.setCountry(countryRepository.findCountryByCode(user.getCountry().getCode()));
-            if (user.getIdentified() != null)
-                sUser.setIdentified(user.getIdentified());
+            Office office = officeRepository.findOne(user.getOffice().getId());
+            sUser.setOffice(office);
+            sUser.setFirstName(user.getFirstName());
+            sUser.setSecondName(user.getSecondName());
+            sUser.setMiddleName(user.getMiddleName());
+            sUser.setPosition(user.getPosition());
+            sUser.setPhone(user.getPhone());
+            sUser.setDocType(docTypeRepository.findDocTypeByCode(user.getDocType().getCode()));
+            sUser.setDocNumber(user.getDocNumber());
+            sUser.setDocDate(user.getDocDate());
+            sUser.setCountry(countryRepository.findCountryByCode(user.getCountry().getCode()));
+            sUser.setIdentified(user.getIdentified());
             userRepository.save(sUser);
         } else {
             throw new CustomUserException("По officeId: " + user.getOffice().getId() + " офис не найден! Для заведения нового сотрудника, нужно прикрепить сотрудника к существующему офису!");
@@ -207,12 +182,12 @@ public class UserServiceImpl implements UserService {
 
     /**
      * Удаление из базы сотрудника по Id
-     *
-     * @param user - объект содержащий параметр Id сотрудника, для удаления по нему из базы
+     * @param userDeleteViewRequest - объект содержащий параметр Id сотрудника, для удаления по нему из базы
      */
     @Override
     @Transactional
-    public void delete(User user) throws CustomUserException {
+    public void delete(UserDeleteViewRequest userDeleteViewRequest) throws CustomUserException, ParseException {
+        User user = convertToEntity(userDeleteViewRequest);
         if (userRepository.findOne(user.getId()) == null) {
             throw new CustomUserException("С данным Id, сотрудник не найден!");
         }
@@ -229,49 +204,48 @@ public class UserServiceImpl implements UserService {
 
     public User convertToEntity(UserListViewRequest userListViewRequest) throws ParseException {
         User user = modelMapper.map(userListViewRequest, User.class);
-            Office office = new Office();
-            office.setId(userListViewRequest.getOfficeId());
-            user.setOffice(office);
-            DocType docType = new DocType();
-            docType.setCode(userListViewRequest.getDocCode());
-            user.setDocType(docType);
-            Country country = new Country();
-            country.setCode(userListViewRequest.getCitizenshipCode());
-            user.setCountry(country);
+        Office office = new Office();
+        office.setId(userListViewRequest.getOfficeId());
+        user.setOffice(office);
+
+        DocType docType = new DocType();
+        docType.setCode(userListViewRequest.getDocCode());
+        user.setDocType(docType);
+
+        Country country = new Country();
+        country.setCode(userListViewRequest.getCitizenshipCode());
+        user.setCountry(country);
 
         return user;
     }
 
     public User convertToEntity(UserUpdateViewRequest userUpdateViewRequest) throws ParseException {
         User user = modelMapper.map(userUpdateViewRequest, User.class);
-            DocType docType = new DocType();
-            docType.setCode(userUpdateViewRequest.getDocCode());
-            docType.setName(userUpdateViewRequest.getDocName());
-            user.setDocType(docType);
-            Country country = new Country();
-            country.setCode(userUpdateViewRequest.getCitizenshipCode());
-            country.setName(userUpdateViewRequest.getCitizenshipName());
-            user.setCountry(country);
+        DocType docType = new DocType();
+        docType.setCode(userUpdateViewRequest.getDocCode());
+        docType.setName(userUpdateViewRequest.getDocName());
+        user.setDocType(docType);
+
+        Country country = new Country();
+        country.setCode(userUpdateViewRequest.getCitizenshipCode());
+        country.setName(userUpdateViewRequest.getCitizenshipName());
+        user.setCountry(country);
         return user;
     }
 
     public User convertToEntity(UserSaveViewRequest userSaveViewRequest) throws ParseException {
         User user = modelMapper.map(userSaveViewRequest, User.class);
-        if (userSaveViewRequest.getOfficeId() != null) {
             Office office = new Office();
             office.setId(userSaveViewRequest.getOfficeId());
             user.setOffice(office);
-        }
-        if (userSaveViewRequest.getDocCode() != null) {
+
             DocType docType = new DocType();
             docType.setCode(userSaveViewRequest.getDocCode());
             user.setDocType(docType);
-        }
-        if (userSaveViewRequest.getCitizenshipCode() != null) {
+
             Country country = new Country();
             country.setCode(userSaveViewRequest.getCitizenshipCode());
             user.setCountry(country);
-        }
         return user;
     }
 }

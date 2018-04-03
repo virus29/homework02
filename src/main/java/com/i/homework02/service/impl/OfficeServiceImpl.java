@@ -32,12 +32,14 @@ public class OfficeServiceImpl implements OfficeService {
 
     /**
      * Поиск офиса(ов) по нескольким параметрам
-     * @param office - объект с параметрами поиска
+     *
+     * @param officeListViewRequest - объект с параметрами поиска
      * @return Список офисов полученый из параметров запроса
      */
     @Override
     @Transactional(readOnly = true)
-    public List<OfficeListViewResponse> searchOffice(Office office) throws CustomOfficeException {
+    public List<OfficeListViewResponse> searchOffice(OfficeListViewRequest officeListViewRequest) throws CustomOfficeException, ParseException {
+        Office office = convertToEntity(officeListViewRequest);
         Specification<Office> findOfficeByParam = new Specification<Office>() {
             @Override
             public Predicate toPredicate(Root<Office> r, CriteriaQuery<?> cq, CriteriaBuilder cb) {
@@ -75,11 +77,13 @@ public class OfficeServiceImpl implements OfficeService {
 
     /**
      * Изменение(обновление) параметров офиса
-     * @param office - парметры офиса переданные для удаления
+     *
+     * @param officeUpdateViewRequest - парметры офиса переданные для удаления
      */
     @Override
     @Transactional
-    public void update(Office office) throws CustomOfficeException {
+    public void update(OfficeUpdateViewRequest officeUpdateViewRequest) throws CustomOfficeException, ParseException {
+        Office office = convertToEntity(officeUpdateViewRequest);
         Office officeUpdate = officeRepository.findOne(office.getId());
         if (officeUpdate != null) {
             officeUpdate.setName(office.getName());
@@ -96,23 +100,18 @@ public class OfficeServiceImpl implements OfficeService {
     OrganizationRepository organizationRepository;
 
 
-
-
-
     /**
      * Сохранение офиса
-     * @param office - объект с параметрами для сохранения
+     *
+     * @param officeSaveViewRequest - объект с параметрами для сохранения
      */
     @Override
     @Transactional
-    public void save(Office office) throws CustomOfficeException {
+    public void save(OfficeSaveViewRequest officeSaveViewRequest) throws CustomOfficeException, ParseException {
+        Office office = convertToEntity(officeSaveViewRequest);
         if (organizationRepository.exists(office.getOrganization().getId())) {
-            if (office.getName() == null &
-                    office.getAddress() == null &
-                    office.getPhone() == null &
-                    office.getActive() == null
-                    ) {
-                throw new CustomOfficeException("Поля не заполнены! Для сохранения, необходимо заполнить, хотя бы, одно поле, помимо Id организации!");
+            if (office.getName() == null) {
+                throw new CustomOfficeException("Поле name не заполнено! Для сохранения, необходимо заполнить, Название офиса, помимо Id организации!");
             }
             officeRepository.save(office);
         } else {
@@ -123,6 +122,7 @@ public class OfficeServiceImpl implements OfficeService {
 
     /**
      * Поиск офиса по Id
+     *
      * @param id - id офиса
      * @return - офис найденный по id
      */
@@ -133,10 +133,10 @@ public class OfficeServiceImpl implements OfficeService {
             Office of = officeRepository.findOne(id);
             OfficeViewResponse officeViewResponse = new OfficeViewResponse();
             officeViewResponse.setId(of.getId());
-            if (of.getName() != null) officeViewResponse.setName(of.getName());
-            if (of.getAddress() != null) officeViewResponse.setAddress(of.getAddress());
-            if (of.getPhone() != null) officeViewResponse.setPhone(of.getPhone());
-            if (of.getActive() != null) officeViewResponse.setActive(of.getActive());
+            officeViewResponse.setName(of.getName());
+            officeViewResponse.setAddress(of.getAddress());
+            officeViewResponse.setPhone(of.getPhone());
+            officeViewResponse.setActive(of.getActive());
             return officeViewResponse;
         } else {
             throw new CustomOfficeException("С Id = " + id + ", офисов не найдено! Введите существующий Id.");
@@ -149,12 +149,14 @@ public class OfficeServiceImpl implements OfficeService {
 
     /**
      * Удаление офиса
-     * @param office объект с параметром id офиса
+     *
+     * @param officeDeleteViewRequest объект с параметром id офиса
      */
     @Override
     @Transactional
-    public void delete(Office office) throws CustomOfficeException {
-        if (officeRepository.findOne(office.getId())!=null) {
+    public void delete(OfficeDeleteViewRequest officeDeleteViewRequest) throws CustomOfficeException, ParseException {
+        Office office = convertToEntity(officeDeleteViewRequest);
+        if (officeRepository.findOne(office.getId()) != null) {
             officeRepository.delete(office.getId());
         } else {
             throw new CustomOfficeException("С данным Id, офис не найден!");
@@ -165,12 +167,12 @@ public class OfficeServiceImpl implements OfficeService {
     private ModelMapper modelMapper;
 
     public Office convertToEntity(OfficeDeleteViewRequest officeDeleteViewRequest) throws ParseException {
-        Office office = modelMapper.map(officeDeleteViewRequest,Office.class);
+        Office office = modelMapper.map(officeDeleteViewRequest, Office.class);
         return office;
     }
 
     public Office convertToEntity(OfficeListViewRequest officeListViewRequest) throws ParseException {
-        Office office=modelMapper.map(officeListViewRequest,Office.class);
+        Office office = modelMapper.map(officeListViewRequest, Office.class);
         Organization organization = new Organization();
         organization.setId(officeListViewRequest.getOrgId());
         office.setOrganization(organization);
@@ -178,7 +180,7 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     public Office convertToEntity(OfficeSaveViewRequest officeSaveViewRequest) throws ParseException {
-        Office office=modelMapper.map(officeSaveViewRequest,Office.class);
+        Office office = modelMapper.map(officeSaveViewRequest, Office.class);
         Organization organization = new Organization();
         organization.setId(officeSaveViewRequest.getOrgId());
         office.setOrganization(organization);
@@ -186,10 +188,9 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     public Office convertToEntity(OfficeUpdateViewRequest officeUpdateViewRequest) throws ParseException {
-        Office office=modelMapper.map(officeUpdateViewRequest,Office.class);
+        Office office = modelMapper.map(officeUpdateViewRequest, Office.class);
         return office;
     }
-
 
 
 }

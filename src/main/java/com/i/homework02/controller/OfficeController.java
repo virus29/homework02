@@ -29,8 +29,7 @@ public class OfficeController {
     @PostMapping(value = "/list")
     public
     ResponseEntity searchOffice(@RequestBody @Valid OfficeListViewRequest officeListViewRequest) throws CustomOfficeException, ParseException {
-        Office office=officeServiceImpl.convertToEntity(officeListViewRequest);
-        List<OfficeListViewResponse> listOffices = officeServiceImpl.searchOffice(office);
+        List<OfficeListViewResponse> listOffices = officeServiceImpl.searchOffice(officeListViewRequest);
         DataView<List<OfficeListViewResponse>> dataView =new DataView<>(listOffices);
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
@@ -54,8 +53,7 @@ public class OfficeController {
     @PostMapping(value = "/update")
     public
     ResponseEntity officeUpdate (@RequestBody @Valid OfficeUpdateViewRequest officeUpdateViewRequest) throws CustomOfficeException, ParseException {
-        Office office=officeServiceImpl.convertToEntity(officeUpdateViewRequest);
-        officeServiceImpl.update(office);
+        officeServiceImpl.update(officeUpdateViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
@@ -66,8 +64,7 @@ public class OfficeController {
     @PostMapping(value = "/save")
     public
     ResponseEntity officeSave (@RequestBody OfficeSaveViewRequest officeSaveViewRequest) throws CustomOfficeException, ParseException {
-        Office office=officeServiceImpl.convertToEntity(officeSaveViewRequest);
-        officeServiceImpl.save(office);
+        officeServiceImpl.save(officeSaveViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -78,8 +75,7 @@ public class OfficeController {
     @PostMapping(value = "/delete")
     public
     ResponseEntity officeDelete (@RequestBody @Valid OfficeDeleteViewRequest officeDeleteViewRequest) throws CustomOfficeException, ParseException {
-        Office office=officeServiceImpl.convertToEntity(officeDeleteViewRequest);
-        officeServiceImpl.delete(office);
+        officeServiceImpl.delete(officeDeleteViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 }

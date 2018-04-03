@@ -4,6 +4,7 @@ import com.i.homework02.entity.Organization;
 import com.i.homework02.exeption.CustomOrganizationException;
 import com.i.homework02.view.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface OrganisationService {
@@ -17,22 +18,22 @@ public interface OrganisationService {
 
         /**
          * Поиск организации по нескольким параметрам
-         * @param organization - объект содержащий параметры для поиска
+         * @param orgListViewRequest - объект содержащий параметры для поиска
          * @return список организаций подходящие критериям поиска
          */
-        public List<OrgListViewResponse> search(Organization organization) throws CustomOrganizationException;
+        public List<OrgListViewResponse> search(OrgListViewRequest orgListViewRequest) throws CustomOrganizationException, ParseException;
 
         /**
          * Изменение(обновление) организации
-         * @param organization - объект содержащий параметры для обновления
+         * @param orgViewRequest - объект содержащий параметры для обновления
          */
-        public void update(Organization organization) throws CustomOrganizationException;
+        public void update(OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException;
 
         /**
          * Сохранение организации
-         * @param organization - объект содержащий параметры для сохранения
+         * @param orgSaveViewRequest - объект содержащий параметры для сохранения
          */
-        public void save(Organization organization) throws CustomOrganizationException;
+        public void save(OrgSaveViewRequest orgSaveViewRequest) throws CustomOrganizationException, ParseException;
 
         /**
          * Поиск по Id организации
@@ -43,7 +44,7 @@ public interface OrganisationService {
 
         /**
          * Удаление организации
-         * @param organization - объект содержащий id организации
+         * @param orgViewRequest - объект содержащий id организации
          */
-        public void delete(Organization organization) throws CustomOrganizationException;
+        public void delete(OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException;
 }

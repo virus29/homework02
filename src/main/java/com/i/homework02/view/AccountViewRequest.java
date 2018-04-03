@@ -59,4 +59,6 @@ public class AccountViewRequest {
     public void setActivationCode(String activationCode) {
         this.activationCode = activationCode;
     }
+
+
 }

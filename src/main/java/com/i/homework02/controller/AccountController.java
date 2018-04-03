@@ -19,9 +19,13 @@ import com.i.homework02.view.PositiveResponseView;
 import javax.validation.Valid;
 import java.text.ParseException;
 
+
+
+
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AccountController {
+
 
     @Autowired
     AccountServiceImpl accountServiceImpl;
@@ -33,7 +37,7 @@ public class AccountController {
     @PostMapping(value = "/register")
     public ResponseEntity registrationAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
         Account account=accountServiceImpl.convertToEntity(accountViewRequest);
-        accountServiceImpl.registration(account);
+        accountServiceImpl.registration(accountViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -54,8 +58,8 @@ public class AccountController {
      */
     @PostMapping(value = "/login")
     public ResponseEntity logInAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
-        com.i.homework02.entity.Account account=accountServiceImpl.convertToEntity(accountViewRequest);
-        accountServiceImpl.logIn(account);
+        Account account=accountServiceImpl.convertToEntity(accountViewRequest);
+        accountServiceImpl.logIn(accountViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
@@ -66,8 +70,8 @@ public class AccountController {
      */
     @PostMapping(value = "/getactivationcode")
     public ResponseEntity getActivationCode(@RequestBody AccountViewRequest accountViewRequest) throws ParseException {
-        com.i.homework02.entity.Account account=accountServiceImpl.convertToEntity(accountViewRequest);
-        String s = accountServiceImpl.getActivationCode(account);
+        Account account=accountServiceImpl.convertToEntity(accountViewRequest);
+        String s = accountServiceImpl.getActivationCode(accountViewRequest);
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 }

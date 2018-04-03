@@ -1,15 +1,17 @@
 package com.i.homework02.service;
 
-import com.i.homework02.entity.Account;
 import com.i.homework02.exeption.CustomAccountException;
+import com.i.homework02.view.AccountViewRequest;
+
+import java.text.ParseException;
 
 public interface AccountService {
 
     /**
      * Регистрация аккаунта
-     * @param account - обЪект, который содержит login, password, name аккаунта
+     * @param accountViewRequest - обЪект, который содержит login, password, name аккаунта
      */
-    public void registration (Account account) throws CustomAccountException;
+    public void registration (AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException;
 
     /**
      * Активация аккаунта по коду
@@ -19,15 +21,15 @@ public interface AccountService {
 
     /**
      * Вход в систему, через верификация аккаунта
-     * @param account обЪект, который содержит login, password аккаунта
+     * @param accountViewRequest обЪект, который содержит login, password аккаунта
      * @return подтверждение входа true или false
      */
-    public boolean logIn(Account account) throws CustomAccountException;
+    public boolean logIn(AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException;
 
     /**
      * Иммитация получение активационного кода по электронной почте, для нужд тестирования
-     * @param account -содержит login аккаунта
+     * @param accountViewRequest -содержит login аккаунта
      * @return возвращает активационный код аккаунта
      */
-    public String getActivationCode(Account account);
+    public String getActivationCode(AccountViewRequest accountViewRequest) throws ParseException;
 }

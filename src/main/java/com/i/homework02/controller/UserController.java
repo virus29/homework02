@@ -32,8 +32,7 @@ public class UserController {
      */
     @PostMapping(value = "/list")
     public ResponseEntity searchUser(@RequestBody @Valid UserListViewRequest userListViewRequest) throws CustomUserException, ParseException {
-        User user = userServiceImpl.convertToEntity(userListViewRequest);
-        List<UserListViewResponse> listUsers = userServiceImpl.searchUser(user);
+        List<UserListViewResponse> listUsers = userServiceImpl.searchUser(userListViewRequest);
         DataView<List<UserListViewResponse>> dataView = new DataView(listUsers);
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
@@ -57,8 +56,7 @@ public class UserController {
      */
     @PostMapping(value = "/update")
     public ResponseEntity updaterUser(@RequestBody @Valid UserUpdateViewRequest userUpdateViewRequest) throws CustomUserException, ParseException {
-        User user = userServiceImpl.convertToEntity(userUpdateViewRequest);
-        userServiceImpl.update(user);
+        userServiceImpl.update(userUpdateViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
@@ -70,8 +68,7 @@ public class UserController {
      */
     @PostMapping(value = "/save")
     public ResponseEntity addUser(@RequestBody @Valid UserSaveViewRequest userSaveViewRequest) throws CustomUserException, ParseException {
-        User user=userServiceImpl.convertToEntity(userSaveViewRequest);
-        userServiceImpl.save(user);
+        userServiceImpl.save(userSaveViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -82,8 +79,7 @@ public class UserController {
      */
     @PostMapping(value = "/delete")
     public ResponseEntity delete(@RequestBody @Valid UserDeleteViewRequest userDeleteViewRequest) throws CustomUserException, ParseException {
-        User user=userServiceImpl.convertToEntity(userDeleteViewRequest);
-        userServiceImpl.delete(user);
+        userServiceImpl.delete(userDeleteViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 }

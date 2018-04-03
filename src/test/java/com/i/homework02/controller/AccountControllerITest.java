@@ -91,12 +91,12 @@ public class AccountControllerITest {
 
     @Test
     public void getActivationCodePositiveTest() throws Exception {
-        Account account = new Account();
-        account.setLogin("test@mail.ru");
-        account.setPassword("123");
-        account.setName("Test");
-        accountServiceImpl.registration(account);
-        String code = accountServiceImpl.getActivationCode(account);
+        AccountViewRequest accountViewRequest = new AccountViewRequest();
+        accountViewRequest.setLogin("test@mail.ru");
+        accountViewRequest.setPassword("123");
+        accountViewRequest.setName("Test");
+        accountServiceImpl.registration(accountViewRequest);
+        String code = accountServiceImpl.getActivationCode(accountViewRequest);
 
         HttpEntity entity = new HttpEntity<>(headers);
         ResponseEntity<PositiveResponseView> response = restTemplate.exchange("/api/activation/" + code, HttpMethod.GET, entity, PositiveResponseView.class);
@@ -109,12 +109,12 @@ public class AccountControllerITest {
 
     @Test
     public void getActivationCodeNegativeTest() throws Exception {
-        Account account = new Account();
-        account.setLogin("test@mail.ru");
-        account.setPassword("123");
-        account.setName("Test");
-        accountServiceImpl.registration(account);
-        String code = accountServiceImpl.getActivationCode(account);
+        AccountViewRequest accountViewRequest = new AccountViewRequest();
+        accountViewRequest.setLogin("test@mail.ru");
+        accountViewRequest.setPassword("123");
+        accountViewRequest.setName("Test");
+        accountServiceImpl.registration(accountViewRequest);
+        String code = accountServiceImpl.getActivationCode(accountViewRequest);
         String fakeCode = "khhfdjdkdthrsfdrexfcgvfdfg345678";
 
         HttpEntity entity = new HttpEntity<>(headers);

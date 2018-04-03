@@ -2,35 +2,33 @@ package com.i.homework02.service;
 
 import com.i.homework02.entity.User;
 import com.i.homework02.exeption.CustomUserException;
-import com.i.homework02.view.UserIdViewResponse;
-import com.i.homework02.view.UserListViewResponse;
-import com.i.homework02.view.UserSaveViewRequest;
-import com.i.homework02.view.UserUpdateViewRequest;
+import com.i.homework02.view.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 public interface UserService {
 
     /**
      * Поиск списка сотрудников по параметрам
-     * @param user        - Объект содержащий параметры для поиска сотрудника
+     * @param userListViewRequest        - Объект содержащий параметры для поиска сотрудника
      * @return List<User> - список сотрудников, отвечающий критериям поиска
      */
-    public List<UserListViewResponse> searchUser (User user) throws CustomUserException;
+    public List<UserListViewResponse> searchUser (UserListViewRequest userListViewRequest) throws CustomUserException, ParseException;
 
 
     /**
      * Изменение(обновление) параметров сотрудника по переданным парметрам в теле объекта userUpdateViewRequest
-     * @param user - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
+     * @param userUpdateViewRequest - объект содержащий параметры сотрудника, для изменения данных хранящихся в базе
      */
-    public void update(User user) throws CustomUserException;
+    public void update(UserUpdateViewRequest userUpdateViewRequest) throws CustomUserException, ParseException;
 
     /**
      * Сохранение
      * Запись нового сотрудника в базу, по переданным парметрам в теле объекта userUpdateView
-     * @param user - объект содержащий параметры сотрудника, для сохранения их в базе
+     * @param userSaveViewRequest - объект содержащий параметры сотрудника, для сохранения их в базе
      */
-    public void save(User user) throws CustomUserException;
+    public void save(UserSaveViewRequest userSaveViewRequest) throws CustomUserException, ParseException;
 
     /**
      * Поиск по Id Сотрудника
@@ -41,7 +39,7 @@ public interface UserService {
 
     /**
      * Удаление из базы сотрудника по Id
-     * @param user - объект содержащий параметр Id сотрудника, для удаления по нему из базы
+     * @param userDeleteViewRequest - объект содержащий параметр Id сотрудника, для удаления по нему из базы
      */
-    public void delete(User user) throws CustomUserException;
+    public void delete(UserDeleteViewRequest userDeleteViewRequest) throws CustomUserException, ParseException;
 }
