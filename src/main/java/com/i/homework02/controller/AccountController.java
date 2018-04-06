@@ -4,6 +4,8 @@ import com.i.homework02.entity.Account;
 import com.i.homework02.exeption.CustomAccountException;
 import com.i.homework02.service.impl.AccountServiceImpl;
 import com.i.homework02.view.AccountViewRequest;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ import java.text.ParseException;
 
 
 @RestController
+@Api(value = "/api", description = "Операции по управлению учетной записью")
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AccountController {
 
@@ -34,7 +37,9 @@ public class AccountController {
      * Регистрация аккаунта
      * @param accountViewRequest - обЪект, который содержит login, password, name аккаунта
      */
+
     @PostMapping(value = "/register")
+    @ApiOperation(value = "Регистрация аккаунта")
     public ResponseEntity registrationAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
         Account account=accountServiceImpl.convertToEntity(accountViewRequest);
         accountServiceImpl.registration(accountViewRequest);
@@ -46,6 +51,7 @@ public class AccountController {
      * @param code - код активации высланный на почту
      */
     @GetMapping(path = "/activation/{code}")
+    @ApiOperation(value = "Активация аккаунта по коду")
     public ResponseEntity findOfficeById(@PathVariable String code) throws CustomAccountException {
         accountServiceImpl.activation(code);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
@@ -57,6 +63,7 @@ public class AccountController {
      * @return подтверждение входа true или false
      */
     @PostMapping(value = "/login")
+    @ApiOperation(value = "Вход в систему, через верификация аккаунта")
     public ResponseEntity logInAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
         Account account=accountServiceImpl.convertToEntity(accountViewRequest);
         accountServiceImpl.logIn(accountViewRequest);
@@ -69,6 +76,7 @@ public class AccountController {
      * @return возвращает активационный код аккаунта
      */
     @PostMapping(value = "/getactivationcode")
+    @ApiOperation(value = "Иммитация получение активационного кода по электронной почте, для нужд тестирования")
     public ResponseEntity getActivationCode(@RequestBody AccountViewRequest accountViewRequest) throws ParseException {
         Account account=accountServiceImpl.convertToEntity(accountViewRequest);
         String s = accountServiceImpl.getActivationCode(accountViewRequest);
