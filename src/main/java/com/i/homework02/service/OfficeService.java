@@ -1,6 +1,8 @@
 package com.i.homework02.service;
 
+import com.i.homework02.entity.Account;
 import com.i.homework02.entity.Office;
+import com.i.homework02.entity.Organization;
 import com.i.homework02.exeption.CustomOfficeException;
 import com.i.homework02.view.*;
 
@@ -41,4 +43,32 @@ public interface OfficeService {
      * @param officeDeleteViewRequest объект с параметром id офиса
      */
     public void delete(OfficeDeleteViewRequest officeDeleteViewRequest) throws CustomOfficeException, ParseException;
+
+    /**
+     * Конвертация объекта DTO  в entity класс
+     * @param officeDeleteViewRequest -  объекта DTO Office
+     * @return сконвертированный Entity класс Office
+     */
+    public Office convertToEntity(OfficeDeleteViewRequest officeDeleteViewRequest) throws ParseException;
+
+    /**
+     * Конвертация объекта DTO  в entity класс
+     * @param officeListViewRequest -  объекта DTO Office
+     * @return сконвертированный Entity класс Office
+     */
+    public Office convertToEntity(OfficeListViewRequest officeListViewRequest) throws ParseException;
+
+    /**
+     * Конвертация объекта DTO  в entity класс
+     * @param officeSaveViewRequest -  объекта DTO Office
+     * @return сконвертированный Entity класс Office
+     */
+    public Office convertToEntity(OfficeSaveViewRequest officeSaveViewRequest) throws ParseException;
+
+    /**
+     * Конвертация объекта DTO  в entity класс
+     * @param officeUpdateViewRequest -  объекта DTO Office
+     * @return сконвертированный Entity класс Office
+     */
+    public Office convertToEntity(OfficeUpdateViewRequest officeUpdateViewRequest) throws ParseException;
 }

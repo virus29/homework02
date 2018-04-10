@@ -1,5 +1,6 @@
 package com.i.homework02.service;
 
+import com.i.homework02.entity.Account;
 import com.i.homework02.exeption.CustomAccountException;
 import com.i.homework02.view.AccountViewRequest;
 
@@ -32,4 +33,11 @@ public interface AccountService {
      * @return возвращает активационный код аккаунта
      */
     public String getActivationCode(AccountViewRequest accountViewRequest) throws ParseException;
+
+    /**
+     * Конвертация объекта DTO  в entity класс
+     * @param accountViewRequest -  объекта DTO Account
+     * @return сконвертированный Entity класс Account
+     */
+    public Account convertToEntity(AccountViewRequest accountViewRequest) throws ParseException;
 }

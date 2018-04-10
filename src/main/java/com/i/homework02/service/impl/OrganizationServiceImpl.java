@@ -3,7 +3,7 @@ package com.i.homework02.service.impl;
 import com.i.homework02.entity.Organization;
 import com.i.homework02.exeption.CustomOrganizationException;
 import com.i.homework02.repository.OrganizationRepository;
-import com.i.homework02.service.OrganisationService;
+import com.i.homework02.service.OrganizationService;
 import com.i.homework02.view.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 @Repository
-public class OrganizationServiceImpl implements OrganisationService {
+public class OrganizationServiceImpl implements OrganizationService {
 
     @Autowired
     private OrganizationRepository organizationRepository;

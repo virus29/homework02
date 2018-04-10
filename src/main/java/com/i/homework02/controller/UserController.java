@@ -1,8 +1,7 @@
 package com.i.homework02.controller;
 
-import com.i.homework02.entity.User;
 import com.i.homework02.exeption.CustomUserException;
-import com.i.homework02.service.impl.UserServiceImpl;
+import com.i.homework02.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserService userService;
 
     /**
      * Поиск по нескольким параметрам сотрудника
@@ -37,7 +36,7 @@ public class UserController {
     @PostMapping(value = "/list")
     @ApiOperation(value = "Поиск по нескольким параметрам сотрудника")
     public ResponseEntity searchUser(@RequestBody @Valid UserListViewRequest userListViewRequest) throws CustomUserException, ParseException {
-        List<UserListViewResponse> listUsers = userServiceImpl.searchUser(userListViewRequest);
+        List<UserListViewResponse> listUsers = userService.searchUser(userListViewRequest);
         DataView<List<UserListViewResponse>> dataView = new DataView(listUsers);
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
@@ -50,7 +49,7 @@ public class UserController {
     @GetMapping(path = "/{id}")
     @ApiOperation(value = "Поиск по Id Сотрудника")
     public ResponseEntity findById(@PathVariable Long id) throws CustomUserException {
-        UserIdViewResponse us = userServiceImpl.findById(id);
+        UserIdViewResponse us = userService.findById(id);
         DataView<UserIdViewResponse> dataView = new DataView<>(us);
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
@@ -63,7 +62,7 @@ public class UserController {
     @PostMapping(value = "/update")
     @ApiOperation(value = "Изменение(обновление) параметров сотрудника по переданным парметрам в теле объекта userUpdateViewRequest")
     public ResponseEntity updaterUser(@RequestBody @Valid UserUpdateViewRequest userUpdateViewRequest) throws CustomUserException, ParseException {
-        userServiceImpl.update(userUpdateViewRequest);
+        userService.update(userUpdateViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
@@ -76,7 +75,7 @@ public class UserController {
     @PostMapping(value = "/save")
     @ApiOperation(value = "Сохранение. Запись нового сотрудника в базу, по переданным парметрам в теле объекта userUpdateView")
     public ResponseEntity addUser(@RequestBody @Valid UserSaveViewRequest userSaveViewRequest) throws CustomUserException, ParseException {
-        userServiceImpl.save(userSaveViewRequest);
+        userService.save(userSaveViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -88,7 +87,7 @@ public class UserController {
     @PostMapping(value = "/delete")
     @ApiOperation(value = "Удаление из базы сотрудника")
     public ResponseEntity delete(@RequestBody @Valid UserDeleteViewRequest userDeleteViewRequest) throws CustomUserException, ParseException {
-        userServiceImpl.delete(userDeleteViewRequest);
+        userService.delete(userDeleteViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 }

@@ -7,7 +7,7 @@ import com.i.homework02.view.*;
 import java.text.ParseException;
 import java.util.List;
 
-public interface OrganisationService {
+public interface OrganizationService {
 //        /**
 //         * Поиск организации по нескольким параметрам
 //         * @param orgListViewRequest - объект содержащий параметры для поиска
@@ -47,4 +47,25 @@ public interface OrganisationService {
          * @param orgViewRequest - объект содержащий id организации
          */
         public void delete(OrgViewRequest orgViewRequest) throws CustomOrganizationException, ParseException;
+
+        /**
+         * Конвертация объекта DTO  в entity класс
+         * @param orgSaveViewRequest -  объекта DTO Organization
+         * @return сконвертированный Entity класс Organization
+         */
+        public Organization convertToEntity(OrgSaveViewRequest orgSaveViewRequest) throws ParseException;
+
+        /**
+         * Конвертация объекта DTO  в entity класс
+         * @param orgListViewRequest -  объекта DTO Organization
+         * @return сконвертированный Entity класс Organization
+         */
+        public Organization convertToEntity(OrgListViewRequest orgListViewRequest) throws ParseException;
+
+        /**
+         * Конвертация объекта DTO  в entity класс
+         * @param orgViewRequest -  объекта DTO Organization
+         * @return сконвертированный Entity класс Organization
+         */
+        public Organization convertToEntity(OrgViewRequest orgViewRequest) throws ParseException;
 }

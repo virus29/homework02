@@ -2,7 +2,7 @@ package com.i.homework02.controller;
 
 import com.i.homework02.entity.Office;
 import com.i.homework02.exeption.CustomOfficeException;
-import com.i.homework02.service.impl.OfficeServiceImpl;
+import com.i.homework02.service.OfficeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 public class OfficeController {
 
     @Autowired
-    private OfficeServiceImpl officeServiceImpl;
+    private OfficeService officeService;
 
     /**
      * Поиск офиса(ов) по нескольким параметрам
@@ -34,7 +34,7 @@ public class OfficeController {
     @ApiOperation(value = "Поиск офиса по нескольким параметрам")
     public
     ResponseEntity searchOffice(@RequestBody @Valid OfficeListViewRequest officeListViewRequest) throws CustomOfficeException, ParseException {
-        List<OfficeListViewResponse> listOffices = officeServiceImpl.searchOffice(officeListViewRequest);
+        List<OfficeListViewResponse> listOffices = officeService.searchOffice(officeListViewRequest);
         DataView<List<OfficeListViewResponse>> dataView =new DataView<>(listOffices);
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
@@ -47,7 +47,7 @@ public class OfficeController {
     @GetMapping(path = "/{id}")
     @ApiOperation(value = "Поиск офиса по Id")
     public ResponseEntity findOfficeById(@PathVariable Long id) throws CustomOfficeException {
-        OfficeViewResponse officeViewResponse = officeServiceImpl.findById(id);
+        OfficeViewResponse officeViewResponse = officeService.findById(id);
         DataView<OfficeViewResponse> dataView =new DataView<>(officeViewResponse);
         return new ResponseEntity<>(dataView, HttpStatus.FOUND);
     }
@@ -60,7 +60,7 @@ public class OfficeController {
     @ApiOperation(value = "Изменение(обновление) параметров офиса")
     public
     ResponseEntity officeUpdate (@RequestBody @Valid OfficeUpdateViewRequest officeUpdateViewRequest) throws CustomOfficeException, ParseException {
-        officeServiceImpl.update(officeUpdateViewRequest);
+        officeService.update(officeUpdateViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
@@ -72,7 +72,7 @@ public class OfficeController {
     @ApiOperation(value = "Сохранение офиса")
     public
     ResponseEntity officeSave (@RequestBody OfficeSaveViewRequest officeSaveViewRequest) throws CustomOfficeException, ParseException {
-        officeServiceImpl.save(officeSaveViewRequest);
+        officeService.save(officeSaveViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -84,7 +84,7 @@ public class OfficeController {
     @ApiOperation(value = "Удаление офиса")
     public
     ResponseEntity officeDelete (@RequestBody @Valid OfficeDeleteViewRequest officeDeleteViewRequest) throws CustomOfficeException, ParseException {
-        officeServiceImpl.delete(officeDeleteViewRequest);
+        officeService.delete(officeDeleteViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 }

@@ -2,7 +2,8 @@ package com.i.homework02.controller;
 
 import com.i.homework02.entity.Account;
 import com.i.homework02.exeption.CustomAccountException;
-import com.i.homework02.service.impl.AccountServiceImpl;
+
+import com.i.homework02.service.AccountService;
 import com.i.homework02.view.AccountViewRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +32,7 @@ public class AccountController {
 
 
     @Autowired
-    AccountServiceImpl accountServiceImpl;
+    AccountService accountService;
 
     /**
      * Регистрация аккаунта
@@ -41,8 +42,8 @@ public class AccountController {
     @PostMapping(value = "/register")
     @ApiOperation(value = "Регистрация аккаунта")
     public ResponseEntity registrationAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
-        Account account=accountServiceImpl.convertToEntity(accountViewRequest);
-        accountServiceImpl.registration(accountViewRequest);
+        Account account=accountService.convertToEntity(accountViewRequest);
+        accountService.registration(accountViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.CREATED);
     }
 
@@ -53,7 +54,7 @@ public class AccountController {
     @GetMapping(path = "/activation/{code}")
     @ApiOperation(value = "Активация аккаунта по коду")
     public ResponseEntity findOfficeById(@PathVariable String code) throws CustomAccountException {
-        accountServiceImpl.activation(code);
+        accountService.activation(code);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
@@ -65,8 +66,8 @@ public class AccountController {
     @PostMapping(value = "/login")
     @ApiOperation(value = "Вход в систему, через верификация аккаунта")
     public ResponseEntity logInAccount(@RequestBody @Valid AccountViewRequest accountViewRequest) throws CustomAccountException, ParseException {
-        Account account=accountServiceImpl.convertToEntity(accountViewRequest);
-        accountServiceImpl.logIn(accountViewRequest);
+        Account account=accountService.convertToEntity(accountViewRequest);
+        accountService.logIn(accountViewRequest);
         return new ResponseEntity<>(new PositiveResponseView(), HttpStatus.OK);
     }
 
@@ -78,8 +79,8 @@ public class AccountController {
     @PostMapping(value = "/getactivationcode")
     @ApiOperation(value = "Иммитация получение активационного кода по электронной почте, для нужд тестирования")
     public ResponseEntity getActivationCode(@RequestBody AccountViewRequest accountViewRequest) throws ParseException {
-        Account account=accountServiceImpl.convertToEntity(accountViewRequest);
-        String s = accountServiceImpl.getActivationCode(accountViewRequest);
+        Account account=accountService.convertToEntity(accountViewRequest);
+        String s = accountService.getActivationCode(accountViewRequest);
         return new ResponseEntity<>(s, HttpStatus.OK);
     }
 }
